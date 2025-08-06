@@ -40,12 +40,23 @@
 
                 <div class="col-md-6 text-align-center">
                     <ul class="nav mb-2 justify-content-center mb-md-0">
-                        <li><a href="#" class="nav-link px-2 link-secondary">Inicio</a></li>
-                        <li><a href="   #" class="nav-link px-2">Votação</a></li>
+                        <li><a href="/" class="nav-link px-2 link-secondary">Inicio</a></li>
+                        <li><a href="#" class="nav-link px-2">Votação</a></li>
                         <li><a href="#" class="nav-link px-2">Benefícios</a></li>
                         <li><a href="#" class="nav-link px-2">ASPRA</a></li>
                         <li><a href="#" class="nav-link px-2">Sobre</a></li>
+                        <div class="dropdown-center">
+                            <li class="nav-link dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                                aria-expanded="false">
+                                Associado
+                            </li>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="/associado/create">Novo</a></li>
+                                <li><a class="dropdown-item" href="#">Listar</a></li>
+                            </ul>
+                        </div>
                     </ul>
+
                 </div>
 
 
@@ -68,7 +79,7 @@
 
 
 
-    <footer class="text-center bg-light border-top py-3">
+    <footer class="text-center bg-light border-top py-3 fixed-bottom mt-5">
         <div class="container">
             <div class="row align-items-center">
 
