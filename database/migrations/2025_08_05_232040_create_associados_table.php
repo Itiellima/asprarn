@@ -14,8 +14,20 @@ return new class extends Migration
         Schema::create('associados', function (Blueprint $table) {
             $table->id();
             $table->string('nome');
-            $table->date('data_nascimento')->nullable();
-            $table->string('cidade')->nullable();
+            $table->string('cpf');
+            $table->string('rg')->nullable();
+            $table->string('org_expedidor')->nullable();
+            $table->string('nome_pai')->nullable();
+            $table->string('nome_mae')->nullable();
+            $table->date('dt_nasc');
+            $table->string('estado_civil')->nullable();
+            $table->string('grau_instrucao');
+            $table->string('nome_guerra');
+            $table->string('nmr_praca');
+            $table->string('matricula');
+            $table->string('opm');
+            $table->string('dependentes');
+            $table->string('obs');
             $table->timestamps();
         });
     }

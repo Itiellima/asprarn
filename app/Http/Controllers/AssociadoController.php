@@ -26,6 +26,7 @@ class AssociadoController extends Controller
         $associado = new Associado();
 
         $associado->nome = $request->nome;
+        $associado->cpf = $request->cpf;
         $associado->data_nascimento = $request->data_nascimento;
         $associado->cidade = $request->cidade;
         $associado->save();

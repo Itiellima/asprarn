@@ -60,7 +60,7 @@
                 </div>
 
 
-                <div class="col-md-3 text-center text-end">
+                <div class="col-md-3 text-center">
                     <button type="button" class="btn btn-outline-primary me-2">Ambiente do associado</button>
                     <button type="button" class="btn btn-primary">Quero me associar</button>
                 </div>
@@ -69,7 +69,7 @@
     </div>
 
 
-    <div>
+    <div class="">
         <main class="container container body-offset">
             @yield('content')
         </main>
@@ -79,7 +79,7 @@
 
 
 
-    <footer class="text-center bg-light border-top py-3 fixed-bottom mt-5">
+    <footer class="text-center bg-light border-top py-3 mt-auto">
         <div class="container">
             <div class="row align-items-center">
 
