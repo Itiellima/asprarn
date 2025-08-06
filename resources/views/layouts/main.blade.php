@@ -52,7 +52,7 @@
                             </li>
                             <ul class="dropdown-menu">
                                 <li><a class="dropdown-item" href="/associado/create">Novo</a></li>
-                                <li><a class="dropdown-item" href="#">Listar</a></li>
+                                <li><a class="dropdown-item" href="/associado">Listar</a></li>
                             </ul>
                         </div>
                     </ul>

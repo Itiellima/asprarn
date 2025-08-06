@@ -15,6 +15,8 @@
             <p>Nome: {{ $associados->nome }}</p>
             <p>Data de Nascimento: {{ $associados->data_nascimento }}</p>
             <p>Cidade: {{ $associados->cidade }}</p>
+            <a href="/associado/{{ $associados->id }}">Editar</a>
+            <a href="#">Excluir</a>
         </div>
     @endforeach
     
