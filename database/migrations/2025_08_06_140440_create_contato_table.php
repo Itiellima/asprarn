@@ -11,12 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('contato', function (Blueprint $table) {
+        Schema::create('contatos', function (Blueprint $table) {
             $table->id();
-            $table->string('tel_celular');
-            $table->string('tel_residencial');
-            $table->string('tel_trabalho');
-            $table->string('email');
+            $table->string('tel_celular')->nullable();
+            $table->string('tel_residencial')->nullable();
+            $table->string('tel_trabalho')->nullable();
+            $table->string('email')->nullable();
+            $table->foreignId('associado_id')->constrained()->onDelete('cascade');
             $table->timestamps();
         });
     }

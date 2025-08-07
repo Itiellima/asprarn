@@ -11,15 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('endereco', function (Blueprint $table) {
+        Schema::create('enderecos', function (Blueprint $table) {
             $table->id();
-            $table->string('cep');
-            $table->string('logradouro');
-            $table->string('nmr');
-            $table->string('bairro');
-            $table->string('cidade');
-            $table->string('uf');
-            $table->string('complemento');
+            $table->string('cep')->nullable();
+            $table->string('logradouro')->nullable();
+            $table->string('nmr')->nullable();
+            $table->string('bairro')->nullable();
+            $table->string('cidade')->nullable();
+            $table->string('uf')->nullable();
+            $table->string('complemento')->nullable();
+            $table->foreignId('associado_id')->constrained()->onDelete('cascade');
             $table->timestamps();
         });
     }

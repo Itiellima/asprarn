@@ -13,12 +13,13 @@ return new class extends Migration
     {
         Schema::create('dados_bancarios', function (Blueprint $table) {
             $table->id();
-            $table->integer('codigo');
-            $table->integer('agencia');
-            $table->string('banco');
-            $table->integer('conta');
-            $table->integer('operacao');
-            $table->string('tipo');
+            $table->integer('codigo')->nullable();
+            $table->integer('agencia')->nullable();
+            $table->string('banco')->nullable();
+            $table->integer('conta')->nullable();
+            $table->integer('operacao')->nullable();
+            $table->string('tipo')->nullable();
+            $table->foreignId('associado_id')->constrained()->onDelete('cascade');
             $table->timestamps();
         });
     }

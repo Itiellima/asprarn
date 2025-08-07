@@ -19,15 +19,15 @@ return new class extends Migration
             $table->string('org_expedidor')->nullable();
             $table->string('nome_pai')->nullable();
             $table->string('nome_mae')->nullable();
-            $table->date('dt_nasc');
+            $table->date('dt_nasc')->nullable();
             $table->string('estado_civil')->nullable();
-            $table->string('grau_instrucao');
-            $table->string('nome_guerra');
-            $table->string('nmr_praca');
-            $table->string('matricula');
-            $table->string('opm');
-            $table->string('dependentes');
-            $table->string('obs');
+            $table->string('grau_instrucao')->nullable();
+            $table->string('nome_guerra')->nullable();
+            $table->string('nmr_praca')->nullable();
+            $table->string('matricula')->nullable();
+            $table->string('opm')->nullable();
+            $table->string('dependentes')->nullable();
+            $table->string('obs')->nullable();
             $table->timestamps();
         });
     }

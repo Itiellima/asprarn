@@ -12,8 +12,7 @@
             <form action="/associado/store" method="POST">
                 @csrf
                 {{-- DADOS PESSOAIS --}}
-                <div class="container row border-top border-bottom border-primary ">
-
+                <div class="container row border-top border-bottom border-primary">
                     <h2>Dados pessoais</h2>
                     <div class="mb-3 col-6">
                         <label for="formGroup" class="form-label">Nome:</label>
@@ -23,36 +22,35 @@
                     <div class="mb-3 col-3">
                         <label for="formGroup" class="form-label">CPF:</label>
                         <input type="text" class="form-control " id="cpf" name="cpf"
-                            placeholder="Insira o nome do associado" required>
+                            placeholder="Insira o CPF do associado" required>
                     </div>
                     <div class="mb-3 col-3">
                         <label for="formGroup" class="form-label">RG:</label>
                         <input type="text" class="form-control " id="rg" name="rg"
-                            placeholder="Insira o nome do associado" required>
+                            placeholder="Insira o numero do RG" required>
                     </div>
                     <div class="mb-3 col-3">
                         <label for="formGroup" class="form-label">Órgão expedidor:</label>
                         <input type="text" class="form-control " id="org_expedidor" name="org_expedidor"
-                            placeholder="Insira o nome do associado" required>
+                            placeholder="Órgão expedidor" required>
                     </div>
                     <div class="mb-3 col-3">
                         <label for="formGroup" class="form-label">Nome do pai:</label>
                         <input type="text" class="form-control " id="nome_pai" name="nome_pai"
-                            placeholder="Insira o nome do associado" required>
+                            placeholder="Insira o nome do pai">
                     </div>
                     <div class="mb-3 col-3">
                         <label for="formGroup" class="form-label">Nome da Mãe:</label>
                         <input type="text" class="form-control " id="nome_mae" name="nome_mae"
-                            placeholder="Insira o nome do associado" required>
+                            placeholder="Insira o nome da mãe">
                     </div>
                     <div class="mb-3 col-3">
                         <label for="formGroup" class="form-label">Data de nascimento</label>
-                        <input type="date" class="form-control " id="dt_nasc" name="dt_nasc"
-                            placeholder="Insira a data de nascimento" required>
+                        <input type="date" class="form-control " id="dt_nasc" name="dt_nasc" required>
                     </div>
                     <div class="mb-3 col-3">
                         <label for="formGroup" class="form-label">Estado civil:</label>
-                        <select class="form-select " name="estado_civil" id="estado_civil">
+                        <select class="form-select " name="estado_civil" id="estado_civil" required>
                             <option selected disabled>Selecione</option>
                             <option value="solteiro">Solteiro</option>
                             <option value="Casado">Casado</option>
@@ -71,27 +69,28 @@
                     </div>
                 </div>
 
+                {{-- Endereço --}}
                 <div class="container row border-bottom border-primary mt-3">
                     <h2>Endereço</h2>
                     <div class="mb-3 col-3">
                         <label for="formGroup" class="form-label">CEP:</label>
-                        <input type="text" class="form-control " id="cep" name="cep"
-                            placeholder="Insira o nome da cidade" required>
+                        <input type="number" class="form-control " id="cep" name="cep"
+                            placeholder="59000-000 apenas numeros" required>
                     </div>
                     <div class="mb-3 col-6">
                         <label for="formGroup" class="form-label">Logradouro:</label>
                         <input type="text" class="form-control " id="logradouro" name="logradouro"
-                            placeholder="Insira o nome da cidade" required>
+                            placeholder="Rua..." required>
                     </div>
                     <div class="mb-3 col-3">
                         <label for="formGroup" class="form-label">Numero:</label>
                         <input type="text" class="form-control " id="nmr" name="nmr"
-                            placeholder="Insira o nome da cidade" required>
+                            placeholder="Número da residência" required>
                     </div>
                     <div class="mb-3 col-6">
                         <label for="formGroup" class="form-label">Bairro:</label>
                         <input type="text" class="form-control " id="bairro" name="bairro"
-                            placeholder="Insira o nome da cidade" required>
+                            placeholder="Insira o nome do bairro" required>
                     </div>
                     <div class="mb-3 col-6">
                         <label for="formGroup" class="form-label">Cidade:</label>
@@ -101,42 +100,41 @@
                     <div class="mb-3 col-3">
                         <label for="formGroup" class="form-label">UF:</label>
                         <input type="text" class="form-control " id="uf" name="uf"
-                            placeholder="Insira o nome da cidade" required>
+                            placeholder="ex: RN" required>
                     </div>
                     <div class="mb-3 col-9">
                         <label for="formGroup" class="form-label">Complemento:</label>
                         <input type="text" class="form-control " id="complemento" name="complemento"
-                            placeholder="Insira o nome da cidade" required>
+                            placeholder="Ponto de referência">
                     </div>
                 </div>
-
+                
+                {{-- Contato --}}
                 <div class="container row border-bottom border-primary mt-3">
                     <h2>Contato</h2>
                     <div class="mb-3 col-3">
                         <label for="formGroup" class="form-label">Numero de Celular:</label>
-                        <input type="text" class="form-control" maxlength="11" pattern="\d{10,11}"
-                            id="tel_celular" name="tel_celular" required
-                            placeholder="(xx) x xxxx-xxxx  Apenas numero">
+                        <input type="text" class="form-control" maxlength="11" pattern="\d{10,11}" id="tel_celular"
+                            name="tel_celular" placeholder="(xx) x xxxx-xxxx  Apenas numero" required>
                     </div>
                     <div class="mb-3 col-3">
                         <label for="formGroup" class="form-label">Numero Residencial:</label>
                         <input type="text" class="form-control" maxlength="11" pattern="\d{10,11}"
-                            id="tel_residencial" name="tel_residencial" required
-                            placeholder="(xx) x xxxx-xxxx  Apenas numero">
+                            id="tel_residencial" name="tel_residencial" placeholder="(xx) x xxxx-xxxx  Apenas numero">
                     </div>
                     <div class="mb-3 col-3">
                         <label for="formGroup" class="form-label">Numero de Trabalho:</label>
-                        <input type="text" class="form-control" maxlength="11" pattern="\d{10,11}"
-                            id="tel_trabalho" name="tel_trabalho" required
-                            placeholder="(xx) x xxxx-xxxx  Apenas numero">
+                        <input type="text" class="form-control" maxlength="11" pattern="\d{10,11}" id="tel_trabalho"
+                            name="tel_trabalho" placeholder="(xx) x xxxx-xxxx  Apenas numero">
                     </div>
                     <div class="mb-3 col-12">
                         <label for="formGroup" class="form-label">Email:</label>
-                        <input type="email" class="form-control" id="email" name="email" required
-                            placeholder="exemplo@email.com">
+                        <input type="email" class="form-control" id="email" name="email" 
+                            placeholder="exemplo@email.com" required>
                     </div>
                 </div>
 
+                {{-- Dados Bancarios --}}
                 <div class="container row border-bottom border-primary mt-3">
                     <h2>Dados Bancarios</h2>
                     <div class="mb-3 col-3">
@@ -165,6 +163,7 @@
                     </div>
                 </div>
 
+                {{-- Dados dos Militares --}}
                 <div class="container row border-bottom border-primary mt-3">
                     <h2>Dados dos Militares</h2>
                     <div class="mb-3 col-3">
@@ -197,6 +196,7 @@
                     </div>
                 </div>
 
+                {{-- Dependentes e Observações --}}
                 <div class="container row border-bottom border-primary mt-3">
                     <h2>Dependentes</h2>
                     <label for="formGroup" class="form-label">Insira os nomes dos dependentes:</label>

@@ -3,7 +3,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use App\Models\Associado;
+use App\Models\Contato;
+use App\Models\Endereco;
+use App\Models\DadosBancarios;
 
 class AssociadoController extends Controller
 {
@@ -23,22 +27,73 @@ class AssociadoController extends Controller
 
     // salvar o associado no banco de dados
     public function store(Request $request){
-        $associado = new Associado();
-
-        $associado->nome = $request->nome;
-        $associado->cpf = $request->cpf;
-        $associado->data_nascimento = $request->data_nascimento;
-        $associado->cidade = $request->cidade;
-        $associado->save();
-
-        return redirect('/associado')->with('msg', 'Associado criado com sucesso!');
         
+        //salva associado
+        DB::beginTransaction();
+            try{
+                $associado = new Associado();
+                $associado->nome = $request->nome;
+                $associado->cpf = $request->cpf;
+                $associado->rg = $request->rg;
+                $associado->org_expedidor = $request->org_expedidor;
+                $associado->nome_pai = $request->nome_pai;
+                $associado->nome_mae = $request->nome_mae;
+                $associado->dt_nasc = $request->dt_nasc;
+                $associado->estado_civil = $request->estado_civil;
+                $associado->grau_instrucao = $request->grau_instrucao;
+                $associado->nome_guerra = $request->nome_guerra;
+                $associado->nmr_praca = $request->nmr_praca;
+                $associado->matricula = $request->matricula;
+                $associado->opm = $request->opm;
+                $associado->dependentes = $request->dependentes;
+                $associado->obs = $request->obs;
+                $associado->save();
+        
+                $endereco = new Endereco();
+                $endereco->cep = $request->cep;
+                $endereco->logradouro = $request->logradouro;
+                $endereco->nmr = $request->nmr;
+                $endereco->bairro = $request->bairro;
+                $endereco->cidade = $request->cidade;
+                $endereco->uf = $request->uf;
+                $endereco->complemento = $request->complemento;
+                $endereco->associado_id = $associado->id;
+                $endereco->save();
+        
+                $contato = new Contato();
+                $contato->tel_celular = $request->tel_celular;
+                $contato->tel_residencial = $request->tel_residencial;
+                $contato->tel_trabalho = $request->tel_trabalho;
+                $contato->email = $request->email;
+                $contato->associado_id = $associado->id;
+                $contato->save();
+        
+                $dadosBancarios = new DadosBancarios();
+                $dadosBancarios->codigo = $request->codigo;
+                $dadosBancarios->agencia = $request->agencia;
+                $dadosBancarios->banco = $request->banco;
+                $dadosBancarios->conta = $request->conta;
+                $dadosBancarios->operacao = $request->operacao;
+                $dadosBancarios->tipo = $request->tipo;
+                $dadosBancarios->associado_id = $associado->id;
+                $dadosBancarios->save();
+
+                DB::commit();
+                return redirect('/associado')->with('msg', 'Associado criado com sucesso!');
+            }catch (\Exception $e) {
+                DB::rollBack();
+                return redirect()->back()->with('error', 'Erro ao criar associado: ' . $e->getMessage());
+            }
+            
+
+        
+
     }
 
     // exibir detalhes de um associado, busca pelo id.
     public function show($id){
 
-        $associado = Associado::findOrFail($id);
+        $associado = Associado::with(['endereco', 'contato', 'dadosBancarios'])->findOrFail($id);
         
         return view('associado.show', ['associado' => $associado]);
     }

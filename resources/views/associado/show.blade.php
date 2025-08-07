@@ -11,6 +11,8 @@
             <p>Nome do associado {{ $associado->nome }}</p>
             <p>Data de nascimento: {{ $associado->data_nascimento }}</p>
             <p>Cidade: {{ $associado->cidade }}</p>
+        @else
+            <p>Associado não encontrado.</p>
         @endif
     </div>
     
