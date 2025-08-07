@@ -26,47 +26,47 @@
 </head>
 
 <body class="d-flex flex-column min-vh-100">
-    <div class="container-fluid">
-        <header>
-            <nav class="row align-items-center mb-4 border-bottom fixed-top bg-light">
 
-                <div class="col-md-3 text-center text-start">
-                    <a href="/" class="d-inline-flex align-items-center text-decoration-none">
-                        <img src="/img/Aspra.png" alt="Logo" width="150" height="100" class="me-2">
-                        <span class="fs-5 fw-bold"></span>
-                    </a>
-                </div>
+    <header>
+        <nav class="row align-items-center mb-4 border-bottom fixed-top bg-light">
 
-
-                <div class="col-md-6 text-align-center">
-                    <ul class="nav mb-2 justify-content-center mb-md-0">
-                        <li><a href="/" class="nav-link px-2 link-secondary">Inicio</a></li>
-                        <li><a href="#" class="nav-link px-2">Votação</a></li>
-                        <li><a href="#" class="nav-link px-2">Benefícios</a></li>
-                        <li><a href="#" class="nav-link px-2">ASPRA</a></li>
-                        <li><a href="#" class="nav-link px-2">Sobre</a></li>
-                        <div class="dropdown-center">
-                            <li class="nav-link dropdown-toggle" type="button" data-bs-toggle="dropdown"
-                                aria-expanded="false">
-                                Associado
-                            </li>
-                            <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="/associado/create">Novo</a></li>
-                                <li><a class="dropdown-item" href="/associado">Listar</a></li>
-                            </ul>
-                        </div>
-                    </ul>
-
-                </div>
+            <div class="col-md-3 text-center text-start">
+                <a href="/" class="d-inline-flex align-items-center text-decoration-none">
+                    <img src="/img/Aspra.png" alt="Logo" width="150" height="100" class="me-2">
+                    <span class="fs-5 fw-bold"></span>
+                </a>
+            </div>
 
 
-                <div class="col-md-3 text-center">
-                    <button type="button" class="btn btn-outline-primary me-2">Ambiente do associado</button>
-                    <button type="button" class="btn btn-primary">Quero me associar</button>
-                </div>
-            </nav>
-        </header>
-    </div>
+            <div class="col-md-6 text-align-center">
+                <ul class="nav mb-2 justify-content-center mb-md-0">
+                    <li><a href="/" class="nav-link px-2 link-secondary">Inicio</a></li>
+                    <li><a href="#" class="nav-link px-2">Votação</a></li>
+                    <li><a href="#" class="nav-link px-2">Benefícios</a></li>
+                    <li><a href="#" class="nav-link px-2">ASPRA</a></li>
+                    <li><a href="#" class="nav-link px-2">Sobre</a></li>
+                    <div class="dropdown-center">
+                        <li class="nav-link dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                            aria-expanded="false">
+                            Associado
+                        </li>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="/associado/create">Novo</a></li>
+                            <li><a class="dropdown-item" href="/associado">Listar</a></li>
+                        </ul>
+                    </div>
+                </ul>
+
+            </div>
+
+
+            <div class="col-md-3 text-center">
+                <button type="button" class="btn btn-outline-primary me-2">Ambiente do associado</button>
+                <button type="button" class="btn btn-primary">Quero me associar</button>
+            </div>
+        </nav>
+    </header>
+
 
 
     <div class="">

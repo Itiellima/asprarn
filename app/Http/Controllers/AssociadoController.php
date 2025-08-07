@@ -11,7 +11,7 @@ use App\Models\DadosBancarios;
 
 class AssociadoController extends Controller
 {
-    // listar todos os associados
+    // view todos os associados
     public function index()
     {
         $associados = Associado::all();
@@ -19,13 +19,14 @@ class AssociadoController extends Controller
         return view('associado.index', ['associados' => $associados]);
     }
 
-    // pagina para criar um associado
+    // view para criar um associado
     public function create(){
+        $associado = new Associado();
 
-        return view('associado.create');
+        return view('associado.create', ['associado' => $associado]);
     }
 
-    // salvar o associado no banco de dados
+    // Rota salvar o associado no banco de dados
     public function store(Request $request){
         
         //salva associado
@@ -84,18 +85,24 @@ class AssociadoController extends Controller
                 DB::rollBack();
                 return redirect()->back()->with('error', 'Erro ao criar associado: ' . $e->getMessage());
             }
-            
-
-        
-
     }
 
-    // exibir detalhes de um associado, busca pelo id.
-    public function show($id){
+    // view edição
+    public function edit($id){
+        $associado = Associado::findOrFail($id);
 
-        $associado = Associado::with(['endereco', 'contato', 'dadosBancarios'])->findOrFail($id);
-        
-        return view('associado.show', ['associado' => $associado]);
+        return view ('associado.create', ['associado' => $associado]);
     }
+
+    public function update(Request $request, $id){
+
+        $associado = Associado::findOrFail($id);
+
+        $associado->update($request->all());
+
+        return redirect('/associado')->with('msg', 'Associado alterado com sucesso!');
+    }
+
+    
 
 }

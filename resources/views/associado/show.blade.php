@@ -15,5 +15,14 @@
             <p>Associado não encontrado.</p>
         @endif
     </div>
+    <div class="container">
+        <form action="/associado/update/{{ $associado->id }}" method="POST">
+        @csrf
+        
+        @method('PUT')
+            
+
+        </form>
+    </div>
     
 @endsection

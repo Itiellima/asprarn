@@ -6,23 +6,39 @@
 
 
     <h1>Insira os dados do novo associado</h1>
-
+    @if (session('msg'))
+        <div class="alert alert-danger">
+            {{ session('msg') }}
+        </div>
+    @endif
     <div class="container mb-3">
         <div class="container">
-            <form action="/associado/store" method="POST">
+
+            <form action="{{ $associado->id ? route('associado.update', $associado->id) : route('associado.store') }}"
+                method="POST">
                 @csrf
+                @if ($associado->id)
+                    @method('PUT')
+                    <div class="form-check">
+                        <label>
+                            <input type="checkbox" id="editarCheckbox"> EDITAR
+                        </label>
+
+                    </div>
+                @endif
+
                 {{-- DADOS PESSOAIS --}}
                 <div class="container row border-top border-bottom border-primary">
                     <h2>Dados pessoais</h2>
                     <div class="mb-3 col-6">
                         <label for="formGroup" class="form-label">Nome:</label>
                         <input type="text" class="form-control " id="nome" name="nome"
-                            placeholder="Insira o nome do associado" required>
+                            placeholder="Insira o nome do associado" required value="{{ $associado->nome }}">
                     </div>
                     <div class="mb-3 col-3">
                         <label for="formGroup" class="form-label">CPF:</label>
                         <input type="text" class="form-control " id="cpf" name="cpf"
-                            placeholder="Insira o CPF do associado" required>
+                            placeholder="Insira o CPF do associado" required value="{{ $associado->cpf }}">
                     </div>
                     <div class="mb-3 col-3">
                         <label for="formGroup" class="form-label">RG:</label>
@@ -79,8 +95,8 @@
                     </div>
                     <div class="mb-3 col-6">
                         <label for="formGroup" class="form-label">Logradouro:</label>
-                        <input type="text" class="form-control " id="logradouro" name="logradouro"
-                            placeholder="Rua..." required>
+                        <input type="text" class="form-control " id="logradouro" name="logradouro" placeholder="Rua..."
+                            required>
                     </div>
                     <div class="mb-3 col-3">
                         <label for="formGroup" class="form-label">Numero:</label>
@@ -99,8 +115,8 @@
                     </div>
                     <div class="mb-3 col-3">
                         <label for="formGroup" class="form-label">UF:</label>
-                        <input type="text" class="form-control " id="uf" name="uf"
-                            placeholder="ex: RN" required>
+                        <input type="text" class="form-control " id="uf" name="uf" placeholder="ex: RN"
+                            required>
                     </div>
                     <div class="mb-3 col-9">
                         <label for="formGroup" class="form-label">Complemento:</label>
@@ -108,14 +124,15 @@
                             placeholder="Ponto de referência">
                     </div>
                 </div>
-                
+
                 {{-- Contato --}}
                 <div class="container row border-bottom border-primary mt-3">
                     <h2>Contato</h2>
                     <div class="mb-3 col-3">
                         <label for="formGroup" class="form-label">Numero de Celular:</label>
                         <input type="text" class="form-control" maxlength="11" pattern="\d{10,11}" id="tel_celular"
-                            name="tel_celular" placeholder="(xx) x xxxx-xxxx  Apenas numero" required>
+                            name="tel_celular" placeholder="(xx) x xxxx-xxxx  Apenas numero" required
+                            value="{{ $associado->contato->tel_celular }}">
                     </div>
                     <div class="mb-3 col-3">
                         <label for="formGroup" class="form-label">Numero Residencial:</label>
@@ -129,7 +146,7 @@
                     </div>
                     <div class="mb-3 col-12">
                         <label for="formGroup" class="form-label">Email:</label>
-                        <input type="email" class="form-control" id="email" name="email" 
+                        <input type="email" class="form-control" id="email" name="email"
                             placeholder="exemplo@email.com" required>
                     </div>
                 </div>
@@ -210,10 +227,12 @@
                 </div>
 
                 <div class="container border-bottom border-primary mt-3 text-end">
-                    <input type="submit" class="btn btn-primary mb-3" value=" Salvar ">
+                    <input type="submit" class="btn btn-primary mb-3"
+                        value="{{ $associado->id ? 'Salvar alterações' : 'Cadastrar' }}">
                 </div>
             </form>
         </div>
     </div>
 
+    <script src="{{ asset('js/form-edit.js') }}"></script>
 @endsection
