@@ -23,7 +23,6 @@
                         <label>
                             <input type="checkbox" id="editarCheckbox"> EDITAR
                         </label>
-
                     </div>
                 @endif
 
@@ -132,7 +131,7 @@
                         <label for="formGroup" class="form-label">Numero de Celular:</label>
                         <input type="text" class="form-control" maxlength="11" pattern="\d{10,11}" id="tel_celular"
                             name="tel_celular" placeholder="(xx) x xxxx-xxxx  Apenas numero" required
-                            value="{{ $associado->contato->tel_celular }}">
+                            value="{{ $associado->contato?->tel_celular }}">
                     </div>
                     <div class="mb-3 col-3">
                         <label for="formGroup" class="form-label">Numero Residencial:</label>

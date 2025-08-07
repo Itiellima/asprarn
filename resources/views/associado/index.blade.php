@@ -29,7 +29,7 @@
                 <td>{{ $associado->nome }}</td>
                 <td>{{ $associado->cpf }}</td>
                 <td>
-                    <a href="/associado/{{ $associado->id }}">Ver informações</a>
+                    <a href="/associado/edit/{{ $associado->id }}">Ver informações</a>
                 </td>
             </tr>
         @endforeach
