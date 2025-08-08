@@ -73,4 +73,15 @@ start = right
 
 end = left
 
-Se quiser, posso gerar uma tabela HTML com todos os utilitários ou mostrar como aplicar isso em uma página específica. Deseja isso?s
+// START PROJETO
+Como rodar seeders no outro ambiente?
+Certifique-se de ter o código atualizado no outro ambiente (git pull ou deploy atualizado).
+
+Rode as migrations, se ainda não tiver rodado:
+bash
+    php artisan migrate
+
+
+Rode as seeders:
+bash
+    php artisan db:seed

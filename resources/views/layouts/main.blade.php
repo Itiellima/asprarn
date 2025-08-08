@@ -45,13 +45,13 @@
                     <li><a href="#" class="nav-link px-2">Benefícios</a></li>
                     <li><a href="#" class="nav-link px-2">ASPRA</a></li>
                     <li><a href="#" class="nav-link px-2">Sobre</a></li>
+                    <li><a href="/associado/create" class="nav-link px-2 border-bottom">Quero me associar</a></li>
                     <div class="dropdown-center">
                         <li class="nav-link dropdown-toggle" type="button" data-bs-toggle="dropdown"
                             aria-expanded="false">
                             Associado
                         </li>
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="/associado/create">Novo</a></li>
                             <li><a class="dropdown-item" href="/associado">Listar</a></li>
                         </ul>
                     </div>
@@ -60,10 +60,23 @@
             </div>
 
 
-            <div class="col-md-3 text-center">
-                <button type="button" class="btn btn-outline-primary me-2">Ambiente do associado</button>
-                <button type="button" class="btn btn-primary">Quero me associar</button>
+            <div class="col-md-3 text-center align-items-center d-flex justify-content-center">
+                @auth
+                    @role('admin')
+                        <a class="btn btn-primary" href="#">Novo Usuario</a>
+                    @endrole
+                    <!-- Usuário está logado -->
+                    <form method="POST" action="{{ route('logout') }}" class="ms-3">
+                        @csrf
+                        <button class="btn btn-primary" type="submit">Sair</button>
+                    </form>
+                @else
+                    <!-- Usuário não está logado -->
+                    <a class="btn btn-primary" href="/login">Login</a>
+                @endauth
+
             </div>
+
         </nav>
     </header>
 
