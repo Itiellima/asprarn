@@ -197,37 +197,37 @@
                         <label for="formGroup" class="form-label">Codigo:</label>
                         <input type="number" class="form-control" id="codigo" name="codigo"
                             placeholder="Insira o código do banco" required
-                            value="{{ old('codigo', $associado->dados_bancarios?->codigo) }}">
+                            value="{{ old('codigo', $associado->dadosBancarios?->codigo) }}">
                     </div>
                     <div class="mb-3 col-4">
                         <label for="formGroup" class="form-label">Agencia:</label>
                         <input type="number" class="form-control" id="agencia" name="agencia"
                             placeholder="Insira o número da agência" required
-                            value="{{ old('agencia', $associado->dados_bancarios?->agencia) }}">
+                            value="{{ old('agencia', $associado->dadosBancarios?->agencia) }}">
                     </div>
                     <div class="mb-3 col-4">
                         <label for="formGroup" class="form-label">Banco:</label>
                         <input type="text" class="form-control" id="banco" name="banco"
                             placeholder="Insira o nome do banco" required
-                            value="{{ old('banco', $associado->dados_bancarios?->banco) }}">
+                            value="{{ old('banco', $associado->dadosBancarios?->banco) }}">
                     </div>
                     <div class="mb-3 col-4">
                         <label for="formGroup" class="form-label">Conta:</label>
                         <input type="number" class="form-control" id="conta" name="conta"
                             placeholder="Insira o número da conta" required
-                            value="{{ old('conta', $associado->dados_bancarios?->conta) }}">
+                            value="{{ old('conta', $associado->dadosBancarios?->conta) }}">
                     </div>
                     <div class="mb-3 col-4">
                         <label for="formGroup" class="form-label">Operação:</label>
                         <input type="number" class="form-control" id="operacao" name="operacao"
                             placeholder="Insira o número da operação" required
-                            value="{{ old('operacao', $associado->dados_bancarios?->operacao) }}">
+                            value="{{ old('operacao', $associado->dadosBancarios?->operacao) }}">
                     </div>
                     <div class="mb-3 col-4">
                         <label for="formGroup" class="form-label">Tipo:</label>
                         <input type="text" class="form-control" id="tipo" name="tipo"
                             placeholder="Insira o tipo da conta" required
-                            value="{{ old('tipo', $associado->dados_bancarios?->tipo) }}">
+                            value="{{ old('tipo', $associado->dadosBancarios?->tipo) }}">
                     </div>
                 </div>
 

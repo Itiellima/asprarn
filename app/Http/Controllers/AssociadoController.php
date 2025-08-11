@@ -105,7 +105,7 @@ class AssociadoController extends Controller
     public function update(Request $request, $id)
     {
 
-        $associado = Associado::findOrFail($id); // encontra o registro pelo ID
+        $associado = Associado::with(['endereco', 'contato', 'dadosBancarios'])->findOrFail($id); // encontra o registro pelo ID
 
         $data = $request->except('_token', '_method'); // limpa dados desnecessários
         $associado->update($data); // atualiza o registro com os dados filtrados

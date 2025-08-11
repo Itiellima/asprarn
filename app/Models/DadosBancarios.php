@@ -9,11 +9,15 @@ class DadosBancarios extends Model
     public function associado() {
         return $this->belongsTo(Associado::class);
     }
+    
 
     protected $fillable = [
-        'banco',
+        'codigo',
         'agencia',
-        'conta_corrente',
+        'banco',
+        'conta',
+        'operacao',
+        'tipo',
         'associado_id'
     ];
 
