@@ -9,4 +9,10 @@ class Contato extends Model
     public function associado() {
         return $this->belongsTo(Associado::class);
     }
+    protected $fillable = [
+        'telefone',
+        'celular',
+        'email',
+        'associado_id'
+    ];
 }

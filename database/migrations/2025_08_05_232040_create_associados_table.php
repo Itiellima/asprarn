@@ -23,6 +23,7 @@ return new class extends Migration
             $table->string('estado_civil')->nullable();
             $table->string('grau_instrucao')->nullable();
             $table->string('nome_guerra')->nullable();
+            $table->string('graduacao')->nullable();
             $table->string('nmr_praca')->nullable();
             $table->string('matricula')->nullable();
             $table->string('opm')->nullable();

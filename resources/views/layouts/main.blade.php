@@ -62,9 +62,6 @@
 
             <div class="col-md-3 text-center align-items-center d-flex justify-content-center">
                 @auth
-                    @role('admin')
-                        <a class="btn btn-primary" href="#">Novo Usuario</a>
-                    @endrole
                     <!-- Usuário está logado -->
                     <form method="POST" action="{{ route('logout') }}" class="ms-3">
                         @csrf
@@ -72,14 +69,26 @@
                     </form>
                 @else
                     <!-- Usuário não está logado -->
-                    <a class="btn btn-primary" href="/login">Login</a>
+                    <a class="btn btn-primary mx-2" href="/register">Cadastrar</a>
+                    <a class="btn btn-primary mx-2" href="/login">Login</a>
                 @endauth
 
             </div>
 
         </nav>
     </header>
-
+    <div class="container">
+        @if (session('msg'))
+            <div class="alert alert-success">
+                {{ session('msg') }}
+            </div>
+        @endif
+        @if (session('error'))
+            <div class="alert alert-danger">
+                {{ session('error') }}
+            </div>
+        @endif
+    </div>
 
 
     <div class="">

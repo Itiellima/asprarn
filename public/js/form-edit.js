@@ -1,33 +1,33 @@
 document.addEventListener('DOMContentLoaded', function () {
-    const checkbox = document.getElementById('editarCheckbox');
-    const form = document.querySelector('form'); // Ou: document.getElementById('meuForm');
+    const form = document.querySelector('form');
+    const btnEditar = document.getElementById('btnEditar');
     const inputs = form.querySelectorAll('input, textarea, select');
     const submitBtn = document.getElementById('submitBtn');
 
-    function toggleInputs(checked) {
+    function toggleCampos(habilitar) {
         inputs.forEach(input => {
             if (
                 input.type !== 'hidden' &&
                 input.name !== '_token' &&
-                input.name !== '_method' &&
-                input !== checkbox // evita desabilitar o próprio checkbox
+                input.name !== '_method'
             ) {
-                input.disabled = !checked;
+                input.disabled = !habilitar;
             }
         });
 
         if (submitBtn) {
-            submitBtn.disabled = !checked;
+            submitBtn.disabled = !habilitar;
         }
     }
 
-    if (checkbox) {
-        // Aplica o estado inicial com base no checkbox
-        toggleInputs(checkbox.checked);
+    // Se estamos no modo edição (associado já existe), desabilita os campos inicialmente
+    if (btnEditar) {
+        toggleCampos(false);
 
-        // Escuta alterações futuras
-        checkbox.addEventListener('change', function () {
-            toggleInputs(this.checked);
+        btnEditar.addEventListener('click', function () {
+            toggleCampos(true);
         });
+    } else {
+        toggleCampos(true); // Novo cadastro
     }
 });

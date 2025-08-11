@@ -85,3 +85,15 @@ bash
 Rode as seeders:
 bash
     php artisan db:seed
+
+
+
+roles e permissoes
+    @auth
+        @role('admin')
+            <!-- Usuário está logado como admin-->
+        @endrole
+            <!-- Usuário está logado -->
+    @else
+        <!-- Usuário não está logado -->
+    @endauth

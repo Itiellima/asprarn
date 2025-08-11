@@ -3,11 +3,7 @@
 @section('title', 'Aspra Associado')
 
 @section('content')
-    @if (session('msg'))
-        <div class="alert alert-success">
-            {{ session('msg') }}
-        </div>
-    @endif
+    
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h1>Lista de associados</h1>
     </div>

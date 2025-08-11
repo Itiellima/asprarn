@@ -18,4 +18,23 @@ class Associado extends Model
     public function dadosBancarios() {
         return $this->hasOne(DadosBancarios::class);
     }
+
+    protected $fillable = [
+        'nome',
+        'cpf',
+        'data_nascimento',
+        'rg',
+        'orgao_expedidor',
+        'nome_pai',
+        'nome_mae',
+        'estado_civil',
+        'grau_instrucao',
+        'nome_guerra',
+        'graduacao',
+        'nmr_praca',
+        'matricula',
+        'opm',
+        'dependentes',
+        'obs',
+    ];
 }

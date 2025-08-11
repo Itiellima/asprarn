@@ -19,8 +19,8 @@
         <form action="/associado/update/{{ $associado->id }}" method="POST">
         @csrf
         
-        @method('PUT')
-            
+       @method('PUT')
+             
 
         </form>
     </div>
