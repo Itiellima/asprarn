@@ -28,7 +28,7 @@ class HierarchyHelper
     {
         $rolesHierarchy = [
             'user' => 1,
-            'moderator' => 2,
+            'moderador' => 2,
             'admin' => 3,
         ];
 
