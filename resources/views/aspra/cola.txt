@@ -62,15 +62,11 @@ py-1	preenchimento vertical: 0.25rem
 start e end respeitam a direção do texto:
 
 Em LTR (padrão):
-
 start = left
-
 end = right
 
 Em RTL:
-
 start = right
-
 end = left
 
 // START PROJETO
@@ -86,6 +82,12 @@ Rode as seeders:
 bash
     php artisan db:seed
 
+starte o server:
+bash
+    npm run dev
+
+
+php artisan make:controller MyController
 
 
 roles e permissoes
@@ -97,3 +99,7 @@ roles e permissoes
     @else
         <!-- Usuário não está logado -->
     @endauth
+    
+    @guest
+        <!-- Qualquer visitante pode acessar -->
+    @endguest

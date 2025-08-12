@@ -2,7 +2,13 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AssociadoController;
-use App\Http\Livewire\Auth\Register;
+use App\Http\Controllers\UsuariosController;
+use Illuminate\Support\Facades\Auth;
+use App\Http\Livewire\ManageUsers;
+
+
+
+
 
 Route::get('/', function () {
     return view('welcome');
@@ -11,9 +17,7 @@ Route::get('/', function () {
 
 
 //verifica se o usuario está logado
-Route::middleware(['auth'])->group(function(){
-    
-});
+Route::middleware(['auth'])->group(function () {});
 
 Route::get('/associado', [AssociadoController::class, 'index'])->name('associado.index');
 //FORMULARIO de criação
@@ -29,6 +33,14 @@ Route::delete('/associado/delete/{id}', [AssociadoController::class, 'destroy'])
 
 
 
+// Livewire routes
+
+// Admin routes, exemplo sem middlewaren ou outro role sem middleware
+
+Route::get('/usuarios', [UsuariosController::class, 'index'])->name('usuarios.index');
+
+
+
 Route::middleware([
     'auth:sanctum',
     config('jetstream.auth_session'),
@@ -38,4 +50,3 @@ Route::middleware([
         return view('dashboard');
     })->name('dashboard');
 });
-

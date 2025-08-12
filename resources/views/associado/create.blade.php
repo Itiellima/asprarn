@@ -4,8 +4,12 @@
 
 @section('content')
 
+    @if ($associado->id)
+        <h1>Editar associado</h1>
+    @else
+        <h1>Cadastrar novo associado</h1>
+    @endif
 
-    <h1>Insira os dados do novo associado</h1>
 
     <div class="container mb-3">
         <div class="container">
@@ -238,16 +242,16 @@
                         <label for="formGroup" class="form-label">Posto/Graduação:</label>
                         <select class="form-select " name="graduacao" id="graduacao">
                             <option selected value="">Selecione</option>
-                            <option value="civil" {{ old('graduacao', $associado->graduacao) == 'civil' ? 'selected' : '' }}>Civil</option>
-                            <option value="soldado" {{ old('graduacao', $associado->graduacao) == 'soldado' ? 'selected' : '' }}>Soldado</option>
-                            <option value="cabo" {{ old('graduacao', $associado->graduacao) == 'cabo' ? 'selected' : '' }}>Cabo</option>
-                            <option value="3_sargento" {{ old('graduacao', $associado->graduacao) == '3_sargento' ? 'selected' : '' }}>3°
+                            <option value="civil" {{ old('civil', $associado->graduacao) == 'civil' ? 'selected' : '' }}>Civil</option>
+                            <option value="soldado" {{ old('soldado', $associado->graduacao) == 'soldado' ? 'selected' : '' }}>Soldado</option>
+                            <option value="cabo" {{ old('cabo', $associado->graduacao) == 'cabo' ? 'selected' : '' }}>Cabo</option>
+                            <option value="3_sargento" {{ old('3_sargento', $associado->graduacao) == '3_sargento' ? 'selected' : '' }}>3°
                                 Sargento</option>
-                            <option value="2_sargento" {{ old('graduacao', $associado->graduacao) == '2_sargento' ? 'selected' : '' }}>2°
+                            <option value="2_sargento" {{ old('2_sargento', $associado->graduacao) == '2_sargento' ? 'selected' : '' }}>2°
                                 Sargento</option>
-                            <option value="1_sargento" {{ old('graduacao', $associado->graduacao) == '1_sargento' ? 'selected' : '' }}>1°
+                            <option value="1_sargento" {{ old('1_sargento', $associado->graduacao) == '1_sargento' ? 'selected' : '' }}>1°
                                 Sargento</option>
-                            <option value="subtenente" {{ old('graduacao', $associado->graduacao) == 'subtenente' ? 'selected' : '' }}>
+                            <option value="subtenente" {{ old('subtenente', $associado->graduacao) == 'subtenente' ? 'selected' : '' }}>
                                 Subtenente
                             </option>
                         </select>
@@ -274,7 +278,7 @@
                         <label for="formGroup" class="form-label">OPM:</label>
                         <select class="form-select " name="opm" id="opm">
                             <option selected value="">Selecione</option>
-                            <option value="1bpm">1°BPM</option>
+                            <option value="1bpm" {{old('1bpm', $associado->opm) == '1bpm' ? 'selected' : '' }}>1°BPM</option>
                         </select>
                     </div>
                 </div>

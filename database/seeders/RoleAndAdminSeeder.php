@@ -28,6 +28,6 @@ class RoleAndAdminSeeder extends Seeder
         );
 
         // Atribui role admin ao usuário
-        $admin->assignRole('admin');
+        $admin->syncRoles('admin');
     }
 }

@@ -45,6 +45,18 @@
                     <li><a href="#" class="nav-link px-2">Benefícios</a></li>
                     <li><a href="#" class="nav-link px-2">ASPRA</a></li>
                     <li><a href="#" class="nav-link px-2">Sobre</a></li>
+                    
+                    {{-- Verifica se o usuário está autenticado e se é admin --}}
+                    @auth
+                    <!-- Usuário está logado -->
+                        @role('admin')
+                            <li><a href="/usuarios" class="nav-link px-2 border-bottom">Gerenciar Usuários</a></li>
+                        @endrole
+                        
+                    @else
+                    <!-- Usuário não está logado -->
+                    @endauth
+
                     <li><a href="/associado/create" class="nav-link px-2 border-bottom">Quero me associar</a></li>
                     <div class="dropdown-center">
                         <li class="nav-link dropdown-toggle" type="button" data-bs-toggle="dropdown"
