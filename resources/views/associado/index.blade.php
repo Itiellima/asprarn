@@ -36,15 +36,25 @@
 
     <div>
         @auth
+            
+            <p>Você está autenticado como: <strong>{{ auth()->user()->name }}</strong></p>
             @hasanyrole('admin|moderador|user')
-                <p>ADMIN</p>
+                <p><strong>Any Role</strong></p>
             @endhasanyrole
+
+            @role('admin')
+                <p><strong>ADMINISTRADOR</strong></p>
+            @endrole
+
             @role('moderador')
-                <p>MODERADOR</p>
+                <p><strong>MODERADOR</strong></p>
             @endrole
+
             @role('user')
-                <p>USUÁRIO</p>
+                <p><strong>USUÁRIO</strong></p>
             @endrole
+
+
         @endauth
     </div>
 

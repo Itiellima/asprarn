@@ -23,15 +23,33 @@ class UsuariosController extends Controller
         return view('usuarios.index', compact('users', 'roles'));
     }
 
-    public function updateRole(Request $request, User $user)
-{
-    $request->validate([
-        'role' => 'required|exists:roles,name',
-    ]);
+    public function updateRole(Request $request, $id)
+    {
+        // Verifica se o usuário autenticado é admin
+        $user = Auth::user();
+        if (!$user || !$user->hasRole('admin')) {
+            return redirect()->route('dashboard')->with('error', 'Acesso negado. Você não tem permissão para acessar esta página.');
+        }
 
-    // Atualiza a role do usuário, removendo as antigas
-    $user->syncRoles([$request->role]);
+        // Valida a entrada
+        $user = User::findOrFail($id);
+        $role = $request->role;
 
-    return redirect()->route('usuarios.index')->with('success', 'Role atualizada com sucesso!');
-}
+        // Define hierarquia
+        $rolesHierarquia = [
+            'admin'     => ['admin', 'moderador', 'user'],
+            'moderador' => ['moderador', 'user'],
+            'user'      => ['user']
+        ];
+
+        // Verifica se a role existe na hierarquia
+        if (!array_key_exists($role, $rolesHierarquia)) {
+            return redirect()->back()->with('error', 'Role inválida.');
+        }
+
+        // Aplica todas as roles conforme a hierarquia
+        $user->syncRoles($rolesHierarquia[$role]);
+
+        return redirect()->route('usuarios.index')->with('success', 'Roles atualizadas com sucesso!');
+    }
 }

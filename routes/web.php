@@ -36,10 +36,11 @@ Route::delete('/associado/delete/{id}', [AssociadoController::class, 'destroy'])
 
 // Livewire routes
 
-// Admin routes, exemplo sem middlewaren ou outro role sem middleware
-
-Route::get('/usuarios', [UsuariosController::class, 'index'])->name('usuarios.index');
-Route::post('/usuarios/{user}/role', [UsuariosController::class, 'updateRole'])->name('usuarios.updateRole');
+// Admin routes
+Route::middleware(['auth'])->group(function () {
+    Route::get('/usuarios', [UsuariosController::class, 'index'])->name('usuarios.index');
+    Route::post('/usuarios/{user}/role', [UsuariosController::class, 'updateRole'])->name('usuarios.updateRole');
+});
 
 
 Route::middleware([
@@ -51,4 +52,3 @@ Route::middleware([
         return view('dashboard');
     })->name('dashboard');
 });
-
