@@ -16,6 +16,7 @@ class RoleAndAdminSeeder extends Seeder
     {
         // Cria roles, se não existirem
         Role::firstOrCreate(['name' => 'admin']);
+        Role::firstOrCreate(['name' => 'moderator']);
         Role::firstOrCreate(['name' => 'user']);
 
         // Cria usuário admin (ou pega se já existir)

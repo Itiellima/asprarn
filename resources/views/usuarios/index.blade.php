@@ -1,8 +1,14 @@
+@extends('layouts.main')
+
+@section('title', 'Aspra Associado')
+
+@section('content')
+
 @if(session('success'))
     <div class="alert alert-success">{{ session('success') }}</div>
 @endif
 
-<table>
+<table class="table table-striped table-hover">
     <thead>
         <tr>
             <th>Nome</th>
@@ -17,10 +23,10 @@
             <td>{{ $user->name }}</td>
             <td>{{ $user->email }}</td>
             <td>{{ $user->getRoleNames()->join(', ') }}</td>
-            <td>
+            <td class="px-3">
                 <form action="{{ route('usuarios.updateRole', $user) }}" method="POST">
                     @csrf
-                    <select name="role" required>
+                    <select class="form-select" name="role" required>
                         @foreach($roles as $role)
                             <option value="{{ $role->name }}" @if($user->hasRole($role->name)) selected @endif>
                                 {{ $role->name }}
@@ -34,3 +40,5 @@
         @endforeach
     </tbody>
 </table>
+
+@endsection

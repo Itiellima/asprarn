@@ -25,14 +25,14 @@
 
 </head>
 
-<body class="d-flex flex-column min-vh-100">
+<body class="">
 
-    <header>
-        <nav class="row align-items-center mb-4 border-bottom fixed-top bg-light">
+    <header class="py-2">
+        <nav class="row align-items-center border-bottom fixed-top bg-light">
 
             <div class="col-md-3 text-center text-start">
                 <a href="/" class="d-inline-flex align-items-center text-decoration-none">
-                    <img src="/img/Aspra.png" alt="Logo" width="150" height="100" class="me-2">
+                    <img src="/img/Aspra.png" alt="Logo" width="110" height="70" class="me-2">
                     <span class="fs-5 fw-bold"></span>
                 </a>
             </div>
@@ -45,19 +45,16 @@
                     <li><a href="#" class="nav-link px-2">Benefícios</a></li>
                     <li><a href="#" class="nav-link px-2">ASPRA</a></li>
                     <li><a href="#" class="nav-link px-2">Sobre</a></li>
-                    
+                    <li><a href="/associado/create" class="nav-link px-2 border-bottom">Quero me associar</a></li>
                     {{-- Verifica se o usuário está autenticado e se é admin --}}
                     @auth
-                    <!-- Usuário está logado -->
+                        <!-- Usuário está logado -->
                         @role('admin')
                             <li><a href="/usuarios" class="nav-link px-2 border-bottom">Gerenciar Usuários</a></li>
                         @endrole
-                        
                     @else
-                    <!-- Usuário não está logado -->
+                        <!-- Usuário não está logado -->
                     @endauth
-
-                    <li><a href="/associado/create" class="nav-link px-2 border-bottom">Quero me associar</a></li>
                     <div class="dropdown-center">
                         <li class="nav-link dropdown-toggle" type="button" data-bs-toggle="dropdown"
                             aria-expanded="false">
@@ -74,6 +71,11 @@
 
             <div class="col-md-3 text-center align-items-center d-flex justify-content-center">
                 @auth
+                    <!-- Exibe o nome do usuário logado -->
+                    <div class="me-3">
+                        Olá, {{ auth()->user()->name }}!
+                    </div>
+
                     <!-- Usuário está logado -->
                     <form method="POST" action="{{ route('logout') }}" class="ms-3">
                         @csrf
@@ -86,9 +88,18 @@
                 @endauth
 
             </div>
-
         </nav>
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                const navbar = document.querySelector('nav.fixed-top');
+                if (navbar) {
+                    const navbarHeight = navbar.offsetHeight;
+                    document.body.style.paddingTop = navbarHeight + 'px';
+                }
+            });
+        </script>
     </header>
+
     <div class="container">
         @if (session('msg'))
             <div class="alert alert-success">
@@ -113,14 +124,14 @@
 
 
 
-    <footer class="text-center bg-light border-top py-3 mt-auto">
+    <footer class="text-center bg-light border-top py-2 mt-auto">
         <div class="container">
             <div class="row align-items-center">
 
                 <!-- Coluna 1: Logo -->
                 <div class="col-md-4 mb-3 mb-md-0 text-md-start text-center">
                     <a href="/" class="d-inline-flex align-items-center text-decoration-none">
-                        <img src="/img/Aspra.png" alt="Logo" width="150" height="100" class="me-2">
+                        <img src="/img/Aspra.png" alt="Logo" width="100" height="65" class="me-2">
                     </a>
                     <p class="mb-0">&copy; {{ date('Y') }} ASPRA RN</p>
                 </div>

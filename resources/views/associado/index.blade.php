@@ -34,6 +34,20 @@
 
     @endif
 
+    <div>
+        @auth
+            @hasanyrole('admin|moderador|user')
+                <p>ADMIN</p>
+            @endhasanyrole
+            @role('moderador')
+                <p>MODERADOR</p>
+            @endrole
+            @role('user')
+                <p>USUÁRIO</p>
+            @endrole
+        @endauth
+    </div>
+
 
 
 

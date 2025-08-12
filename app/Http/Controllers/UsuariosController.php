@@ -14,7 +14,7 @@ class UsuariosController extends Controller
         $user = Auth::user();
 
         if (!$user || !$user->hasRole('admin')) {
-            abort(403, 'Acesso negado. Você precisa ser admin.');
+            return redirect()->route('dashboard')->with('error', 'Acesso negado. Você não tem permissão para acessar esta página.');
         }
 
         $users = User::all();
