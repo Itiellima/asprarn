@@ -38,7 +38,7 @@ Route::delete('/associado/delete/{id}', [AssociadoController::class, 'destroy'])
 // Admin routes, exemplo sem middlewaren ou outro role sem middleware
 
 Route::get('/usuarios', [UsuariosController::class, 'index'])->name('usuarios.index');
-
+Route::post('/usuarios/{user}/role', [UsuariosController::class, 'updateRole'])->name('usuarios.updateRole');
 
 
 Route::middleware([

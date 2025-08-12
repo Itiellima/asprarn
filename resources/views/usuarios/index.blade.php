@@ -1,39 +1,36 @@
-@extends('layouts.main')
+@if(session('success'))
+    <div class="alert alert-success">{{ session('success') }}</div>
+@endif
 
-@section('title', 'Aspra Show')
-
-@section('content')
-    
-
-<div>
-    {{-- Success is as dangerous as failure. --}}
-    <div>
-    <h2>Gerenciar Usuários</h2>
-    <table border="1" cellpadding="6">
+<table>
+    <thead>
         <tr>
-            <th>ID</th>
             <th>Nome</th>
             <th>Email</th>
-            <th>Função</th>
+            <th>Role</th>
             <th>Ação</th>
         </tr>
-
+    </thead>
+    <tbody>
         @foreach($users as $user)
         <tr>
-            <td>{{ $user->id }}</td>
             <td>{{ $user->name }}</td>
             <td>{{ $user->email }}</td>
-            <td>{{ $user->role }}</td>
+            <td>{{ $user->getRoleNames()->join(', ') }}</td>
             <td>
-                <button wire:click="toggleRole({{ $user->id }})">
-                    {{ $user->role === 'admin' ? 'Rebaixar para User' : 'Promover para Admin' }}
-                </button>
+                <form action="{{ route('usuarios.updateRole', $user) }}" method="POST">
+                    @csrf
+                    <select name="role" required>
+                        @foreach($roles as $role)
+                            <option value="{{ $role->name }}" @if($user->hasRole($role->name)) selected @endif>
+                                {{ $role->name }}
+                            </option>
+                        @endforeach
+                    </select>
+                    <button type="submit">Atualizar</button>
+                </form>
             </td>
         </tr>
         @endforeach
-    </table>
-</div>
-
-</div>
-
-@endsection
+    </tbody>
+</table>
