@@ -9,17 +9,23 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-//verifica se o usuario está logado
-Route::middleware(['auth'])->group(function () {});
 
 Route::get('/associado', [AssociadoController::class, 'index'])->name('associado.index');
 //FORMULARIO de criação de novo associado
 Route::get('/associado/create', [AssociadoController::class, 'create'])->name('associado.create');
 //ROTA para salvar
 Route::post('/associado/store', [AssociadoController::class, 'store'])->name('associado.store');
-
 //ROTA excluir
 Route::delete('/associado/delete/{id}', [AssociadoController::class, 'destroy'])->name('associado.destroy');
+
+Route::get('/associado/documentos/{id}', [AssociadoController::class, 'indexDocumentos'])->name('associado.documentos.index');
+
+
+Route::prefix('associados/{associado}')->group(function () {
+    Route::post('/documentos', [AssociadoController::class, 'storeDocumento'])->name('associado.documentos.store');
+    Route::patch('/documentos/{documento}', [AssociadoController::class, 'updateDocumento'])->name('associado.documentos.update');
+    Route::delete('/documentos/{documento}', [AssociadoController::class, 'destroyDocumento'])->name('associado.documentos.destroy');
+});
 
 
 

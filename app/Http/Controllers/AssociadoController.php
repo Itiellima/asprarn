@@ -9,6 +9,8 @@ use App\Models\Contato;
 use App\Models\Endereco;
 use App\Models\DadosBancarios;
 use Illuminate\Support\Facades\Auth;
+use App\Models\DocumentoAssociado;
+use Illuminate\Support\Facades\Storage;
 
 
 class AssociadoController extends Controller
@@ -31,6 +33,8 @@ class AssociadoController extends Controller
         return view('associado.index', ['associados' => $associados, 'search' => $search]);
     }
 
+
+    // view detalhes informaçoes
     public function show($id)
     {
         $associado = Associado::with([
@@ -133,6 +137,7 @@ class AssociadoController extends Controller
         return view('associado.create', ['associado' => $associado]);
     }
 
+    // Rota para atualizar o associado no banco de dados
     public function update(Request $request, $id)
     {
         $user = Auth::user();
@@ -158,4 +163,61 @@ class AssociadoController extends Controller
 
         return redirect('/associado')->with('msg', 'Associado deletado com sucesso!');
     }
+
+///////////////////////////////////////////// documentos associados \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+    // Listar documentos
+    public function indexDocumentos($id)
+    {
+        $associado = Associado::with('documentos')->findOrFail($id);
+        return view('associado.documentos.index', compact('associado'));
+    }
+
+    // Criar documento
+    public function storeDocumento(Request $request, $id)
+    {
+        $request->validate([
+            'tipo_documento' => 'required|string|max:50',
+            'arquivo' => 'required|file|mimes:pdf,jpg,jpeg,png',
+            'observacao' => 'nullable|string',
+        ]);
+
+        $associado = Associado::findOrFail($id);
+
+        $path = $request->file('arquivo')->store('documentos', 'public');
+
+        $associado->documentos()->create([
+            'tipo_documento' => $request->tipo_documento,
+            'arquivo' => $path,
+            'status' => 'pendente',
+            'observacao' => $request->observacao,
+        ]);
+
+        return redirect()->back()->with('success', 'Documento enviado com sucesso!');
+    }
+
+    // Atualizar status/observação do documento
+    public function updateDocumento(Request $request, $id, $documentoId)
+    {
+        $request->validate([
+            'status' => 'required|in:pendente,recebido,rejeitado',
+            'observacao' => 'nullable|string',
+        ]);
+
+        $documento = DocumentoAssociado::where('associado_id', $id)->findOrFail($documentoId);
+        $documento->update($request->only('status', 'observacao'));
+
+        return redirect()->back()->with('success', 'Documento atualizado com sucesso!');
+    }
+
+    // Excluir documento
+    public function destroyDocumento($id, $documentoId)
+    {
+        $documento = DocumentoAssociado::where('associado_id', $id)->findOrFail($documentoId);
+        Storage::disk('public')->delete($documento->arquivo);
+        $documento->delete();
+
+        return redirect()->back()->with('success', 'Documento excluído com sucesso!');
+    }
+
+
 }
