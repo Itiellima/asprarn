@@ -3,25 +3,19 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AssociadoController;
 use App\Http\Controllers\UsuariosController;
-use App\Helpers\HierarchyHelper;
 use Illuminate\Support\Facades\Auth;
-use App\Http\Livewire\ManageUsers;
-
-
-
-
 
 Route::get('/', function () {
     return view('welcome');
 });
 
-
-
 //verifica se o usuario está logado
-Route::middleware(['auth'])->group(function () {});
+Route::middleware(['auth'])->group(function () {
+
+});
 
 Route::get('/associado', [AssociadoController::class, 'index'])->name('associado.index');
-//FORMULARIO de criação
+//FORMULARIO de criação de novo associado
 Route::get('/associado/create', [AssociadoController::class, 'create'])->name('associado.create');
 //ROTA para salvar
 Route::post('/associado/store', [AssociadoController::class, 'store'])->name('associado.store');
@@ -33,8 +27,6 @@ Route::put('/associado/update/{id}', [AssociadoController::class, 'update'])->na
 Route::delete('/associado/delete/{id}', [AssociadoController::class, 'destroy'])->name('associado.destroy');
 
 
-
-// Livewire routes
 
 // Admin routes
 Route::middleware(['auth'])->group(function () {
