@@ -3,15 +3,28 @@
 @section('title', 'Aspra Associado')
 
 @section('content')
-    
+
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h1>Lista de associados</h1>
     </div>
 
+    <div id="search-container" class="col-md-12 mb-3">
+        <label for="form-label">Busque um associado</label>
+        <form method="GET" action="{{ route('associado.index') }}">
+            <input class="form-control" type="text" name="search" value="{{ $search ?? '' }}" placeholder="Pesquisar evento">
+        </form>
+
+    </div>
+
+    @if (!@empty($search))
+        <p>Você pesquisou por: <strong>{{ $search }}</strong></p>
+    @else
+        
+    @endif
+
     @if ($associados->isEmpty())
         <p>Nenhum associado encontrado.</p>
     @else
-
         <p>Existem {{ $associados->count() }} associados cadastrados.</p>
         <table class="table table-striped table-hover ">
             <tr>
@@ -36,7 +49,7 @@
 
     <div>
         @auth
-            
+
             <p>Você está autenticado como: <strong>{{ auth()->user()->name }}</strong></p>
             @hasanyrole('admin|moderador|user')
                 <p><strong>Any Role</strong></p>

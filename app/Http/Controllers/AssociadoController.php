@@ -15,9 +15,19 @@ class AssociadoController extends Controller
     // view todos os associados
     public function index()
     {
-        $associados = Associado::all();
+        $search = request('search');
 
-        return view('associado.index', ['associados' => $associados]);
+        $associados = Associado::query()
+        ->when($search, function ($query, $search){
+            $query->where('nome', 'like', "%{$search}%")
+                  ->orWhere('cpf', 'like', "%{$search}%")
+                  ->orWhere('matricula', 'like', "%{$search}%");
+        })
+        ->orderBy('nome')
+        ->paginate(10);
+        
+
+        return view('associado.index', ['associados' => $associados, 'search' => $search]);
     }
 
     // view para criar um associado
