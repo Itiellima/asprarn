@@ -87,7 +87,9 @@ bash
     npm run dev
 
 
-php artisan make:controller MyController
+-php artisan make:controller MyController
+-php artisan make:migration create_nome_da_tablea_table
+-php artisan make:model NomeDoModel
 
 
 roles e permissoes

@@ -11,7 +11,7 @@
     <div id="search-container" class="col-md-12 mb-3">
         <label for="form-label">Busque um associado</label>
         <form method="GET" action="{{ route('associado.index') }}">
-            <input class="form-control" type="text" name="search" value="{{ $search ?? '' }}" placeholder="Pesquisar evento">
+            <input class="form-control" type="text" name="search" value="{{ $search ?? '' }}" placeholder="Pesquisar...">
         </form>
 
     </div>
@@ -39,7 +39,9 @@
                     <td>{{ $associado->nome }}</td>
                     <td>{{ $associado->cpf }}</td>
                     <td>
-                        <a href="/associado/edit/{{ $associado->id }}">Ver informações</a>
+                        <a href="/associado/edit/{{ $associado->id }}">Editar</a>
+                        <a href="/associado/show/{{ $associado->id }}">Mostar informações</button>
+                        </a>
                     </td>
                 </tr>
             @endforeach

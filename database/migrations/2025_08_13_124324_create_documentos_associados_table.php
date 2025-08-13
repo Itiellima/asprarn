@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('documentos_associados', function (Blueprint $table) {
+        Schema::create('documento_associados', function (Blueprint $table) {
             $table->id();
             $table->foreignId('associado_id')->constrained('associados')->onDelete('cascade');
             $table->string('tipo_documento'); // e.g., 'identidade', 'comprovante_residencia'

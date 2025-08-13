@@ -26,9 +26,8 @@ class Associado extends Model
         return $this->hasMany(Mensalidade::class);
     }
     public function historicoSituacoes() {
-        return $this->hasMany(HistoricoSituacao::class);
+        return $this->hasMany(HistoricoSituacoes::class);
     }
-    
 
     protected $fillable = [
         'nome',

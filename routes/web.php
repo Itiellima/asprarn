@@ -10,19 +10,14 @@ Route::get('/', function () {
 });
 
 //verifica se o usuario está logado
-Route::middleware(['auth'])->group(function () {
-
-});
+Route::middleware(['auth'])->group(function () {});
 
 Route::get('/associado', [AssociadoController::class, 'index'])->name('associado.index');
 //FORMULARIO de criação de novo associado
 Route::get('/associado/create', [AssociadoController::class, 'create'])->name('associado.create');
 //ROTA para salvar
 Route::post('/associado/store', [AssociadoController::class, 'store'])->name('associado.store');
-//FORMULARIO de edição
-Route::get('/associado/edit/{id}', [AssociadoController::class, 'edit'])->name('associado.edit');
-//ROTA editar
-Route::put('/associado/update/{id}', [AssociadoController::class, 'update'])->name('associado.update');
+
 //ROTA excluir
 Route::delete('/associado/delete/{id}', [AssociadoController::class, 'destroy'])->name('associado.destroy');
 
@@ -30,6 +25,16 @@ Route::delete('/associado/delete/{id}', [AssociadoController::class, 'destroy'])
 
 // Admin routes
 Route::middleware(['auth'])->group(function () {
+    // ASSOCIADOS
+    //FORMULARIO de edição
+    Route::get('/associado/edit/{id}', [AssociadoController::class, 'edit'])->name('associado.edit');
+    //ROTA editar
+    Route::put('/associado/update/{id}', [AssociadoController::class, 'update'])->name('associado.update');
+    //ROTA visualizar associado
+    Route::get('/associado/show/{id}', [AssociadoController::class, 'show'])->name('associado.show');
+
+
+
     Route::get('/usuarios', [UsuariosController::class, 'index'])->name('usuarios.index');
     Route::post('/usuarios/{user}/role', [UsuariosController::class, 'updateRole'])->name('usuarios.updateRole');
 });

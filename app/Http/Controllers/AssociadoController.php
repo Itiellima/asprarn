@@ -8,6 +8,7 @@ use App\Models\Associado;
 use App\Models\Contato;
 use App\Models\Endereco;
 use App\Models\DadosBancarios;
+use Illuminate\Support\Facades\Auth;
 
 
 class AssociadoController extends Controller
@@ -18,16 +19,30 @@ class AssociadoController extends Controller
         $search = request('search');
 
         $associados = Associado::query()
-        ->when($search, function ($query, $search){
-            $query->where('nome', 'like', "%{$search}%")
-                  ->orWhere('cpf', 'like', "%{$search}%")
-                  ->orWhere('matricula', 'like', "%{$search}%");
-        })
-        ->orderBy('nome')
-        ->paginate(10);
-        
+            ->when($search, function ($query, $search) {
+                $query->where('nome', 'like', "%{$search}%")
+                    ->orWhere('cpf', 'like', "%{$search}%")
+                    ->orWhere('matricula', 'like', "%{$search}%");
+            })
+            ->orderBy('nome')
+            ->paginate(10);
+
 
         return view('associado.index', ['associados' => $associados, 'search' => $search]);
+    }
+
+    public function show($id)
+    {
+        $associado = Associado::with([
+            'endereco', 
+            'contato', 
+            'dadosBancarios', 
+            'documentos', 
+            'historicoSituacoes', 
+            'mensalidades'
+            ])->findOrFail($id);
+
+        return view('associado.show', ['associado' => $associado]);
     }
 
     // view para criar um associado
@@ -107,6 +122,12 @@ class AssociadoController extends Controller
     // view edição
     public function edit($id)
     {
+        $user = Auth::user();
+
+        if (!$user || !$user->hasRole('admin')) {
+            return redirect()->route('dashboard')->with('error', 'Acesso negado. Você não tem permissão para acessar esta página.');
+        }
+
         $associado = Associado::findOrFail($id);
 
         return view('associado.create', ['associado' => $associado]);
@@ -114,6 +135,11 @@ class AssociadoController extends Controller
 
     public function update(Request $request, $id)
     {
+        $user = Auth::user();
+
+        if (!$user || !$user->hasRole('admin')) {
+            return redirect()->route('dashboard')->with('error', 'Acesso negado. Você não tem permissão para acessar esta página.');
+        }
 
         $associado = Associado::with(['endereco', 'contato', 'dadosBancarios'])->findOrFail($id); // encontra o registro pelo ID
 
