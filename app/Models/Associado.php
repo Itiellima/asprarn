@@ -19,6 +19,17 @@ class Associado extends Model
         return $this->hasOne(DadosBancarios::class);
     }
 
+    public function documentos() {
+        return $this->hasMany(DocumentoAssociado::class);
+    }
+    public function mensalidades() {
+        return $this->hasMany(Mensalidade::class);
+    }
+    public function historicoSituacoes() {
+        return $this->hasMany(HistoricoSituacao::class);
+    }
+    
+
     protected $fillable = [
         'nome',
         'cpf',
