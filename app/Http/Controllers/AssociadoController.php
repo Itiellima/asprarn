@@ -38,13 +38,13 @@ class AssociadoController extends Controller
     public function show($id)
     {
         $associado = Associado::with([
-            'endereco', 
-            'contato', 
-            'dadosBancarios', 
-            'documentos', 
-            'historicoSituacoes', 
+            'endereco',
+            'contato',
+            'dadosBancarios',
+            'documentos',
+            'historicoSituacoes',
             'mensalidades'
-            ])->findOrFail($id);
+        ])->findOrFail($id);
 
         return view('associado.show', ['associado' => $associado]);
     }
@@ -164,7 +164,7 @@ class AssociadoController extends Controller
         return redirect('/associado')->with('msg', 'Associado deletado com sucesso!');
     }
 
-///////////////////////////////////////////// documentos associados \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+    ///////////////////////////////////////////// documentos associados \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
     // Listar documentos
     public function indexDocumentos($id)
     {
@@ -184,6 +184,7 @@ class AssociadoController extends Controller
         $associado = Associado::findOrFail($id);
 
         $path = $request->file('arquivo')->store('documentos', 'public');
+        
 
         $associado->documentos()->create([
             'tipo_documento' => $request->tipo_documento,
@@ -210,14 +211,21 @@ class AssociadoController extends Controller
     }
 
     // Excluir documento
-    public function destroyDocumento($id, $documentoId)
+    public function destroyDocumento($associadoId, $documentoId)
     {
-        $documento = DocumentoAssociado::where('associado_id', $id)->findOrFail($documentoId);
-        Storage::disk('public')->delete($documento->arquivo);
+        // Garante que o documento pertence ao associado
+        $documento = DocumentoAssociado::where('associado_id', $associadoId)
+            ->where('id', $documentoId)
+            ->firstOrFail();
+
+        // Exclui o arquivo físico (se existir)
+        if ($documento->arquivo && Storage::disk('public')->exists($documento->arquivo)) {
+            Storage::disk('public')->delete($documento->arquivo);
+        }
+
+        // Exclui o registro no banco
         $documento->delete();
 
         return redirect()->back()->with('success', 'Documento excluído com sucesso!');
     }
-
-
 }

@@ -7,9 +7,9 @@
     <div class="container">
         <h1>Informações do associado</h1>
         @if ($associado->id != null)
-            <p>Nome do associado {{ $associado->nome }}</p>
-            <p>Data de nascimento: {{ $associado->data_nascimento }}</p>
-            <p>Cidade: {{ $associado->cidade }}</p>
+            <p>Nome do associado: <strong>{{ $associado->nome }}</strong></p>
+            <p>Data de nascimento: <strong>{{ $associado->dt_nasc }}</strong></p>
+            <p>Cidade: {{ $associado->endereco->cidade }}</p>
         @else
             <p>Associado não encontrado.</p>
         @endif
@@ -19,15 +19,89 @@
     <div class="container">
         <h2>Documentos do associado</h2>
         @if ($associado->documentos && $associado->documentos->count() > 0)
-            <ul>
-                @foreach ($associado->documentos as $documento)
-                    <li>
-                        Tipo: {{ $documento->tipo_documento }} - Status: {{ $documento->status }} - Observação:
-                        {{ $documento->observacao }}
-                    </li>
-                    
-                @endforeach
-            </ul>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Tipo</th>
+                        <th>Status</th>
+                        <th>Observação</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($associado->documentos as $documento)
+                        <tr>
+                            <td>{{ $documento->tipo_documento }}</td>
+                            <td>{{ ucfirst($documento->status) }}</td>
+                            <td>{{ $documento->observacao }}</td>
+                            <td>
+                                {{-- Botão para abrir modal de edição --}}
+                                <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
+                                    data-bs-target="#modalEditDocumento{{ $documento->id }}">
+                                    Editar
+                                </button>
+
+                                {{-- Modal de edição --}}
+                                <div class="modal fade" id="modalEditDocumento{{ $documento->id }}" data-bs-backdrop="static"
+                                    data-bs-keyboard="false" tabindex="-1" aria-labelledby="modalLabel{{ $documento->id }}"
+                                    aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h1 class="modal-title fs-5" id="modalLabel{{ $documento->id }}">
+                                                    Editar Documento de {{ $associado->nome }}
+                                                </h1>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                    aria-label="Fechar"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <form
+                                                    action="{{ route('associado.documentos.update', [$associado->id, $documento->id]) }}"
+                                                    method="POST">
+                                                    @csrf
+                                                    @method('PATCH')
+                                                    <div class="mb-3">
+                                                        <label>Status</label>
+                                                        <select class="form-control" name="status">
+                                                            <option value="pendente"
+                                                                {{ $documento->status == 'pendente' ? 'selected' : '' }}>
+                                                                Pendente</option>
+                                                            <option value="recebido"
+                                                                {{ $documento->status == 'recebido' ? 'selected' : '' }}>
+                                                                Recebido</option>
+                                                            <option value="rejeitado"
+                                                                {{ $documento->status == 'rejeitado' ? 'selected' : '' }}>
+                                                                Rejeitado</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label>Observação</label>
+                                                        <input class="form-control" type="text" name="observacao"
+                                                            value="{{ $documento->observacao }}" placeholder="Observação">
+                                                    </div>
+                                                    <button class="btn btn-success" type="submit">Atualizar</button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {{-- Formulário de exclusão --}}
+                                <form
+                                    action="{{ route('associado.documentos.destroy', [$associado->id, $documento->id]) }}"
+                                    method="POST" style="display:inline-block">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button class="btn btn-danger btn-sm" type="submit"
+                                        onclick="return confirm('Tem certeza que deseja excluir este documento?')">
+                                        Excluir
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
         @else
             <p>Não há documentos associados a este associado.</p>
         @endif
@@ -36,7 +110,7 @@
             Inserir Documento
         </button>
 
-        <!-- Modal -->
+        <!-- Modal inserir -->
         <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
             aria-labelledby="staticBackdropLabel" aria-hidden="true">
             <div class="modal-dialog">
@@ -65,7 +139,7 @@
                             <label>Observação</label>
                             <textarea class="form-control" name="observacao"></textarea>
 
-                            
+
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Voltar</button>
                                 <button type="submit" class="btn btn-primary">Inserir</button>
@@ -77,6 +151,8 @@
                 </div>
             </div>
         </div>
+
+
 
 
         <div class="container border-top mt-4 pt-4">

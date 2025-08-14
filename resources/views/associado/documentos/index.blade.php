@@ -39,28 +39,28 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach($associado->documentos as $doc)
+                @foreach($associado->documentos as $documento)
                     <tr>
-                        <td>{{ $doc->tipo_documento }}</td>
-                        <td>{{ $doc->status }}</td>
-                        <td><a href="{{ asset('storage/' . $doc->arquivo) }}" target="_blank">Ver</a></td>
-                        <td>{{ $doc->observacao }}</td>
+                        <td>{{ $documento->tipo_documento }}</td>
+                        <td>{{ $documento->status }}</td>
+                        <td><a href="{{ asset('storage/' . $documento->arquivo) }}" target="_blank">Ver</a></td>
+                        <td>{{ $documento->observacao }}</td>
                         <td>
                             {{-- Form de update --}}
-                            <form action="{{ route('associado.documentos.update', [$associado->id, $doc->id]) }}" method="POST" style="display:inline-block">
+                            <form action="{{ route('associado.documentos.update', [$associado->id, $documento->id]) }}" method="POST" style="display:inline-block">
                                 @csrf
                                 @method('PATCH')
                                 <select name="status">
-                                    <option value="pendente" {{ $doc->status=='pendente' ? 'selected' : '' }}>Pendente</option>
-                                    <option value="recebido" {{ $doc->status=='recebido' ? 'selected' : '' }}>Recebido</option>
-                                    <option value="rejeitado" {{ $doc->status=='rejeitado' ? 'selected' : '' }}>Rejeitado</option>
+                                    <option value="pendente" {{ $documento->status=='pendente' ? 'selected' : '' }}>Pendente</option>
+                                    <option value="recebido" {{ $documento->status=='recebido' ? 'selected' : '' }}>Recebido</option>
+                                    <option value="rejeitado" {{ $documento->status=='rejeitado' ? 'selected' : '' }}>Rejeitado</option>
                                 </select>
-                                <input type="text" name="observacao" value="{{ $doc->observacao }}" placeholder="Observação">
+                                <input type="text" name="observacao" value="{{ $documento->observacao }}" placeholder="Observação">
                                 <button type="submit">Atualizar</button>
                             </form>
 
                             {{-- Form de delete --}}
-                            <form action="{{ route('associado.documentos.destroy', [$associado->id, $doc->id]) }}" method="POST" style="display:inline-block">
+                            <form action="{{ route('associado.documentos.destroy', [$associado->id, $documento->id]) }}" method="POST" style="display:inline-block">
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" onclick="return confirm('Tem certeza?')">Excluir</button>

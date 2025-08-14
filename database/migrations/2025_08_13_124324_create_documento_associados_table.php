@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('associado_id')->constrained('associados')->onDelete('cascade');
             $table->string('tipo_documento'); // e.g., 'identidade', 'comprovante_residencia'
+            $table->string('arquivo');
             $table->enum('status', ['pendente', 'recebido', 'rejeitado'])->default('pendente');
             $table->text('observacao')->nullable();
             $table->timestamps();

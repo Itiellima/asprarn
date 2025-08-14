@@ -18,10 +18,12 @@ Route::post('/associado/store', [AssociadoController::class, 'store'])->name('as
 //ROTA excluir
 Route::delete('/associado/delete/{id}', [AssociadoController::class, 'destroy'])->name('associado.destroy');
 
+
+
 Route::get('/associado/documentos/{id}', [AssociadoController::class, 'indexDocumentos'])->name('associado.documentos.index');
 
 
-Route::prefix('associados/{associado}')->group(function () {
+Route::prefix('associado/{associado}')->group(function () {
     Route::post('/documentos', [AssociadoController::class, 'storeDocumento'])->name('associado.documentos.store');
     Route::patch('/documentos/{documento}', [AssociadoController::class, 'updateDocumento'])->name('associado.documentos.update');
     Route::delete('/documentos/{documento}', [AssociadoController::class, 'destroyDocumento'])->name('associado.documentos.destroy');
