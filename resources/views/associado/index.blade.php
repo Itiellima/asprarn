@@ -39,7 +39,6 @@
                     <td>{{ $associado->nome }}</td>
                     <td>{{ $associado->cpf }}</td>
                     <td>
-                        <a href="/associado/edit/{{ $associado->id }}">Editar</a>
                         <a href="/associado/show/{{ $associado->id }}">Mostar informações</button>
                         </a>
                     </td>

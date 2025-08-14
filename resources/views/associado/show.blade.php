@@ -7,12 +7,31 @@
     <div class="container">
         <h1>Informações do associado</h1>
         @if ($associado->id != null)
-            <p>Nome do associado: <strong>{{ $associado->nome }}</strong></p>
-            <p>Data de nascimento: <strong>{{ $associado->dt_nasc }}</strong></p>
-            <p>Cidade: {{ $associado->endereco->cidade }}</p>
+            <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Nome</th>
+                    <th>Data de Nascimento</th>
+                    <th>Telefone</th>
+                    <th>Email</th>
+                    <th>Ação</th>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>{{ $associado->nome }}</td>
+                    <td>{{ $associado->dt_nasc }}</td>
+                    <td>{{ $associado->contato->tel_celular }}</td>
+                    <td>{{ $associado->contato->email }}</td>
+                    <td>
+                        <a href="/associado/edit/{{ $associado->id }}">Ver tudo</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
         @else
             <p>Associado não encontrado.</p>
         @endif
+        
     </div>
 
 
@@ -97,6 +116,7 @@
                                         Excluir
                                     </button>
                                 </form>
+
                             </td>
                         </tr>
                     @endforeach
@@ -105,12 +125,12 @@
         @else
             <p>Não há documentos associados a este associado.</p>
         @endif
-        <!-- Button trigger modal -->
+        {{-- Botão para abrir modal de inderir documento --}}
         <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
             Inserir Documento
         </button>
 
-        <!-- Modal inserir -->
+        {{-- Modal de inserir documento --}}
         <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
             aria-labelledby="staticBackdropLabel" aria-hidden="true">
             <div class="modal-dialog">
@@ -128,12 +148,14 @@
                             @csrf
                             <label>Tipo de Documento</label>
                             <select class="form-select" name="tipo_documento" required>
-                                <option value="identidade">Identidade</option>
-                                <option value="comprovante_residencia">Comprovante de Residência</option>
-                                <option value="cpf">CPF</option>
+                                <option value="Identidade">Identidade</option>
+                                <option value="Comprovante de Residência">Comprovante de Residência</option>
+                                <option value="CPF">CPF</option>
+                                <option value="Procuração">Procuração</option>
+                                <option value="Outro">Outro</option>
                             </select>
 
-                            <label>Arquivo</label>
+                            <label>Arquivo: pdf, jpg, jpeg, png.</label>
                             <input class="form-control" type="file" name="arquivo" required>
 
                             <label>Observação</label>
@@ -152,9 +174,7 @@
             </div>
         </div>
 
-
-
-
+        {{-- Painel Historico de situação --}}
         <div class="container border-top mt-4 pt-4">
             <h2>Histórico de Situações do associado</h2>
             @if ($associado->historicoSituacoes && $associado->historicoSituacoes->count() > 0)
@@ -171,7 +191,9 @@
                 <p>Não há histórico de situações para este associado.</p>
             @endif
         </div>
-        <div class="container">
+
+
+        <div class="container border-top mt-4 pt-4">
             <h2>Mensalidades do associado</h2>
             @if ($associado->mensalidades && $associado->mensalidades->count() > 0)
                 <ul>

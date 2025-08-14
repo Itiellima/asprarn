@@ -123,12 +123,12 @@ class AssociadoController extends Controller
         }
     }
 
-    // view edição
+    // view edição do associado
     public function edit($id)
     {
         $user = Auth::user();
 
-        if (!$user || !$user->hasRole('admin')) {
+        if (!$user || !$user->hasRole('admin|moderador')) {
             return redirect()->route('dashboard')->with('error', 'Acesso negado. Você não tem permissão para acessar esta página.');
         }
 
@@ -175,16 +175,21 @@ class AssociadoController extends Controller
     // Criar documento
     public function storeDocumento(Request $request, $id)
     {
-        $request->validate([
-            'tipo_documento' => 'required|string|max:50',
-            'arquivo' => 'required|file|mimes:pdf,jpg,jpeg,png',
-            'observacao' => 'nullable|string',
-        ]);
+        if ($request->hasFile('arquivo')) {
+            // Se for upload de arquivo
+            $request->validate([
+                'tipo_documento' => 'required|string|max:50',
+                'arquivo' => 'required|file|mimes:pdf,jpg,jpeg,png|max:2048', // 2MB max
+                'observacao' => 'nullable|string',
+            ]);
+        } else {
+            return redirect()->back()->with('error', 'Arquivo não enviado.')->withInput();
+        }
 
         $associado = Associado::findOrFail($id);
 
         $path = $request->file('arquivo')->store('documentos', 'public');
-        
+
 
         $associado->documentos()->create([
             'tipo_documento' => $request->tipo_documento,
@@ -199,6 +204,7 @@ class AssociadoController extends Controller
     // Atualizar status/observação do documento
     public function updateDocumento(Request $request, $id, $documentoId)
     {
+
         $request->validate([
             'status' => 'required|in:pendente,recebido,rejeitado',
             'observacao' => 'nullable|string',

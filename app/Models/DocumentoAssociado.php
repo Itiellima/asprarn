@@ -15,6 +15,7 @@ class DocumentoAssociado extends Model
     protected $fillable = [
         'associado_id',
         'tipo_documento',
+        'arquivo',
         'status',
         'observacao',
     ];

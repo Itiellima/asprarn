@@ -14,11 +14,7 @@ return new class extends Migration
         Schema::create('historico_situacoes', function (Blueprint $table) {
             $table->id();
             $table->foreignId('associado_id')->constrained('associados')->onDelete('cascade');
-            $table->enum('situacao', [
-            'ativo', 
-            'inadimplente', 
-            'pendente_documentos', 
-            'pendencia_financeira']);
+            $table->string('situacao');
             $table->text('observacao')->nullable();
             $table->date('data_inicio');
             $table->date('data_fim')->nullable();
