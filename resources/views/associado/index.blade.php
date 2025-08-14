@@ -45,7 +45,8 @@
                 </tr>
             @endforeach
         </table>
-
+        
+        {{ $associados->appends(request()->query())->links('pagination::bootstrap-5') }}
     @endif
 
     <div>

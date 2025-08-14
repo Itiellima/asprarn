@@ -37,6 +37,13 @@ class AssociadoController extends Controller
     // view detalhes informaçoes
     public function show($id)
     {
+        $user = Auth::user();
+
+        if (!$user || !$user->hasRole('admin|moderador')) {
+            return redirect()->route('index')->with('error', 'Acesso negado. Você não tem permissão para acessar esta página.');
+        }
+
+
         $associado = Associado::with([
             'endereco',
             'contato',
@@ -60,6 +67,11 @@ class AssociadoController extends Controller
     // Rota salvar o associado no banco de dados
     public function store(Request $request)
     {
+        $user = Auth::user();
+
+        if (!$user || !$user->hasRole('admin|moderador')) {
+            return redirect()->route('associado.create')->with('error', 'Acesso negado. Você não tem permissão para acessar esta página.');
+        }
 
         // Validação dos campos
         if (!\App\Helpers\CpfHelper::validar($request->cpf)) {
@@ -142,8 +154,8 @@ class AssociadoController extends Controller
     {
         $user = Auth::user();
 
-        if (!$user || !$user->hasRole('admin')) {
-            return redirect()->route('dashboard')->with('error', 'Acesso negado. Você não tem permissão para acessar esta página.');
+        if (!$user || !$user->hasRole('admin|moderador')) {
+            return redirect()->route('index')->with('error', 'Acesso negado. Você não tem permissão para acessar esta página.');
         }
 
         $associado = Associado::with(['endereco', 'contato', 'dadosBancarios'])->findOrFail($id); // encontra o registro pelo ID
@@ -157,6 +169,12 @@ class AssociadoController extends Controller
     // Deletar associado
     public function destroy($id)
     {
+        $user = Auth::user();
+
+        if (!$user || !$user->hasRole('admin|moderador')) {
+            return redirect()->route('index')->with('error', 'Acesso negado. Você não tem permissão para acessar esta página.');
+        }
+
         $associado = Associado::findOrFail($id);
 
         $associado->delete();
@@ -165,9 +183,16 @@ class AssociadoController extends Controller
     }
 
     ///////////////////////////////////////////// documentos associados \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+    
     // Listar documentos
     public function indexDocumentos($id)
     {
+        $user = Auth::user();
+
+        if (!$user || !$user->hasRole('admin|moderador')) {
+            return redirect()->route('index')->with('error', 'Acesso negado. Você não tem permissão para acessar esta página.');
+        }
+
         $associado = Associado::with('documentos')->findOrFail($id);
         return view('associado.documentos.index', compact('associado'));
     }
@@ -175,6 +200,12 @@ class AssociadoController extends Controller
     // Criar documento
     public function storeDocumento(Request $request, $id)
     {
+        $user = Auth::user();
+
+        if (!$user || !$user->hasRole('admin|moderador')) {
+            return redirect()->route('index')->with('error', 'Acesso negado. Você não tem permissão para acessar esta página.');
+        }
+        
         if ($request->hasFile('arquivo')) {
             // Se for upload de arquivo
             $request->validate([
@@ -204,6 +235,11 @@ class AssociadoController extends Controller
     // Atualizar status/observação do documento
     public function updateDocumento(Request $request, $id, $documentoId)
     {
+        $user = Auth::user();
+
+        if (!$user || !$user->hasRole('admin|moderador')) {
+            return redirect()->route('index')->with('error', 'Acesso negado. Você não tem permissão para acessar esta página.');
+        }
 
         $request->validate([
             'status' => 'required|in:pendente,recebido,rejeitado',
@@ -219,6 +255,12 @@ class AssociadoController extends Controller
     // Excluir documento
     public function destroyDocumento($associadoId, $documentoId)
     {
+        $user = Auth::user();
+
+        if (!$user || !$user->hasRole('admin|moderador')) {
+            return redirect()->route('index')->with('error', 'Acesso negado. Você não tem permissão para acessar esta página.');
+        }
+
         // Garante que o documento pertence ao associado
         $documento = DocumentoAssociado::where('associado_id', $associadoId)
             ->where('id', $documentoId)
@@ -233,5 +275,19 @@ class AssociadoController extends Controller
         $documento->delete();
 
         return redirect()->back()->with('success', 'Documento excluído com sucesso!');
+    }
+
+    public function storeSituacao(Request $request, $id)
+    {
+        $associado = Associado::findOrFail($id);
+
+        $associado->historicoSituacoes()->create([
+            'situacao' => $request->situacao,
+            'observacao' =>$request->observacao,
+            'data_inicio' =>$request->data_inicio,
+            'data_fim' =>$request->data_fim,
+        ]);
+
+        return redirect()->back()->with('sucess', 'Nova situação incluida!');
     }
 }

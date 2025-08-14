@@ -191,6 +191,7 @@
         </div>
     </footer>
 
+<script src="{{ asset('js/form-double-click.js') }}"></script>
 
 </body>
 
