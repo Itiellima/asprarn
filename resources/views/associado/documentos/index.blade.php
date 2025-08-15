@@ -74,5 +74,5 @@
         <p>Não há documentos cadastrados.</p>
     @endif
 </div>
-    <script src="{{ asset('js/form-double-click.js') }}"></script>
+
 @endsection

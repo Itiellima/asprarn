@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AssociadoController;
 use App\Http\Controllers\UsuariosController;
 use App\Http\Controllers\DocumentoAssociadoController;
+use App\Http\Controllers\HistoricoSituacoesController;
 use Illuminate\Support\Facades\Auth;
 
 Route::get('/', function () {
@@ -29,6 +30,8 @@ Route::patch('/associado/{id}/documentos/{documento}', [DocumentoAssociadoContro
 // Rota Delete
 Route::delete('/associado/{id}/documentos/{documento}', [DocumentoAssociadoController::class, 'destroyDocumento'])->name('associado.documentos.destroy');
 
+
+Route::post('/associado/{id}/historico', [HistoricoSituacoesController::class, 'storeHistorico'])->name('associado.historico.store');
 
 
 // Admin routes

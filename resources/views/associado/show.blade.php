@@ -8,30 +8,30 @@
         <h1>Informações do associado</h1>
         @if ($associado->id != null)
             <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th>Nome</th>
-                    <th>Data de Nascimento</th>
-                    <th>Telefone</th>
-                    <th>Email</th>
-                    <th>Ação</th>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>{{ $associado->nome }}</td>
-                    <td>{{ $associado->dt_nasc }}</td>
-                    <td>{{ $associado->contato->tel_celular }}</td>
-                    <td>{{ $associado->contato->email }}</td>
-                    <td>
-                        <a href="/associado/edit/{{ $associado->id }}">Ver tudo</a>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+                <thead>
+                    <tr>
+                        <th>Nome</th>
+                        <th>Data de Nascimento</th>
+                        <th>Telefone</th>
+                        <th>Email</th>
+                        <th>Ação</th>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>{{ $associado->nome }}</td>
+                        <td>{{ $associado->dt_nasc }}</td>
+                        <td>{{ $associado->contato->tel_celular }}</td>
+                        <td>{{ $associado->contato->email }}</td>
+                        <td>
+                            <a href="/associado/edit/{{ $associado->id }}">Ver tudo</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
         @else
             <p>Associado não encontrado.</p>
         @endif
-        
+
     </div>
 
 
@@ -62,8 +62,8 @@
 
                                 {{-- Modal de edição --}}
                                 <div class="modal fade" id="modalEditDocumento{{ $documento->id }}" data-bs-backdrop="static"
-                                    data-bs-keyboard="false" tabindex="-1" aria-labelledby="modalLabel{{ $documento->id }}"
-                                    aria-hidden="true">
+                                    data-bs-keyboard="false" tabindex="-1"
+                                    aria-labelledby="modalLabel{{ $documento->id }}" aria-hidden="true">
                                     <div class="modal-dialog">
                                         <div class="modal-content">
                                             <div class="modal-header">
@@ -142,7 +142,7 @@
                     <div class="modal-body">
                         <h1>Documentos de {{ $associado->nome }}</h1>
 
-                        {{-- Formulário de envio --}}
+                        {{-- Formulário de envio documento --}}
                         <form action="{{ route('associado.documentos.store', $associado->id) }}" method="POST"
                             enctype="multipart/form-data">
                             @csrf
@@ -178,21 +178,75 @@
         <div class="container border-top mt-4 pt-4">
             <h2>Histórico de Situações do associado</h2>
             @if ($associado->historicoSituacoes && $associado->historicoSituacoes->count() > 0)
-                <ul>
-                    @foreach ($associado->historicoSituacoes as $historico)
-                        <li>
-                            Situação: {{ $historico->situacao }} - Data de início: {{ $historico->data_inicio }} - Data de
-                            fim:
-                            {{ $historico->data_fim ?? 'Ativo' }}
-                        </li>
-                    @endforeach
-                </ul>
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Situação</th>
+                            <th>Data de inicio</th>
+                            <th>Data de finalização</th>
+                            <th>Observacao</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($associado->historicoSituacoes as $historico)
+                            <tr>
+                                <td>{{ $historico->situacao }}</td>
+                                <td>{{ $historico->data_inicio }}</td>
+                                <td>{{ $historico->data_fim }}</td>
+                                <td>{{ $historico->observacao }}</td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
             @else
                 <p>Não há histórico de situações para este associado.</p>
             @endif
+
+            {{-- Botão para abrir modal de inserir historico --}}
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop3">
+                Inserir Historico
+            </button>
+
+            {{-- Modal Historico --}}
+            <div class="modal fade" id="staticBackdrop3" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+                aria-labelledby="staticBackdropLabel3" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="staticBackdropLabel3">Modal title</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <h2>Historico de {{ $associado->nome }}</h2>
+                            {{-- Formulário de envio documento --}}
+                            <form action="{{ route('associado.historico.store', $associado->id) }}" method="POST"
+                                enctype="multipart/form-data">
+                                @csrf
+                                <label>Tipo de Documento</label>
+                                <input type="text" class="form-control" name="situacao" required>
+                                <label>Observação</label>
+                                <input type="text" class="form-control" name="observacao">
+                                <label>Data de Inicio</label>
+                                <input type="date" class="form-control" name="data_inicio" required>
+                                <label>Encerramento</label>
+                                <input type="date" class="form-control" name="data_fim">
+
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary"
+                                        data-bs-dismiss="modal">Voltar</button>
+                                    <button type="submit" class="btn btn-primary">Inserir</button>
+                                </div>
+                            </form>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
 
 
+        {{-- Painel Mensalidades --}}
         <div class="container border-top mt-4 pt-4">
             <h2>Mensalidades do associado</h2>
             @if ($associado->mensalidades && $associado->mensalidades->count() > 0)

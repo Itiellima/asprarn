@@ -183,37 +183,26 @@ class AssociadoController extends Controller
     }
 
     ///////////////////////////////////////////// documentos associados \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
-    
+
     // Listar documentos
     public function indexDocumentos($id)
     {
         $user = Auth::user();
 
-        if (!$user || !$user->hasRole('admin|moderador')) {
+        if (!$user || !$user->hasAnyRole(['admin', 'moderador'])) {
             return redirect()->route('index')->with('error', 'Acesso negado. Você não tem permissão para acessar esta página.');
         }
 
-        $associado = Associado::with('documentos')->findOrFail($id);
+        $associado = Associado::with([
+            'endereco',
+            'contato',
+            'dadosBancarios',
+            'documentos',
+            'historicoSituacoes',
+            'mensalidades'
+        ])->findOrFail($id);
+
+
         return view('associado.documentos.index', compact('associado'));
-    }
-
-    
-
-    
-
-    
-
-    public function storeSituacao(Request $request, $id)
-    {
-        $associado = Associado::findOrFail($id);
-
-        $associado->historicoSituacoes()->create([
-            'situacao' => $request->situacao,
-            'observacao' =>$request->observacao,
-            'data_inicio' =>$request->data_inicio,
-            'data_fim' =>$request->data_fim,
-        ]);
-
-        return redirect()->back()->with('sucess', 'Nova situação incluida!');
     }
 }
