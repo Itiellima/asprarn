@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AssociadoController;
 use App\Http\Controllers\UsuariosController;
+use App\Http\Controllers\DocumentoAssociadoController;
 use Illuminate\Support\Facades\Auth;
 
 Route::get('/', function () {
@@ -18,16 +19,15 @@ Route::post('/associado/store', [AssociadoController::class, 'store'])->name('as
 //ROTA excluir
 Route::delete('/associado/delete/{id}', [AssociadoController::class, 'destroy'])->name('associado.destroy');
 
-
-
+// Show Associado
 Route::get('/associado/documentos/{id}', [AssociadoController::class, 'indexDocumentos'])->name('associado.documentos.index');
 
-
-Route::prefix('associado/{associado}')->group(function () {
-    Route::post('/documentos', [AssociadoController::class, 'storeDocumento'])->name('associado.documentos.store');
-    Route::patch('/documentos/{documento}', [AssociadoController::class, 'updateDocumento'])->name('associado.documentos.update');
-    Route::delete('/documentos/{documento}', [AssociadoController::class, 'destroyDocumento'])->name('associado.documentos.destroy');
-});
+// Rota Salvar Documento
+Route::post('/associado/{id}/documentos', [DocumentoAssociadoController::class, 'storeDocumento'])->name('associado.documentos.store');
+// Rota de edição
+Route::patch('/associado/{id}/documentos/{documento}', [DocumentoAssociadoController::class, 'updateDocumento'])->name('associado.documentos.update');
+// Rota Delete
+Route::delete('/associado/{id}/documentos/{documento}', [DocumentoAssociadoController::class, 'destroyDocumento'])->name('associado.documentos.destroy');
 
 
 
@@ -40,10 +40,9 @@ Route::middleware(['auth'])->group(function () {
     Route::put('/associado/update/{id}', [AssociadoController::class, 'update'])->name('associado.update');
     //ROTA visualizar associado
     Route::get('/associado/show/{id}', [AssociadoController::class, 'show'])->name('associado.show');
-
-
-
+    // View usuarios
     Route::get('/usuarios', [UsuariosController::class, 'index'])->name('usuarios.index');
+    // Rota para atualizar as permissoes de um usuario
     Route::post('/usuarios/{user}/role', [UsuariosController::class, 'updateRole'])->name('usuarios.updateRole');
 });
 
