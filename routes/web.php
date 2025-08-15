@@ -32,7 +32,7 @@ Route::delete('/associado/{id}/documentos/{documento}', [DocumentoAssociadoContr
 
 
 Route::post('/associado/{id}/historico', [HistoricoSituacoesController::class, 'storeHistorico'])->name('associado.historico.store');
-
+Route::delete('/associado/{id}/historico/{historico}', [HistoricoSituacoesController::class, 'destroyHistorico'])->name('associado.historico.destroy');
 
 // Admin routes
 Route::middleware(['auth'])->group(function () {

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Associado;
+use App\Models\HistoricoSituacoes;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -39,7 +40,29 @@ class HistoricoSituacoesController extends Controller
         ]);
 
         return redirect()->back()->with('success', 'Historico criado com sucesso!');
-
-
     }
+
+
+    public function destroyHistorico($associadoId, $historicoId){
+
+        $user = Auth::user();
+
+        if(!$user || !$user->hasRole('admin|moderador')){
+            return redirect()->back()->with('error', 'Acesso negado. Você não tem permissão para acessar esta página.');
+        }
+
+        $historico = HistoricoSituacoes::where('associado_id', $associadoId)
+            ->where('id', $historicoId)
+            ->firstOrFail();
+
+        $historico->delete();
+
+        return redirect()->back()->with('success', 'Historico excluido com sucesso!');
+    }
+
+
+
+
+
+
 }

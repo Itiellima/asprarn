@@ -185,6 +185,7 @@
                             <th>Data de inicio</th>
                             <th>Data de finalização</th>
                             <th>Observacao</th>
+                            <th>Ação</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -194,6 +195,18 @@
                                 <td>{{ $historico->data_inicio }}</td>
                                 <td>{{ $historico->data_fim }}</td>
                                 <td>{{ $historico->observacao }}</td>
+                                <td>
+                                    <form
+                                        action="{{ route('associado.historico.destroy', [$associado->id, $historico->id]) }}"
+                                        method="POST">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button class="btn btn-danger btn-sm" type="submit"
+                                            onclick="return confirm('Tem certeza que deseja excluir este historico?')">
+                                            Excluir
+                                        </button>
+                                    </form>
+                                </td>
                             </tr>
                         @endforeach
                     </tbody>
@@ -208,8 +221,8 @@
             </button>
 
             {{-- Modal Historico --}}
-            <div class="modal fade" id="staticBackdrop3" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-                aria-labelledby="staticBackdropLabel3" aria-hidden="true">
+            <div class="modal fade" id="staticBackdrop3" data-bs-backdrop="static" data-bs-keyboard="false"
+                tabindex="-1" aria-labelledby="staticBackdropLabel3" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
