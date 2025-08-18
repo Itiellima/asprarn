@@ -54,6 +54,11 @@
                             <td>{{ ucfirst($documento->status) }}</td>
                             <td>{{ $documento->observacao }}</td>
                             <td>
+                                <a href="{{ route('associado.documentos.show', [$associado->id, $documento->id]) }}"
+                                    class="btn btn-sm btn-primary" target="_blank">
+                                    Visualizar
+                                </a>
+
                                 {{-- Botão para abrir modal de edição --}}
                                 <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
                                     data-bs-target="#modalEditDocumento{{ $documento->id }}">
@@ -61,8 +66,8 @@
                                 </button>
 
                                 {{-- Modal de edição --}}
-                                <div class="modal fade" id="modalEditDocumento{{ $documento->id }}" data-bs-backdrop="static"
-                                    data-bs-keyboard="false" tabindex="-1"
+                                <div class="modal fade" id="modalEditDocumento{{ $documento->id }}"
+                                    data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
                                     aria-labelledby="modalLabel{{ $documento->id }}" aria-hidden="true">
                                     <div class="modal-dialog">
                                         <div class="modal-content">

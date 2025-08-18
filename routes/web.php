@@ -20,8 +20,10 @@ Route::post('/associado/store', [AssociadoController::class, 'store'])->name('as
 //ROTA excluir
 Route::delete('/associado/delete/{id}', [AssociadoController::class, 'destroy'])->name('associado.destroy');
 
+
 // Show Associado
 Route::get('/associado/documentos/{id}', [AssociadoController::class, 'indexDocumentos'])->name('associado.documentos.index');
+
 
 // Rota Salvar Documento
 Route::post('/associado/{id}/documentos', [DocumentoAssociadoController::class, 'storeDocumento'])->name('associado.documentos.store');
@@ -29,6 +31,10 @@ Route::post('/associado/{id}/documentos', [DocumentoAssociadoController::class, 
 Route::patch('/associado/{id}/documentos/{documento}', [DocumentoAssociadoController::class, 'updateDocumento'])->name('associado.documentos.update');
 // Rota Delete
 Route::delete('/associado/{id}/documentos/{documento}', [DocumentoAssociadoController::class, 'destroyDocumento'])->name('associado.documentos.destroy');
+// Visualizar documentos
+Route::get('/associado/documentos/{id}/{documento}', [DocumentoAssociadoController::class, 'showDocumento'])->name('associado.documentos.show');
+
+
 
 
 Route::post('/associado/{id}/historico', [HistoricoSituacoesController::class, 'storeHistorico'])->name('associado.historico.store');

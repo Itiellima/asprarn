@@ -20,7 +20,7 @@ class DocumentoAssociadoController extends Controller
         if (!$user || !$user->hasRole('admin|moderador')) {
             return redirect()->route('index')->with('error', 'Acesso negado. Você não tem permissão para acessar esta página.');
         }
-        
+
         if ($request->hasFile('arquivo')) {
             // Se for upload de arquivo
             $request->validate([
@@ -90,5 +90,28 @@ class DocumentoAssociadoController extends Controller
         $documento->delete();
 
         return redirect()->back()->with('success', 'Documento excluído com sucesso!');
+    }
+
+    public function showDocumento($id, DocumentoAssociado $documento)
+    {
+
+        $user = Auth::user();
+
+        if(!$user || !$user->hasRole('admin|moderador')){
+            return redirect()->route('index')->with('error', 'Acesso negado. Voce nao tem permissao para acessar esta página');
+        }
+
+        if ($documento->associado_id != $id) {
+            abort(404, 'Documento não encontrado para esse associado!');
+        }
+
+        // Verifica se existe arquivo físico
+        if ($documento->arquivo && Storage::disk('public')->exists($documento->arquivo)) {
+            $path = Storage::disk('public')->path($documento->arquivo);
+
+            return response()->file($path); // Abre direto no navegador
+        }
+
+        abort(404, 'Arquivo não encontrado.');
     }
 }

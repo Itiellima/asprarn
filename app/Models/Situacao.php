@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Mensalidade extends Model
+class Situacao extends Model
 {
     public function associado()
     {
@@ -13,10 +13,10 @@ class Mensalidade extends Model
 
     protected $fillable = [
         'associado_id',
-        'mes_referencia',
-        'valor',
-        'status',
-        'data_pagamento',
+        'ativo',
+        'inadimplente',
+        'pendente_documento',
+        'pendente_financeiro',
         'observacao',
     ];
 }

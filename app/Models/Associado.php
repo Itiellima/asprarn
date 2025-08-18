@@ -23,6 +23,11 @@ class Associado extends Model
         return $this->hasOne(DadosBancarios::class);
     }
 
+    public function situacao()
+    {
+        return $this->hasOne(Situacao::class);
+    }
+
     public function documentos()
     {
         return $this->hasMany(DocumentoAssociado::class);
