@@ -128,11 +128,10 @@
     </div>
 
 
-    <div class="">
-        <main class="container container body-offset">
+    <div>
+        <main class="container body-offset">
             @yield('content')
         </main>
-
     </div>
 
 
