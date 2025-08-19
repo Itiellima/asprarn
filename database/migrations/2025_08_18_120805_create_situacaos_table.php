@@ -11,12 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('situacao', function (Blueprint $table) {
+        Schema::create('situacaos', function (Blueprint $table) {
             $table->id();
             $table->foreignId('associado_id')->constrained('associados')->onDelete('cascade');
             $table->boolean('ativo')->default(0);
             $table->boolean('inadimplente')->default(0);
-            $table->boolean('pedente_documento')->default(0);
+            $table->boolean('pendente_documento')->default(0);
             $table->boolean('pendente_financeiro')->default(0);
             $table->string('observacao')->nullable();
             $table->timestamps();

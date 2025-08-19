@@ -4,7 +4,7 @@
 
 @section('content')
 
-    <div class="container">
+    <div class="container border">
         <h1>Informações do associado</h1>
         @if ($associado->id != null)
             <table class="table table-striped">
@@ -32,27 +32,39 @@
             <p>Associado não encontrado.</p>
         @endif
     </div>
-    <div class="container align-items-center">
-        <div class="form-check form-check-inline">
-            <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1">
-            <label class="form-check-label" for="inlineCheckbox1">Ativo</label>
-        </div>
-        <div class="form-check form-check-inline">
-            <input class="form-check-input" type="checkbox" id="inlineCheckbox2" value="option2">
-            <label class="form-check-label" for="inlineCheckbox2">Inadimplente</label>
-        </div>
-        <div class="form-check form-check-inline">
-            <input class="form-check-input" type="checkbox" id="inlineCheckbox3" value="option2">
-            <label class="form-check-label" for="inlineCheckbox3">Pendente Documentos</label>
-        </div>
-        <div class="form-check form-check-inline">
-            <input class="form-check-input" type="checkbox" id="inlineCheckbox4" value="option2">
-            <label class="form-check-label" for="inlineCheckbox4">Pendente Financeiro</label>
-        </div>
+
+    <div class="container align-items-center border">
+        <form action="{{ route('associado.situacao.store', $associado->id) }}" method="POST">
+            @csrf
+
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="checkbox" id="ativo" name="ativo" value="1"
+                    {{ old('ativo', $associado->situacao->ativo ?? false) ? 'checked' : '' }}>
+                <label class="form-check-label" for="ativo">Ativo</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="checkbox" id="inadimplente" name="inadimplente" value="1"
+                    {{ old('ativo', $associado->situacao->inadimplente ?? false) ? 'checked' : '' }}>
+                <label class="form-check-label" for="inadimplente">Inadimplente</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="checkbox" id="pendente_documento" name="pendente_documento"
+                    value="1" {{ old('ativo', $associado->situacao->pendente_documento ?? false) ? 'checked' : '' }}>
+                <label class="form-check-label" for="pendente_documento">Pendente documento</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="checkbox" id="pendente_financeiro" name="pendente_financeiro"
+                    value="1" {{ old('ativo', $associado->situacao->pendente_financeiro ?? false) ? 'checked' : '' }}>
+                <label class="form-check-label" for="pendente_financeiro">Pendente financeiro</label>
+            </div>
+            
+            <button type="submit" class="btn btn-primary mt-3 mb-3">Salvar</button>
+
+        </form>
     </div>
 
 
-    <div class="container">
+    <div class="container border mt-3">
         <h2>Documentos do associado</h2>
         @if ($associado->documentos && $associado->documentos->count() > 0)
             <table class="table table-striped">

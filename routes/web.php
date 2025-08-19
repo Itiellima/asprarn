@@ -5,10 +5,15 @@ use App\Http\Controllers\AssociadoController;
 use App\Http\Controllers\UsuariosController;
 use App\Http\Controllers\DocumentoAssociadoController;
 use App\Http\Controllers\HistoricoSituacoesController;
+use App\Http\Controllers\SituacaoController;
 use Illuminate\Support\Facades\Auth;
 
 Route::get('/', function () {
     return view('welcome');
+});
+
+Route::get('/requerimento', function () {
+    return view('/associado/requerimentos/requerimento');
 });
 
 
@@ -34,7 +39,7 @@ Route::delete('/associado/{id}/documentos/{documento}', [DocumentoAssociadoContr
 // Visualizar documentos
 Route::get('/associado/documentos/{id}/{documento}', [DocumentoAssociadoController::class, 'showDocumento'])->name('associado.documentos.show');
 
-
+Route::post('/associado/situacao/{id}', [SituacaoController::class, 'storeSituacao'])->name('associado.situacao.store');
 
 
 Route::post('/associado/{id}/historico', [HistoricoSituacoesController::class, 'storeHistorico'])->name('associado.historico.store');

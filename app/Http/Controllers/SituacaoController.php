@@ -10,48 +10,34 @@ use App\Models\Situacao;
 
 class SituacaoController extends Controller
 {
-    public function storeSituacao(Request $request, $id)
-    {
 
-        $user = Auth::user();
-
-        if (!$user || !$user->hasRole('admin|moderador')) {
-            return redirect()->route('index')->with('error', 'Acesso nao autorizado');
-        }
+    public function storeSituacao(Request $request, $id) {
 
         $validated = $request->validate([
-            'ativo' => 'required|boolean',
-            'inadimplente' => 'required|boolean',
-            'pendente_documento' => 'required|boolean',
-            'pendente_financeiro' => 'required|boolean',
+            'ativo' => 'nullable|boolean',
+            'inadimplente' => 'nullable|boolean',
+            'pendente_documento' => 'nullable|boolean',
+            'pendente_financeiro' => 'nullable|boolean',
         ]);
 
         $associado = Associado::findOrFail($id);
 
-        $associado->situacao()->create($validated);
+        $validated = array_merge([
+            'ativo' => 0,
+            'inadimplente' => 0,
+            'pendente_documento' => 0,
+            'pendente_financeiro' => 0,
+        ], $validated);
 
-        return redirect()->back()->with('sucess', 'Situação incluida com sucesos');
+
+        $associado->situacao()->updateOrCreate(
+            ['associado_id' => $id],
+            $validated
+        );
+        
+        return redirect()->back()->with('success', 'Situação salva com sucesso!');
     }
 
-    public function updateSituacao(Request $request, $id, $situacaoId)
-    {
 
-        // Validação
-        $validated = $request->validate([
-            'ativo' => 'required|boolean',
-            'inadimplente' => 'required|boolean',
-            'pendente_documento' => 'required|boolean',
-            'pendente_financeiro' => 'required|boolean',
-        ]);
 
-        // Buscar situação garantindo que pertence ao associado
-        $situacao = Situacao::where('associado_id', $id)
-            ->where('id', $situacaoId)
-            ->firstOrFail();
-
-        // Atualizar
-        $situacao->update($validated);
-
-        return redirect()->back()->with('success', 'Situação atualizada com sucesso!');
-    }
 }

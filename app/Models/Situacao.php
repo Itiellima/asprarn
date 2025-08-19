@@ -11,6 +11,8 @@ class Situacao extends Model
         return $this->belongsTo(Associado::class);
     }
 
+    // protected $table = 'Situacaos'; // Aponta para a tabela 'Situacaos'
+
     protected $fillable = [
         'associado_id',
         'ativo',

@@ -50,7 +50,8 @@ class AssociadoController extends Controller
             'dadosBancarios',
             'documentos',
             'historicoSituacoes',
-            'mensalidades'
+            'mensalidades',
+            'situacao'
         ])->findOrFail($id);
 
         return view('associado.show', ['associado' => $associado]);
