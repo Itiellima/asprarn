@@ -5,6 +5,7 @@ use App\Http\Controllers\AssociadoController;
 use App\Http\Controllers\UsuariosController;
 use App\Http\Controllers\DocumentoAssociadoController;
 use App\Http\Controllers\HistoricoSituacoesController;
+use App\Http\Controllers\RequerimentoController;
 use App\Http\Controllers\SituacaoController;
 use Illuminate\Support\Facades\Auth;
 
@@ -13,8 +14,10 @@ Route::get('/', function () {
 });
 
 Route::get('/requerimento', function () {
-    return view('/associado/requerimentos/requerimento');
+    return view('/associado/pdf/requerimento');
 });
+
+Route::get('/requerimento/{id}', [RequerimentoController::class, 'show'])->name('associado.pdf.requerimento');
 
 
 Route::get('/associado', [AssociadoController::class, 'index'])->name('associado.index');

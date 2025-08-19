@@ -24,6 +24,9 @@
                         <td>{{ $associado->contato->email }}</td>
                         <td>
                             <a href="/associado/edit/{{ $associado->id }}">Ver tudo</a>
+                            <a href="{{ route('associado.pdf.requerimento', $associado->id) }}" target="_blank">
+                                Gerar requerimento
+                            </a>
                         </td>
                     </tr>
                 </tbody>
@@ -57,7 +60,7 @@
                     value="1" {{ old('ativo', $associado->situacao->pendente_financeiro ?? false) ? 'checked' : '' }}>
                 <label class="form-check-label" for="pendente_financeiro">Pendente financeiro</label>
             </div>
-            
+
             <button type="submit" class="btn btn-primary mt-3 mb-3">Salvar</button>
 
         </form>

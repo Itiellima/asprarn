@@ -26,7 +26,6 @@
 </head>
 
 <body class="">
-
     <header class="py-2">
         <nav class="row align-items-center border-bottom fixed-top bg-light">
 
