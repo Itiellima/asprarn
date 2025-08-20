@@ -105,3 +105,15 @@ roles e permissoes
     @guest
         <!-- Qualquer visitante pode acessar -->
     @endguest
+
+
+
+
+
+
+
+    CRIAR:
+        POSTS, 
+        EVENTOS,
+        ABOUT,
+        

@@ -16,14 +16,18 @@ Route::get('/', function () {
 
 Route::get('/requerimento/{id}', [RequerimentoController::class, 'show'])->name('associado.pdf.requerimento');
 
-
+//View Listar Associados
 Route::get('/associado', [AssociadoController::class, 'index'])->name('associado.index');
-//FORMULARIO de criação de novo associado
+
+//View de criação de novo associado
 Route::get('/associado/create', [AssociadoController::class, 'create'])->name('associado.create');
+
 //ROTA para salvar
 Route::post('/associado/store', [AssociadoController::class, 'store'])->name('associado.store');
+
 //ROTA excluir
 Route::delete('/associado/delete/{id}', [AssociadoController::class, 'destroy'])->name('associado.destroy');
+
 
 
 // Show Associado
@@ -47,7 +51,6 @@ Route::delete('/associado/{id}/historico/{historico}', [HistoricoSituacoesContro
 
 // Admin routes
 Route::middleware(['auth'])->group(function () {
-    // ASSOCIADOS
     //FORMULARIO de edição
     Route::get('/associado/edit/{id}', [AssociadoController::class, 'edit'])->name('associado.edit');
     //ROTA editar
