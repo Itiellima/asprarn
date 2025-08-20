@@ -13,9 +13,6 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/requerimento', function () {
-    return view('/associado/pdf/requerimento');
-});
 
 Route::get('/requerimento/{id}', [RequerimentoController::class, 'show'])->name('associado.pdf.requerimento');
 

@@ -159,13 +159,60 @@ class AssociadoController extends Controller
             return redirect()->route('index')->with('error', 'Acesso negado. Você não tem permissão para acessar esta página.');
         }
 
-        $associado = Associado::with(['endereco', 'contato', 'dadosBancarios'])->findOrFail($id); // encontra o registro pelo ID
+        $associado = Associado::with(['endereco', 'contato', 'dadosBancarios'])->findOrFail($id);
 
-        $data = $request->except('_token', '_method'); // limpa dados desnecessários
-        $associado->update($data); // atualiza o registro com os dados filtrados
+        // Atualiza os dados da tabela principal
+        $associado->update($request->only([
+            'nome',
+            'cpf',
+            'rg',
+            'org_expedidor',
+            'nome_pai',
+            'nome_mae',
+            'dt_nasc',
+            'estado_civil',
+            'grau_instrucao',
+            'graduacao',
+            'nome_guerra',
+            'nmr_praca',
+            'matricula',
+            'opm',
+            'dependentes',
+            'obs'
+        ]));
+
+        // Atualiza o endereço (assume que o relacionamento existe)
+        $associado->endereco()->update($request->only([
+            'cep',
+            'logradouro',
+            'nmr',
+            'bairro',
+            'cidade',
+            'uf',
+            'complemento'
+        ]));
+
+        // Atualiza o contato
+        $associado->contato()->update($request->only([
+            'tel_celular',
+            'tel_residencial',
+            'tel_trabalho',
+            'email'
+        ]));
+
+        // Atualiza os dados bancários
+        $associado->dadosBancarios()->update($request->only([
+            'codigo',
+            'agencia',
+            'banco',
+            'conta',
+            'operacao',
+            'tipo'
+        ]));
 
         return redirect('/associado')->with('msg', 'Associado alterado com sucesso!');
     }
+
 
     // Deletar associado
     public function destroy($id)
