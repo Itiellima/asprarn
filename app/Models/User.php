@@ -34,6 +34,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'associado_id',
     ];
 
     /**
@@ -68,6 +69,11 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function associado()
+    {
+        return $this->belongsTo(Associado::class);
     }
 
     

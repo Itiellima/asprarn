@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('associados', function (Blueprint $table) {
             $table->id();
             $table->string('nome');
-            $table->string('cpf');
+            $table->string('cpf')->unique();
             $table->string('rg')->nullable();
             $table->string('org_expedidor')->nullable();
             $table->string('nome_pai')->nullable();

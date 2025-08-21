@@ -17,6 +17,7 @@ class RoleAndAdminSeeder extends Seeder
         // Cria roles, se não existirem
         Role::firstOrCreate(['name' => 'admin']);
         Role::firstOrCreate(['name' => 'moderador']);
+        Role::firstOrCreate(['name' => 'associado']);
         Role::firstOrCreate(['name' => 'user']);
 
         // Cria usuário admin (ou pega se já existir)
@@ -29,6 +30,6 @@ class RoleAndAdminSeeder extends Seeder
         );
 
         // Atribui role admin ao usuário
-        $admin->syncRoles('admin', 'moderador', 'user');
+        $admin->syncRoles('admin', 'moderador', 'associado', 'user');
     }
 }

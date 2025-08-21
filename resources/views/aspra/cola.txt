@@ -94,17 +94,23 @@ bash
 
 roles e permissoes
     @auth
+        <p>Você está autenticado como: <strong>{{ auth()->user()->name }}</strong></p>
+        @hasanyrole('admin|moderador|user')
+            <p><strong>Any Role</strong></p>
+        @endhasanyrole
+
         @role('admin')
-            <!-- Usuário está logado como admin-->
+            <p><strong>ADMINISTRADOR</strong></p>
         @endrole
-            <!-- Usuário está logado -->
-    @else
-        <!-- Usuário não está logado -->
+
+        @role('moderador')
+            <p><strong>MODERADOR</strong></p>
+        @endrole
+
+        @role('user')
+            <p><strong>USUÁRIO</strong></p>
+        @endrole
     @endauth
-    
-    @guest
-        <!-- Qualquer visitante pode acessar -->
-    @endguest
 
 
 

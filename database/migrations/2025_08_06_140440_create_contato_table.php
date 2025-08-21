@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('tel_celular')->nullable();
             $table->string('tel_residencial')->nullable();
             $table->string('tel_trabalho')->nullable();
-            $table->string('email')->nullable();
+            $table->string('email')->nullable()->unique();
             $table->foreignId('associado_id')->constrained()->onDelete('cascade');
             $table->timestamps();
         });

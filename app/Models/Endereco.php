@@ -14,11 +14,11 @@ class Endereco extends Model
     protected $fillable = [
         'cep',
         'logradouro',
-        'numero',
-        'complemento',
+        'nmr',
         'bairro',
         'cidade',
-        'estado',
+        'uf',
+        'complemento',
         'associado_id'
     ];
 }

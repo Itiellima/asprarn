@@ -45,6 +45,7 @@
                     <li><a href="#" class="nav-link px-2">ASPRA</a></li>
                     <li><a href="#" class="nav-link px-2">Sobre</a></li>
                     <li><a href="/associado/create" class="nav-link px-2 border-bottom">Quero me associar</a></li>
+                    
                     {{-- Verifica se o usuário está autenticado e se é admin --}}
                     @auth
                         <!-- Usuário está logado -->

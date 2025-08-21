@@ -101,9 +101,9 @@
                 Número: <strong>{{ str_pad($associado->endereco->nmr ?? '', 20, '_') }}</strong>
 
 
-                Bairro: <strong>{{ str_pad($associado->bairro ?? '', 20, '_') }}</strong>
-                Cidade: <strong>{{ str_pad($associado->cidade ?? '', 20, '_') }}</strong>
-                Complemento: <strong>{{ str_pad($associado->complemento ?? '', 60, '_') }}</strong>
+                Bairro: <strong>{{ str_pad($associado->endereco->bairro ?? '', 20, '_') }}</strong>
+                Cidade: <strong>{{ str_pad($associado->endereco->cidade ?? '', 20, '_') }}</strong>
+                Complemento: <strong>{{ str_pad($associado->endereco->complemento ?? '', 60, '_') }}</strong>
                 <br>
 
                 Cursos Civis: <strong>{{ str_pad($associado->cursos_civis ?? '', 30, '_') }}</strong>
@@ -115,7 +115,7 @@
                 <strong>{{ str_pad($associado->contato->tel_residencial ?? '', 25, '_') }}</strong>
                 <br>
 
-                Telefone Trabalho: <strong>{{ str_pad($associado->contato->trabalho ?? '', 25, '_') }}</strong>
+                Telefone Trabalho: <strong>{{ str_pad($associado->contato->tel_trabalho ?? '', 25, '_') }}</strong>
                 E-mail: <strong>{{ str_pad($associado->contato->email ?? '', 43, '_') }}</strong>
                 <br>
 

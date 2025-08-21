@@ -7,6 +7,10 @@ use Illuminate\Support\Facades\Storage;
 
 class Associado extends Model
 {
+    public function user()
+    {
+        return $this->hasOne(User::class);
+    }
 
     public function endereco()
     {
@@ -44,20 +48,20 @@ class Associado extends Model
     protected $fillable = [
         'nome',
         'cpf',
-        'data_nascimento',
         'rg',
-        'orgao_expedidor',
+        'org_expedidor',
         'nome_pai',
         'nome_mae',
+        'dt_nasc',
         'estado_civil',
         'grau_instrucao',
-        'nome_guerra',
         'graduacao',
+        'nome_guerra',
         'nmr_praca',
         'matricula',
         'opm',
         'dependentes',
-        'obs',
+        'obs'
     ];
 
     protected static function booted()
