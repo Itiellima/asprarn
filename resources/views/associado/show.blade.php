@@ -23,10 +23,29 @@
                         <td>{{ $associado->contato->tel_celular }}</td>
                         <td>{{ $associado->contato->email }}</td>
                         <td>
-                            <a href="/associado/edit/{{ $associado->id }}">Ver tudo</a>
-                            <a href="{{ route('associado.pdf.requerimento', $associado->id) }}" target="_blank">
-                                Gerar requerimento
-                            </a>
+                            <div class="dropdown-center">
+                                <li class="nav-link dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                                    aria-expanded="false">
+                                    Associado
+                                </li>
+                                <ul class="dropdown-menu">
+                                    <li>
+                                        <a class="dropdown-item" href="#">#</a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" href="/associado/edit/{{ $associado->id }}">Ver tudo</a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item"
+                                            href="{{ route('associado.pdf.requerimento', $associado->id) }}"
+                                            target="_blank">
+                                            Gerar requerimento
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+
+
                         </td>
                     </tr>
                 </tbody>
@@ -172,8 +191,8 @@
             </button>
 
             {{-- Modal de inserir documento --}}
-            <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-                aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false"
+                tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">

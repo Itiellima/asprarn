@@ -119,7 +119,14 @@ roles e permissoes
 
 
     CRIAR:
-        POSTS, 
-        EVENTOS,
-        ABOUT,
+        PAGINA HOME:
+            POSTS,
+            EVENTOS,
+            ABOUT,
+
+        PAGINAS:
+            BENEFICIOS,
+            SOBRE,
+
+        VOTACÃO
         

@@ -9,7 +9,7 @@
         .pagina {
             width: 22cm;
             min-height: 29.7cm;
-            padding: 2cm;
+            padding: 0.5cm 2cm 2cm 2cm;;
             /* margem interna */
             margin: 1cm auto;
             /* centralizar na tela */
