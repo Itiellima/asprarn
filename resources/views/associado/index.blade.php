@@ -4,6 +4,8 @@
 
 @section('content')
 
+@include('layouts.nav-dashboard')
+
     <div class="container border rounded-3">
         <div class="d-flex justify-content-between align-items-center mb-4 mt-3">
             <h1>Lista de associados</h1>

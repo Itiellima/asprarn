@@ -20,6 +20,14 @@ class AssociadoController extends Controller
     // view todos os associados
     public function index()
     {
+
+        $user = Auth::user();
+
+        if (!$user || !$user->hasRole('admin|moderador')) {
+            return redirect()->back()->with('error', 'Acesso negado. Você não tem permissão para acessar esta página.');
+        }
+
+
         $search = request('search');
 
         $associados = Associado::query()
