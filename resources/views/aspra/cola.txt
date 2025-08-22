@@ -112,21 +112,28 @@ roles e permissoes
         @endrole
     @endauth
 
+substitui todos os existentes
+$associado->syncRoles(['associado', 'user']);
+
+inclui novos sem substituir
+$associado->assignRole('associado');
+$associado->assignRole('user');
 
 
 
 
 
-
-    CRIAR:
+    TODO:
         PAGINA HOME:
-            POSTS,
-            EVENTOS,
-            ABOUT,
+            MODELS:
+                POSTS,
+                EVENTOS,
+                ABOUT,
 
         PAGINAS:
             BENEFICIOS,
             SOBRE,
 
-        VOTACÃO
+
+        VOTACÃO:
         

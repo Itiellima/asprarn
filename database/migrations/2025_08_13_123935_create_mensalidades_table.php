@@ -14,9 +14,9 @@ return new class extends Migration
         Schema::create('mensalidades', function (Blueprint $table) {
             $table->id();
             $table->foreignId('associado_id')->constrained('associados')->onDelete('cascade');
-            $table->date('mes_referencia');
-            $table->decimal('valor', 10, 2);
-            $table->enum('status', ['pendente', 'pago', 'atrasado'])->default('pendente');
+            $table->date('mes_referencia')->nullable();
+            $table->decimal('valor', 10, 2)->nullable();
+            $table->string('status')->nullable();
             $table->date('data_pagamento')->nullable();
             $table->string('observacao')->nullable();
             $table->timestamps();

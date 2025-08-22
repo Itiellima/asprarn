@@ -3,6 +3,7 @@
 @section('title', 'Aspra Associado')
 
 @section('content')
+@include('layouts.nav-dashboard')
 
     <div class="container">
         <h1>Gerenciar Roles dos Usuários</h1>

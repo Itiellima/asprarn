@@ -28,8 +28,9 @@ class HierarchyHelper
     {
         $rolesHierarchy = [
             'user' => 1,
-            'moderador' => 2,
-            'admin' => 3,
+            'associado' => 2,
+            'moderador' => 3,
+            'admin' => 4,
         ];
 
         $userRole = Auth::user()->role ?? 'user';

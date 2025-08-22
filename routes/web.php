@@ -7,11 +7,16 @@ use App\Http\Controllers\DocumentoAssociadoController;
 use App\Http\Controllers\HistoricoSituacoesController;
 use App\Http\Controllers\RequerimentoController;
 use App\Http\Controllers\SituacaoController;
-use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\DashboardController;
+
+
 
 Route::get('/', function () {
     return view('welcome');
 });
+
+//View dashboard
+Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['auth'])->name('dashboard');
 
 
 Route::get('/requerimento/{id}', [RequerimentoController::class, 'show'])->name('associado.pdf.requerimento');
@@ -63,13 +68,14 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/usuarios/{user}/role', [UsuariosController::class, 'updateRole'])->name('usuarios.updateRole');
 });
 
-
-Route::middleware([
-    'auth:sanctum',
-    config('jetstream.auth_session'),
-    'verified',
-])->group(function () {
-    Route::get('/dashboard', function () {
-        return view('dashboard');
-    })->name('dashboard');
-});
+/*
+    Route::middleware([
+        'auth:sanctum',
+        config('jetstream.auth_session'),
+        'verified',
+    ])->group(function () {
+        Route::get('/dashboard', function () {
+            return view('dashboard');
+        })->name('dashboard');
+    });
+*/

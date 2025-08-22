@@ -38,7 +38,8 @@ class UsuariosController extends Controller
         // Define hierarquia
         $rolesHierarquia = [
             'admin'     => ['admin', 'moderador', 'user'],
-            'moderador' => ['moderador', 'user'],
+            'moderador' => ['moderador', 'associado', 'user'],
+            'associado' => ['associado', 'user'],
             'user'      => ['user']
         ];
 

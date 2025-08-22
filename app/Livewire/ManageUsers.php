@@ -17,6 +17,7 @@ class ManageUsers extends Component
         }
         // Carrega todos os usuários ao montar o componente
         $this->users = User::all();
+        
     }
 
     public function toggleRole($userId)

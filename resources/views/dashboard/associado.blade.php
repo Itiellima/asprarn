@@ -7,18 +7,20 @@
 
 <body class="flex">
 
-    <div class="flex-1 p-6">
-        <h2 class="text-xl font-bold mb-6">Menu</h2>
+    <!-- Sidebar -->
+    <aside class="w-64 min-h-screen bg-gray-800 p-4">
+        <h2 class="text-xl font-bold mb-6">DASHBOARD DO ASSOCIADO {{ auth()->user()->name }}</h2>
         <nav class="flex flex-col space-y-4">
             <a href="#" class="hover:bg-gray-700 p-2 rounded">🏠 Home</a>
             <a href="#" class="hover:bg-gray-700 p-2 rounded">📂 Projetos</a>
-            <a href="#" class="hover:bg-gray-700 p-2 rounded">⚙️ C onfigurações</a>
+            <a href="#" class="hover:bg-gray-700 p-2 rounded">⚙️ Configurações</a>
         </nav>
-    </div>
+    </aside>
 
     <!-- Conteúdo -->
-    <main class="flex-1 p-6 mt-3">
+    <main class="flex-1 p-6">
         <h1 class="text-2xl font-bold">Conteúdo principal</h1>
+        
         <p class="mt-4">Texto de exemplo dentro da área principal.</p>
         <div class="container">
             

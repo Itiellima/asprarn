@@ -23,6 +23,14 @@
 
     <link rel="stylesheet" href="/css/style.css">
 
+
+    <style>
+        body {
+            font-family: Arial;
+            /* Lista de fontes */
+        }
+    </style>
+
 </head>
 
 <body class="">
@@ -49,19 +57,8 @@
                     {{-- Verifica se o usuário está autenticado e se é admin --}}
                     @auth
                         <!-- Usuário está logado -->
-                        @role('admin')
-                            <li><a href="/usuarios" class="nav-link px-2 border-bottom">Gerenciar Usuários</a></li>
 
-                            <div class="dropdown-center">
-                                <li class="nav-link dropdown-toggle" type="button" data-bs-toggle="dropdown"
-                                    aria-expanded="false">
-                                    Associado
-                                </li>
-                                <ul class="dropdown-menu">
-                                    <li><a class="dropdown-item" href="/associado">Listar</a></li>
-                                </ul>
-                            </div>
-                        @endrole
+                        <li><a href="/dashboard" class="nav-link px-2">Dashboard</a></li>
                     @else
                         <!-- Usuário não está logado -->
                     @endauth

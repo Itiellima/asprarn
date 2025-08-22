@@ -136,12 +136,14 @@ class AssociadoController extends Controller
             ]) + ['associado_id' => $associado->id]);
 
             // 6. Cria usuário
-            User::create([
+            $user = User::create([
                 'name'         => $associado->nome,
                 'email'        => $request->email,
                 'password'     => Hash::make('123456'),
                 'associado_id' => $associado->id,
             ]);
+
+            $user->syncRoles(['associado', 'user']);
 
             DB::commit();
             return redirect('/associado')->with('msg', 'Associado criado com sucesso!');
