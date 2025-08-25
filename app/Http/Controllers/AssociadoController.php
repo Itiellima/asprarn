@@ -50,7 +50,7 @@ class AssociadoController extends Controller
         $user = Auth::user();
 
         if (!$user || !$user->hasRole('admin|moderador')) {
-            return redirect()->route('index')->with('error', 'Acesso negado. Você não tem permissão para acessar esta página.');
+            return redirect()->route('associado.index')->with('error', 'Acesso negado. Você não tem permissão para acessar esta página.');
         }
 
 
@@ -182,7 +182,7 @@ class AssociadoController extends Controller
         $user = Auth::user();
 
         if (!$user || !$user->hasRole('admin|moderador')) {
-            return redirect()->route('index')->with('error', 'Acesso negado. Você não tem permissão para acessar esta página.');
+            return redirect()->route('associado.index')->with('error', 'Acesso negado. Você não tem permissão para acessar esta página.');
         }
 
         $associado = Associado::with(['endereco', 'contato', 'dadosBancarios'])->findOrFail($id);
@@ -246,7 +246,7 @@ class AssociadoController extends Controller
         $user = Auth::user();
 
         if (!$user || !$user->hasRole('admin|moderador')) {
-            return redirect()->route('index')->with('error', 'Acesso negado. Você não tem permissão para acessar esta página.');
+            return redirect()->route('associado.index')->with('error', 'Acesso negado. Você não tem permissão para acessar esta página.');
         }
 
         $associado = Associado::findOrFail($id);
@@ -269,7 +269,7 @@ class AssociadoController extends Controller
         $user = Auth::user();
 
         if (!$user || !$user->hasAnyRole(['admin', 'moderador'])) {
-            return redirect()->route('index')->with('error', 'Acesso negado. Você não tem permissão para acessar esta página.');
+            return redirect()->route('associado.index')->with('error', 'Acesso negado. Você não tem permissão para acessar esta página.');
         }
 
         $associado = Associado::with([

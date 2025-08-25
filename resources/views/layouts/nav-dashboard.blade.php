@@ -13,7 +13,7 @@
                 @endhasanyrole
             @endauth
 
-            <a href="#" class="hover:bg-gray-700 p-2 rounded">/​📂 Publicações</a>
+            <a href="{{ route('posts.index') }}" class="hover:bg-gray-700 p-2 rounded">/​📂 Publicações</a>
             <a href="#" class="hover:bg-gray-700 p-2 rounded">⚙️ Configurações</a>
 
 

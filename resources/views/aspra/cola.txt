@@ -121,6 +121,24 @@ $associado->assignRole('user');
 
 
 
+Route::middleware(['auth'])->group(function () {
+    Route::resource('posts', PostController::class);
+});
+
+The Route::resource will generate routes like:
+    GET /posts → PostController@index
+    GET /posts/create → PostController@create
+    POST /posts → PostController@store
+    GET /posts/{post} → PostController@show
+    GET /posts/{post}/edit → PostController@edit
+    PUT/PATCH /posts/{post} → PostController@update
+    DELETE /posts/{post} → PostController@destroy
+
+
+
+
+
+
 
 
     TODO:

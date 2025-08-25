@@ -8,8 +8,7 @@ use App\Http\Controllers\HistoricoSituacoesController;
 use App\Http\Controllers\RequerimentoController;
 use App\Http\Controllers\SituacaoController;
 use App\Http\Controllers\DashboardController;
-
-
+use App\Http\Controllers\PostController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -23,20 +22,27 @@ Route::get('/requerimento/{id}', [RequerimentoController::class, 'show'])->name(
 
 //View Listar Associados
 Route::get('/associado', [AssociadoController::class, 'index'])->name('associado.index');
-
 //View de criação de novo associado
 Route::get('/associado/create', [AssociadoController::class, 'create'])->name('associado.create');
-
 //ROTA para salvar
 Route::post('/associado/store', [AssociadoController::class, 'store'])->name('associado.store');
-
 //ROTA excluir
 Route::delete('/associado/delete/{id}', [AssociadoController::class, 'destroy'])->name('associado.destroy');
-
-
-
 // Show Associado
 Route::get('/associado/documentos/{id}', [AssociadoController::class, 'indexDocumentos'])->name('associado.documentos.index');
+
+/* 
+    Route::get('/post', [PostController::class, 'index'])->name('post.index'); //view
+    Route::get('/post/create', [PostController::class, 'create'])->name('post.create'); //view
+    Route::post('/post/store', [PostController::class, 'store'])->name('post.store'); // method
+*/
+
+
+Route::middleware(['auth'])->group(function () {
+    Route::resource('posts', PostController::class);
+});
+
+
 
 
 // Rota Salvar Documento
