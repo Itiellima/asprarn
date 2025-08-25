@@ -154,7 +154,7 @@ class AssociadoController extends Controller
             $user->syncRoles(['associado', 'user']);
 
             DB::commit();
-            return redirect('/associado')->with('msg', 'Associado criado com sucesso!');
+            return redirect('/dashboard')->with('msg', 'Associado criado com sucesso!');
         } catch (\Exception $e) {
             DB::rollBack();
             return redirect()->back()->with('error', 'Erro ao criar associado: ' . $e->getMessage())->withInput();

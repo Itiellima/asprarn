@@ -58,7 +58,7 @@
                     @auth
                         <!-- Usuário está logado -->
 
-                        <li><a href="/dashboard" class="nav-link px-2">Dashboard</a></li>
+                        <li><a href="/dashboard" class="nav-link px-2">Minha Pagina</a></li>
                     @else
                         <!-- Usuário não está logado -->
                     @endauth
