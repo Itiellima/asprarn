@@ -6,7 +6,7 @@
 
     @include('layouts.nav-dashboard')
 
-    <body class="flex">
+    <body class="">
 
         <!-- Conteúdo -->
         <main class="">

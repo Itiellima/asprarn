@@ -4,25 +4,27 @@
 
 @section('content')
 
-    <div class="meu-container">
+    <div class="meu-container alert alert-light">
         <h1>Index</h1>
     </div>
 
     <div class="container mb-3">
-        <h3>Nova publicação</h3>
+        
         <a href="{{ route('posts.create') }}" class="btn btn-primary"> + Nova Publicação</a>
     </div>
+
+
     @if ($posts->count())
         <table class="table table-striped table-hover">
             <thead>
                 <tr>
-                    <th scope="col">Id</th>
+                    <th scope="col-1">Id</th>
                     <th scope="col">Titulo</th>
                     <th scope="col">Assunto</th>
                     <th scope="col">Data</th>
                     <th scope="col">Autor</th>
                     <th scope="col">Img</th>
-                    <th scope="col">Ação</th>
+                    <th scope="col-2">Ação</th>
                 </tr>
             </thead>
             <tbody>
@@ -40,26 +42,23 @@
                                 -
                             @endif
                         </td>
-                        <td>
+                        <td class="row">
                             <form action="{{ route('posts.destroy', $post->id) }}" method="POST"
                                 onsubmit="return confirm('Deseja excluir essa publicação?')">
                                 @csrf
                                 @method('DELETE')
-
-
                                 <button type="submit" class="btn btn-danger">🗑️ Excluir</button>
                             </form>
 
+                            <a href="{{ route('posts.edit', $post->id) }}" class="btn btn-secondary">Editar</a>
                         </td>
                     </tr>
                 @endforeach
             </tbody>
         </table>
     @else
-        <h1>Nenhuma publicação encontrada</h1>
+        <h3>Nenhuma publicação encontrada</h3>
     @endif
-
-
 
 
 

@@ -5,12 +5,19 @@
 @section('content')
 
     <div class="p-4 p-md-5 mb-4 rounded text-body-emphasis bg-body-secondary">
-        <div class="col-lg-8 px-0">
-            <h2 class="display-4 fst-italic">ASPRA de cara nova, fique por dentro de todas as novidades.</h2>
-            <p class="lead my-3">Multiple lines of text that form the lede, informing new readers quickly and efficiently
-                about what’s most interesting in this post’s contents. Toda view responsiva</p>
-            <p class="lead mb-0"><a href="#" class="text-body-emphasis fw-bold">Continue lendo...</a></p>
+        <div class="row align-items-center">
+            <div class="col-lg-7 px-0">
+                <h2 class="display-4 fst-italic">ASPRA de cara nova, fique por dentro de todas as novidades.</h2>
+                <p class="lead my-3">Multiple lines of text that form the lede, informing new readers quickly and efficiently
+                    about what’s most interesting in this post’s contents. Toda view responsiva</p>
+                <p class="lead mb-0"><a href="#" class="text-body-emphasis fw-bold">Continue lendo...</a></p>
+            </div>
+            <div class="col-lg-5 px-0">
+                <p>img</p>
+            </div>
+
         </div>
+        
     </div>
 
     <div class="row g-5">

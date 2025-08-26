@@ -155,3 +155,9 @@ The Route::resource will generate routes like:
 
         VOTACÃO:
         
+
+
+        <h2 class="display-4 fst-italic">ASPRA de cara nova, fique por dentro de todas as novidades.</h2>
+            <p class="lead my-3">Multiple lines of text that form the lede, informing new readers quickly and efficiently
+                about what’s most interesting in this post’s contents. Toda view responsiva</p>
+            <p class="lead mb-0"><a href="#" class="text-body-emphasis fw-bold">Continue lendo...</a></p>

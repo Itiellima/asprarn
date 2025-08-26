@@ -218,6 +218,7 @@
 
                                 <label>Arquivo: pdf, jpg, jpeg, png.</label>
                                 <input class="form-control" type="file" name="arquivo" required>
+                                
 
                                 <label>Observação</label>
                                 <textarea class="form-control" name="observacao"></textarea>

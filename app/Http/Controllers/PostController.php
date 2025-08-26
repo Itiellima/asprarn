@@ -32,7 +32,9 @@ class PostController extends Controller
             return redirect()->back()->with('error', 'Acesso negado. Você não tem permissão para acessar esta página.');
         }
 
-        return view('posts.create');
+        $post = new Post();
+
+        return view('posts.create', compact('post'));
     }
 
     public function show($id)
@@ -90,29 +92,30 @@ class PostController extends Controller
         $request->validate([
             'titulo' => 'required|string|max:225',
             'assunto' => 'required|string|max:500',
-            'img' => 'required|file|mimes:jpg,jpeg,png|max:2048',
+            'img' => 'nullable|file|mimes:jpg,jpeg,png|max:2048',
             'texto' => 'required|string|max:5000',
-            'data' => 'required|data',
+            'data' => 'required|date',
         ]);
 
-        if ($request->hasFile('img')) {
-            if ($post->img && Storage::Disk('public')->exists($post->img)) {
-                Storage::disk('public')->delete($post->img);
-            }
-
-            $post->img = $request->file('img')->store('posts', 'public');
-        }
-
-        $post->update([
+        $data = [
             'titulo' => $request->titulo,
             'assunto' => $request->assunto,
             'texto' => $request->texto,
             'data' => $request->data,
-        ]);
+        ];
 
+        if ($request->hasFile('img')) {
+            if ($post->img && Storage::disk('public')->exists($post->img)) {
+                Storage::disk('public')->delete($post->img);
+            }
+            $data['img'] = $request->file('img')->store('posts', 'public');
+        }
+
+        $post->update($data);
 
         return redirect()->route('posts.index')->with('success', 'Publicação atualizada com sucesso!');
     }
+
 
 
     public function destroy($id)
@@ -127,5 +130,17 @@ class PostController extends Controller
         $post->delete();
 
         return redirect()->route('posts.index')->with('success', 'Publicação excluida com sucesso!');
+    }
+
+    public function edit($id)
+    {
+        $user = Auth::user();
+        if (!$user || !$user->hasAnyRole(['admin', 'moderador'])) {
+            return redirect()->back()->with('error', 'Acesso negado. Você não tem permissão para acessar esta página.');
+        }
+
+        $post = Post::findOrFail($id);
+
+        return view('posts.create', compact('post'));
     }
 }

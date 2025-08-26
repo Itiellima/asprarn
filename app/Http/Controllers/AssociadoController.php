@@ -9,8 +9,6 @@ use App\Models\Contato;
 use App\Models\Endereco;
 use App\Models\DadosBancarios;
 use Illuminate\Support\Facades\Auth;
-use App\Models\DocumentoAssociado;
-use Illuminate\Support\Facades\Storage;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 

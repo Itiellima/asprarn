@@ -4,7 +4,8 @@
 
 @section('content')
 
-@include('layouts.nav-dashboard')
+    @include('layouts.nav-dashboard')
+
     <body class="">
 
         <!-- Conteúdo -->
