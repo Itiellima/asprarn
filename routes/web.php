@@ -9,10 +9,11 @@ use App\Http\Controllers\RequerimentoController;
 use App\Http\Controllers\SituacaoController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\IndexController;
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', [IndexController::class, 'index'])->name('index');
+
+
 
 //View dashboard
 Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['auth'])->name('dashboard');

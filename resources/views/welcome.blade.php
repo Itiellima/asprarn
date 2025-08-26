@@ -4,21 +4,37 @@
 
 @section('content')
 
-    <div class="p-4 p-md-5 mb-4 rounded text-body-emphasis bg-body-secondary">
-        <div class="row align-items-center">
-            <div class="col-lg-7 px-0">
-                <h2 class="display-4 fst-italic">ASPRA de cara nova, fique por dentro de todas as novidades.</h2>
-                <p class="lead my-3">Multiple lines of text that form the lede, informing new readers quickly and efficiently
-                    about what’s most interesting in this post’s contents. Toda view responsiva</p>
-                <p class="lead mb-0"><a href="#" class="text-body-emphasis fw-bold">Continue lendo...</a></p>
-            </div>
-            <div class="col-lg-5 px-0">
-                <p>img</p>
-            </div>
+    @if ($latestPost)
+        <div class="p-4 p-md-5 mb-4 rounded text-body-emphasis bg-body-secondary">
+            <div class="row align-items-center">
+                <div class="col-lg-7 px-0">
+                    <h2 class="display-4 fst-italic">{{ $latestPost->titulo }}</h2>
+                    <p class="lead my-3">{{ $latestPost->assunto }}</p>
+                    <p class="lead mb-0"><a href="#" class="text-body-emphasis fw-bold">Continue lendo...</a></p>
+                </div>
+                <div class="col-lg-5 px-0">
+                    <img src="{{ asset('storage/' . $latestPost->img) }}" class="img-fluid" alt="{{ $latestPost->titulo }}">
+                </div>
 
+            </div>
         </div>
-        
-    </div>
+    @else
+        <div class="p-4 p-md-5 mb-4 rounded text-body-emphasis bg-body-secondary">
+            <div class="row align-items-center">
+                <div class="col-lg-7 px-0">
+                    <h2 class="display-4 fst-italic">ASPRA de cara nova, fique por dentro de todas as novidades.</h2>
+                    <p class="lead my-3">Multiple lines of text that form the lede, informing new readers quickly and
+                        efficiently
+                        about what’s most interesting in this post’s contents. Toda view responsiva</p>
+                    <p class="lead mb-0"><a href="#" class="text-body-emphasis fw-bold">Continue lendo...</a></p>
+                </div>
+                <div class="col-lg-5 px-0">
+                    <p>img</p>
+                </div>
+            </div>
+        </div>
+    @endif
+
 
     <div class="row g-5">
         <div class="col-md-8">
@@ -174,41 +190,26 @@
                         <a href="#">Acesse Aqui!</a>
                     </p>
                 </div>
+
                 <div>
-                    <h4 class="fst-italic">Recent posts</h4>
+                    <h4 class="fst-italic">Ultimos posts</h4>
                     <ul class="list-unstyled">
-                        <li> <a class="d-flex flex-column flex-lg-row gap-3 align-items-start align-items-lg-center py-3 link-body-emphasis text-decoration-none border-top"
-                                href="#"> <svg aria-hidden="true" class="bd-placeholder-img " height="96"
-                                    preserveAspectRatio="xMidYMid slice" width="100%" xmlns="http://www.w3.org/2000/svg">
-                                    <rect width="100%" height="100%" fill="#777"></rect>
-                                </svg>
-                                <div class="col-lg-8">
-                                    <h6 class="mb-0">Example blog post title</h6> <small
-                                        class="text-body-secondary">January 15, 2024</small>
-                                </div>
-                            </a> </li>
-                        <li> <a class="d-flex flex-column flex-lg-row gap-3 align-items-start align-items-lg-center py-3 link-body-emphasis text-decoration-none border-top"
-                                href="#"> <svg aria-hidden="true" class="bd-placeholder-img " height="96"
-                                    preserveAspectRatio="xMidYMid slice" width="100%" xmlns="http://www.w3.org/2000/svg">
-                                    <rect width="100%" height="100%" fill="#777"></rect>
-                                </svg>
-                                <div class="col-lg-8">
-                                    <h6 class="mb-0">This is another blog post title</h6> <small
-                                        class="text-body-secondary">January 14, 2024</small>
-                                </div>
-                            </a> </li>
-                        <li> <a class="d-flex flex-column flex-lg-row gap-3 align-items-start align-items-lg-center py-3 link-body-emphasis text-decoration-none border-top"
-                                href="#"> <svg aria-hidden="true" class="bd-placeholder-img " height="96"
-                                    preserveAspectRatio="xMidYMid slice" width="100%" xmlns="http://www.w3.org/2000/svg">
-                                    <rect width="100%" height="100%" fill="#777"></rect>
-                                </svg>
-                                <div class="col-lg-8">
-                                    <h6 class="mb-0">Longer blog post title: This one has multiple lines!</h6> <small
-                                        class="text-body-secondary">January 13, 2024</small>
-                                </div>
-                            </a> </li>
+                        @foreach ($recentPosts as $post)
+                            <li>
+                                <a class="d-flex flex-column flex-lg-row gap-3 align-items-start align-items-lg-center py-3 link-body-emphasis text-decoration-none border-top"
+                                    href="#">
+                                    <img src="{{ asset('storage/' . $post->img) }}" alt="{{ $post->titulo }}"
+                                        width="100" height="100">
+                                    <div class="col-lg-8">
+                                        <h6 class="mb-0">{{ $post->titulo }}</h6> <small
+                                            class="text-body-secondary">{{ $post->data->format('d/m/Y') }}</small>
+                                    </div>
+                                </a>
+                            </li>
+                        @endforeach
                     </ul>
                 </div>
+
                 <div class="p-4">
                     <h4 class="fst-italic">Archives</h4>
                     <ol class="list-unstyled mb-0">
