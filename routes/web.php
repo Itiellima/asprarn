@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AssociadoController;
+use App\Http\Controllers\BeneficioController;
 use App\Http\Controllers\UsuariosController;
 use App\Http\Controllers\DocumentoAssociadoController;
 use App\Http\Controllers\HistoricoSituacoesController;
@@ -12,6 +13,8 @@ use App\Http\Controllers\PostController;
 use App\Http\Controllers\IndexController;
 
 Route::get('/', [IndexController::class, 'index'])->name('index');
+Route::resource('beneficio', BeneficioController::class);
+
 
 
 
@@ -86,3 +89,7 @@ Route::middleware(['auth'])->group(function () {
         })->name('dashboard');
     });
 */
+
+Route::get('/profile', function () {
+            return view('profile.show');
+        })->name('profile.show');

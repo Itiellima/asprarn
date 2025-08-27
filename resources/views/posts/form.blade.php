@@ -6,8 +6,6 @@
         @method('PUT')
     @endif
 
-
-
     <div class="container row mb-3">
         <div class="mb-3">
             <label for="exampleFormControlInput1" class="form-label">Titulo da publicação</label>
@@ -50,7 +48,8 @@
 
         <div class="mb-3">
             <label for="exampleFormControlTextarea1" class="form-label">Texto do Post</label>
-            <textarea class="form-control" id="texto" name="texto" rows="3" placeholder="Insira o texto do post aqui">{{ old('texto', $post->texto ?? '') }}</textarea>
+            <textarea id="editor" class="form-control" id="texto" name="texto" rows="3"
+                placeholder="Insira o texto do post aqui">{{ old('texto', $post->texto ?? '') }}</textarea>
             @error('texto')
                 <div class="text-danger">{{ $message }}</div>
             @enderror
@@ -64,6 +63,9 @@
 </form>
 
 
+
+{{-- scripts --}}
+{{-- preview de foto/imagem  --}}
 <script>
     document.getElementById('img').addEventListener('change', function(event) {
         const preview = document.getElementById('preview-img');
@@ -76,3 +78,5 @@
         }
     });
 </script>
+
+

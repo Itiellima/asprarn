@@ -41,6 +41,17 @@
             <h3 class="pb-4 mb-4 fst-italic border-bottom">
                 From the Firehose
             </h3>
+            @foreach ($recentPosts as $post)
+                <article class="blog-post">
+                    <h2 class="display-5 link-body-emphasis mb-1">
+                        {{ $post->titulo }}
+                    </h2>
+                    <p class="blog-post-meta">{{ $post->data->format('d/m/Y') }} atualizado em {{ $post->updated_at->format('d/m/Y') }}<a href="#">Mark</a></p>
+                    <p>
+                        {!! $post->texto !!}
+                    </p>
+                </article>
+            @endforeach
             <article class="blog-post">
                 <h2 class="display-5 link-body-emphasis mb-1">Sample blog post</h2>
                 <p class="blog-post-meta">January 1, 2021 by <a href="#">Mark</a></p>
@@ -198,8 +209,8 @@
                             <li>
                                 <a class="d-flex flex-column flex-lg-row gap-3 align-items-start align-items-lg-center py-3 link-body-emphasis text-decoration-none border-top"
                                     href="#">
-                                    <img src="{{ asset('storage/' . $post->img) }}" alt="{{ $post->titulo }}"
-                                        width="100" height="100">
+                                    <img src="{{ asset('storage/' . $post->img) }}" alt="{{ $post->titulo }}" width="100"
+                                        height="100">
                                     <div class="col-lg-8">
                                         <h6 class="mb-0">{{ $post->titulo }}</h6> <small
                                             class="text-body-secondary">{{ $post->data->format('d/m/Y') }}</small>

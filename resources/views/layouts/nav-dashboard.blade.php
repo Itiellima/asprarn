@@ -15,6 +15,7 @@
 
             <a href="{{ route('posts.index') }}" class="hover:bg-gray-700 p-2 rounded">/​📂 Publicações</a>
             <a href="#" class="hover:bg-gray-700 p-2 rounded">⚙️ Configurações</a>
+            <a href="/profile" class="hover:bg-gray-700 p-2 rounded">👮 Alterar Perfil</a>
 
 
             @role('admin')

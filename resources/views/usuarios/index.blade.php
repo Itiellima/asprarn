@@ -32,6 +32,8 @@
                             $principal = 'admin';
                         } elseif ($user->hasRole('moderador')) {
                             $principal = 'moderador';
+                        } elseif ($user->hasRole('associado')) {
+                            $principal = 'associado';
                         } else {
                             $principal = 'user';
                         }
@@ -47,6 +49,7 @@
                                     <option value="admin" {{ $principal === 'admin' ? 'selected' : '' }}>Admin</option>
                                     <option value="moderador" {{ $principal === 'moderador' ? 'selected' : '' }}>Moderador
                                     </option>
+                                    <option value="associado" {{ $principal === 'associado' ? 'selected' : '' }}>Associado</option>
                                     <option value="user" {{ $principal === 'user' ? 'selected' : '' }}>User</option>
                                 </select>
                                 <button type="submit" class="btn btn-primary mt-1">Salvar</button>

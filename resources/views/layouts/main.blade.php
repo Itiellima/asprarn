@@ -23,6 +23,14 @@
 
     <link rel="stylesheet" href="/css/style.css">
 
+    <!-- CKEditor com sua chave -->
+   <script src="https://cdn.tiny.cloud/1/upncklldk8fd5828pgscoflojmf8t2bd82ejr0orc4r417us/tinymce/8/tinymce.min.js" referrerpolicy="origin" crossorigin="anonymous"></script>
+    <script>
+      tinymce.init({
+        selector: '#editor'
+      });
+    </script>
+
 
     <style>
         body {
@@ -49,7 +57,7 @@
                 <ul class="nav mb-2 justify-content-center mb-md-0">
                     <li><a href="/" class="nav-link px-2 link-secondary">Inicio</a></li>
                     <li><a href="#" class="nav-link px-2">Votação</a></li>
-                    <li><a href="#" class="nav-link px-2">Benefícios</a></li>
+                    <li><a href="{{ route('beneficio.index') }}" class="nav-link px-2">Benefícios</a></li>
                     <li><a href="#" class="nav-link px-2">ASPRA</a></li>
                     <li><a href="#" class="nav-link px-2">Sobre</a></li>
                     <li><a href="/associado/create" class="nav-link px-2 border-bottom">Quero me associar</a></li>
@@ -190,6 +198,7 @@
     </footer>
 
     <script src="{{ asset('js/form-double-click.js') }}"></script>
+    <script src="{{ asset('js/form-texto.js') }}"></script>
 
 </body>
 
