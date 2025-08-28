@@ -66,15 +66,24 @@ class PostController extends Controller
             'data' => 'required|date',
         ]);
 
-        $path = $request->file('img')->store('posts', 'public');
 
-        $user->posts()->create([
-            'titulo' => $request->titulo,
-            'assunto' => $request->assunto,
-            'img' => $path,
-            'data' => $request->data,
-            'texto' => $request->texto,
-        ]);
+        $arquivos = $request->file('img');
+
+        // Se for apenas um arquivo, transforma em array
+        if (!is_array($arquivos)) {
+            $arquivos = [$arquivos];
+        }
+
+        foreach ($arquivos as $arquivo) {
+            $path = $arquivo->store('img', 'public');
+
+            $user->files()->create([
+                'tipo_documento' => $request->tipo_documento,
+                'path' => $path,
+                'status' => 'pendente',
+                'observacao' => $request->observacao,
+            ]);
+        }
 
 
         return redirect()->route('posts.index')->with('success', 'Post criado com sucesso!');

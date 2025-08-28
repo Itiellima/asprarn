@@ -26,8 +26,9 @@
 
         <div class="mb-3">
             <label for="formFile" class="form-label">Insira as fotos</label>
-            <input class="form-control" type="file" id="img" name="img"
-                {{ $post->exists ? '' : 'required' }}>
+                <input class="form-control" type="file" id="img" name="img" multiple
+                {{ $post->exist ? '' : 'required' }}>
+
             @if ($post->exists && $post->img)
                 <div class="mt-2">
                     <img id="preview-img" src="{{ asset('storage/' . $post->img) }}" width="120">
@@ -78,5 +79,3 @@
         }
     });
 </script>
-
-
