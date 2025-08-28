@@ -13,65 +13,63 @@ use App\Http\Controllers\PostController;
 use App\Http\Controllers\IndexController;
 
 Route::get('/', [IndexController::class, 'index'])->name('index');
-Route::resource('beneficio', BeneficioController::class);
 
 
-
+Route::middleware(['auth'])->group(function () {
+    Route::resource('beneficio', BeneficioController::class);
+    Route::resource('posts', PostController::class);
+});
 
 //View dashboard
 Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['auth'])->name('dashboard');
 
-
+//view requerimento para impressão
 Route::get('/requerimento/{id}', [RequerimentoController::class, 'show'])->name('associado.pdf.requerimento');
 
-//View Listar Associados
+//////////////////////////////// ********* ASSOCIADO ********* \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+//VIEW TODOS OS ASSOCIADOS
 Route::get('/associado', [AssociadoController::class, 'index'])->name('associado.index');
-//View de criação de novo associado
+//VIEW ASSOCIADO BY ID
+Route::get('/associado/show/{id}', [AssociadoController::class, 'show'])->name('associado.show');
+//VIEW NOVO ASSOCIADO
 Route::get('/associado/create', [AssociadoController::class, 'create'])->name('associado.create');
-//ROTA para salvar
+//VIEW de edição
+Route::get('/associado/edit/{id}', [AssociadoController::class, 'edit'])->name('associado.edit');
+//ROTA STORE
 Route::post('/associado/store', [AssociadoController::class, 'store'])->name('associado.store');
-//ROTA excluir
+//ROTA UPDATE
+Route::put('/associado/update/{id}', [AssociadoController::class, 'update'])->name('associado.update');
+//ROTA DESTROY
 Route::delete('/associado/delete/{id}', [AssociadoController::class, 'destroy'])->name('associado.destroy');
-// Show Associado
-Route::get('/associado/documentos/{id}', [AssociadoController::class, 'indexDocumentos'])->name('associado.documentos.index');
-
-/* 
-    Route::get('/post', [PostController::class, 'index'])->name('post.index'); //view
-    Route::get('/post/create', [PostController::class, 'create'])->name('post.create'); //view
-    Route::post('/post/store', [PostController::class, 'store'])->name('post.store'); // method
-*/
 
 
-Route::middleware(['auth'])->group(function () {
-    Route::resource('posts', PostController::class);
-});
+//////////////////////////////// ********* DOCUMENTOS ASSOCIADOS ********* \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+//VIEW DOCUMENTOS ASSOCIADOS
+Route::get('/associado/documentos/{id}', [DocumentoAssociadoController::class, 'indexDocumento'])->name('associado.documentos.index');
 
 
 
-
-// Rota Salvar Documento
-Route::post('/associado/{id}/documentos', [DocumentoAssociadoController::class, 'storeDocumento'])->name('associado.documentos.store');
-// Rota de edição
-Route::patch('/associado/{id}/documentos/{documento}', [DocumentoAssociadoController::class, 'updateDocumento'])->name('associado.documentos.update');
-// Rota Delete
-Route::delete('/associado/{id}/documentos/{documento}', [DocumentoAssociadoController::class, 'destroyDocumento'])->name('associado.documentos.destroy');
-// Visualizar documentos
+//VIEW DOCUMENTO BY ID
 Route::get('/associado/documentos/{id}/{documento}', [DocumentoAssociadoController::class, 'showDocumento'])->name('associado.documentos.show');
+//ROTA STORE
+Route::post('/associado/{id}/documentos', [DocumentoAssociadoController::class, 'storeDocumento'])->name('associado.documentos.store');
+//ROTA UPDATE
+Route::patch('/associado/{id}/documentos/{documento}', [DocumentoAssociadoController::class, 'updateDocumento'])->name('associado.documentos.update');
+//ROTA DESTROY
+Route::delete('/associado/{id}/documentos/{documento}', [DocumentoAssociadoController::class, 'destroyDocumento'])->name('associado.documentos.destroy');
 
+
+//////////////////////////////// ********* SITUACAO ********* \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 Route::post('/associado/situacao/{id}', [SituacaoController::class, 'storeSituacao'])->name('associado.situacao.store');
 
 
+//////////////////////////////// ********* HISTORICO ********* \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 Route::post('/associado/{id}/historico', [HistoricoSituacoesController::class, 'storeHistorico'])->name('associado.historico.store');
 Route::delete('/associado/{id}/historico/{historico}', [HistoricoSituacoesController::class, 'destroyHistorico'])->name('associado.historico.destroy');
 
-// Admin routes
+
+//////////////////////////////// ********* ADMIN ROTAS E VIEWS ********* \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 Route::middleware(['auth'])->group(function () {
-    //FORMULARIO de edição
-    Route::get('/associado/edit/{id}', [AssociadoController::class, 'edit'])->name('associado.edit');
-    //ROTA editar
-    Route::put('/associado/update/{id}', [AssociadoController::class, 'update'])->name('associado.update');
-    //ROTA visualizar associado
-    Route::get('/associado/show/{id}', [AssociadoController::class, 'show'])->name('associado.show');
     // View usuarios
     Route::get('/usuarios', [UsuariosController::class, 'index'])->name('usuarios.index');
     // Rota para atualizar as permissoes de um usuario
@@ -91,5 +89,5 @@ Route::middleware(['auth'])->group(function () {
 */
 
 Route::get('/profile', function () {
-            return view('profile.show');
-        })->name('profile.show');
+    return view('profile.show');
+})->name('profile.show');

@@ -2,57 +2,72 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Associado;
-use App\Models\DocumentoAssociado;
+use App\Models\File; // novo model polimórfico
 use Illuminate\Support\Facades\Storage;
-
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class DocumentoAssociadoController extends Controller
 {
+
+    public function indexDocumento($id){
+
+        $associado = Associado::with([
+            'files'
+        ])->findOrFail($id);
+
+        return view('associado.documentos.index', compact('associado'));
+    }
+
     // Criar documento
     public function storeDocumento(Request $request, $id)
     {
         $user = Auth::user();
 
-        if (!$user || !$user->hasRole('admin|moderador')) {
+        if (!$user || !$user->hasAnyRole(['admin', 'moderador'])) {
             return redirect()->route('index')->with('error', 'Acesso negado. Você não tem permissão para acessar esta página.');
         }
 
-        if ($request->hasFile('arquivo')) {
-            // Se for upload de arquivo
-            $request->validate([
-                'tipo_documento' => 'required|string|max:50',
-                'arquivo' => 'required|file|mimes:pdf,jpg,jpeg,png|max:2048', // 2MB max
-                'observacao' => 'nullable|string',
-            ]);
-        } else {
-            return redirect()->back()->with('error', 'Arquivo não enviado.')->withInput();
-        }
-
-        $associado = Associado::findOrFail($id);
-
-        $path = $request->file('arquivo')->store('documentos', 'public');
-
-
-        $associado->documentos()->create([
-            'tipo_documento' => $request->tipo_documento,
-            'arquivo' => $path,
-            'status' => 'pendente',
-            'observacao' => $request->observacao,
+        $request->validate([
+            'tipo_documento' => 'required|string|max:50',
+            'arquivo' => 'required|file|mimes:pdf,jpg,jpeg,png|max:2048',
+            'observacao' => 'nullable|string',
         ]);
 
-        return redirect()->back()->with('success', 'Documento enviado com sucesso!');
+        try {
+            DB::beginTransaction();
+
+            $associado = Associado::findOrFail($id);
+
+            $path = $request->file('arquivo')->store('documentos', 'public');
+
+            $associado->files()->create([
+                'tipo_documento' => $request->tipo_documento,
+                'path' => $path,
+                'status' => 'pendente',
+                'observacao' => $request->observacao,
+            ]);
+
+            DB::commit();
+
+            return redirect()->back()->with('success', 'Documento enviado com sucesso!');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            Log::error('Erro ao enviar documentos' . $e->getMessage());
+
+            return redirect()->back()->with('error', 'Ocorreu um erro ao enviar os arquivos, tente novamente');
+        }
     }
 
-    // Atualizar status/observação do documento
-    public function updateDocumento(Request $request, $id, $documentoId)
+    // Atualizar status/observação
+    public function updateDocumento(Request $request, $id, $fileId)
     {
         $user = Auth::user();
 
-        if (!$user || !$user->hasRole('admin|moderador')) {
+        if (!$user || !$user->hasAnyRole(['admin', 'moderador'])) {
             return redirect()->route('index')->with('error', 'Acesso negado. Você não tem permissão para acessar esta página.');
         }
 
@@ -61,55 +76,52 @@ class DocumentoAssociadoController extends Controller
             'observacao' => 'nullable|string',
         ]);
 
-        $documento = DocumentoAssociado::where('associado_id', $id)->findOrFail($documentoId);
-        $documento->update($request->only('status', 'observacao'));
+        $file = File::where('fileable_type', Associado::class)
+            ->where('fileable_id', $id)
+            ->findOrFail($fileId);
+
+        $file->update($request->only('status', 'observacao'));
 
         return redirect()->back()->with('success', 'Documento atualizado com sucesso!');
     }
 
     // Excluir documento
-    public function destroyDocumento($associadoId, $documentoId)
+    public function destroyDocumento($associadoId, $fileId)
     {
         $user = Auth::user();
 
-        if (!$user || !$user->hasRole('admin|moderador')) {
+        if (!$user || !$user->hasAnyRole(['admin', 'moderador'])) {
             return redirect()->route('index')->with('error', 'Acesso negado. Você não tem permissão para acessar esta página.');
         }
 
-        // Garante que o documento pertence ao associado
-        $documento = DocumentoAssociado::where('associado_id', $associadoId)
-            ->where('id', $documentoId)
-            ->firstOrFail();
+        $file = File::where('fileable_type', Associado::class)
+            ->where('fileable_id', $associadoId)
+            ->findOrFail($fileId);
 
-        // Exclui o arquivo físico (se existir)
-        if ($documento->arquivo && Storage::disk('public')->exists($documento->arquivo)) {
-            Storage::disk('public')->delete($documento->arquivo);
+        if ($file->path && Storage::disk('public')->exists($file->path)) {
+            Storage::disk('public')->delete($file->path);
         }
 
-        // Exclui o registro no banco
-        $documento->delete();
+        $file->delete();
 
         return redirect()->back()->with('success', 'Documento excluído com sucesso!');
     }
 
-    public function showDocumento($id, DocumentoAssociado $documento)
+    // Exibir documento
+    public function showDocumento($id, $fileId)
     {
-
         $user = Auth::user();
 
-        if(!$user || !$user->hasRole('admin|moderador')){
-            return redirect()->route('index')->with('error', 'Acesso negado. Voce nao tem permissao para acessar esta página');
+        if (!$user || !$user->hasAnyRole(['admin', 'moderador'])) {
+            return redirect()->route('index')->with('error', 'Acesso negado. Você não tem permissão para acessar esta página.');
         }
 
-        if ($documento->associado_id != $id) {
-            abort(404, 'Documento não encontrado para esse associado!');
-        }
+        $file = File::where('fileable_type', Associado::class)
+            ->where('fileable_id', $id)
+            ->findOrFail($fileId);
 
-        // Verifica se existe arquivo físico
-        if ($documento->arquivo && Storage::disk('public')->exists($documento->arquivo)) {
-            $path = Storage::disk('public')->path($documento->arquivo);
-
-            return response()->file($path); // Abre direto no navegador
+        if ($file->path && Storage::disk('public')->exists($file->path)) {
+            return response()->file(Storage::disk('public')->path($file->path));
         }
 
         abort(404, 'Arquivo não encontrado.');

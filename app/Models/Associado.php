@@ -32,10 +32,7 @@ class Associado extends Model
         return $this->hasOne(Situacao::class);
     }
 
-    public function documentos()
-    {
-        return $this->hasMany(DocumentoAssociado::class);
-    }
+    
     public function mensalidades()
     {
         return $this->hasMany(Mensalidade::class);
@@ -43,6 +40,16 @@ class Associado extends Model
     public function historicoSituacoes()
     {
         return $this->hasMany(HistoricoSituacoes::class);
+    }
+    
+    public function documentos()
+    {
+        return $this->hasMany(DocumentoAssociado::class);
+    }
+    
+    public function files()
+    {
+        return $this->morphMany(File::class, 'fileable');
     }
 
     protected $fillable = [

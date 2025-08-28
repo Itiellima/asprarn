@@ -16,6 +16,11 @@ class Post extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function files()
+    {
+        return $this->morphMany(File::class, 'fileable');
+    }
+
     protected $fillable = [
         'user_id',
         'titulo',
@@ -28,9 +33,13 @@ class Post extends Model
 
     protected static function booted()
     {
-        static::deleting(function ($post) {
-            if ($post->img && Storage::disk('public')->exists($post->img)) {
-                Storage::disk('public')->delete($post->img);
+        static::deleting(function ($associado) {
+            // Apaga arquivos da relação polimórfica
+            foreach ($associado->files as $file) {
+                if ($file->path && Storage::disk('public')->exists($file->path)) {
+                    Storage::disk('public')->delete($file->path);
+                }
+                $file->delete();
             }
         });
     }

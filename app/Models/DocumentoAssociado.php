@@ -29,3 +29,5 @@ class DocumentoAssociado extends Model
         });
     }
 }
+
+// PENDENTE EXCLUSÃO

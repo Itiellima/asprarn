@@ -258,28 +258,5 @@ class AssociadoController extends Controller
 
         return redirect('/associado')->with('msg', 'Associado deletado com sucesso!');
     }
-
-    ///////////////////////////////////////////// documentos associados \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
-
-    // Listar documentos
-    public function indexDocumentos($id)
-    {
-        $user = Auth::user();
-
-        if (!$user || !$user->hasAnyRole(['admin', 'moderador'])) {
-            return redirect()->route('associado.index')->with('error', 'Acesso negado. Você não tem permissão para acessar esta página.');
-        }
-
-        $associado = Associado::with([
-            'endereco',
-            'contato',
-            'dadosBancarios',
-            'documentos',
-            'historicoSituacoes',
-            'mensalidades'
-        ])->findOrFail($id);
-
-
-        return view('associado.documentos.index', compact('associado'));
-    }
+    
 }
