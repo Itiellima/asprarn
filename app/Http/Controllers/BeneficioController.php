@@ -6,11 +6,15 @@ use App\Models\Beneficio;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
+
 class BeneficioController extends Controller
 {
     public function index()
     {
-        return view('beneficio.index');
+
+        $beneficios = Beneficio::all();
+
+        return view('beneficio.index', compact('beneficios'));
     }
 
     public function create()
