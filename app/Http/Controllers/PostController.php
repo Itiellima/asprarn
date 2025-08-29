@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
 use App\Models\Post;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\DB;
 
 class PostController extends Controller
 {
@@ -54,6 +54,11 @@ class PostController extends Controller
     {
 
         $user = Auth::user();
+
+        if (!$user || !$user->hasAnyRole(['admin', 'moderador'])) {
+            return redirect()->back()->with('error', 'Acesso negado. Você não tem permissão para acessar esta página.');
+        }
+
         $arquivos = $request->file('arquivos'); // Deve ser um array de arquivos
 
         $request->validate([
@@ -64,28 +69,36 @@ class PostController extends Controller
 
         ]);
 
-        $post = Post::create([
-            'user_id' => $user->id,
-            'titulo' => $request->titulo,
-            'assunto' => $request->assunto,
-            'texto' => $request->texto,
-            'data' => $request->data,
-            'owner' => $user->name,
-        ]);
-
-
-        foreach ($arquivos as $arquivo) {
-            $path = $arquivo->store('img', 'public');
-
-            $post->files()->create([
-                'path' => $path,
-                'tipo_documento' => 'imagem',
-                'status' => 'ativo',
-                'observacao' => 'Upload automatico'
+        DB::beginTransaction();
+        try {
+            $post = Post::create([
+                'user_id' => $user->id,
+                'titulo' => $request->titulo,
+                'assunto' => $request->assunto,
+                'texto' => $request->texto,
+                'data' => $request->data,
+                'owner' => $user->name,
             ]);
-        }
 
-        return redirect()->route('posts.index')->with('success', 'Post criado com sucesso!');
+
+            foreach ($arquivos as $arquivo) {
+                $path = $arquivo->store('img', 'public');
+
+                $post->files()->create([
+                    'path' => $path,
+                    'tipo_documento' => 'imagem',
+                    'status' => 'ativo',
+                    'observacao' => 'Upload automatico'
+                ]);
+            }
+
+            DB::commit();
+            return redirect()->route('posts.index')->with('success', 'Post criado com sucesso!');
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            return redirect()->route('posts.index')->with('error', 'Erro ao criar, tente novamente!');
+        }
     }
 
     public function update(Request $request, $id)
@@ -105,23 +118,53 @@ class PostController extends Controller
             'data' => 'required|date',
         ]);
 
-        $data = [
-            'titulo' => $request->titulo,
-            'assunto' => $request->assunto,
-            'texto' => $request->texto,
-            'data' => $request->data,
-        ];
 
-        if ($request->hasFile('img')) {
-            if ($post->img && Storage::disk('public')->exists($post->img)) {
-                Storage::disk('public')->delete($post->img);
+        DB::beginTransaction();
+        try {
+
+            $post->update([
+                'titulo' => $request->titulo,
+                'assunto' => $request->assunto,
+                'texto' => $request->texto,
+                'data' => $request->data,
+            ]);
+
+            $arquivos = $request->file('arquivos');
+            
+            // Exclui arquivos se existirem outros
+            if($arquivos){
+                foreach ($post->files as $file) {
+                    if (Storage::disk('public')->exists($file->path)) {
+                        Storage::disk('public')->delete($file->path);
+                    }
+                }
+    
+                // Agora exclui os registros da relação polimórfica
+                $post->files()->delete();
             }
-            $data['img'] = $request->file('img')->store('posts', 'public');
+
+            
+            if ($arquivos) {
+
+                foreach ($arquivos as $arquivo) {
+                    $path = $arquivo->store('img', 'public');
+
+                    $post->files()->create([
+                        'path' => $path,
+                        'tipo_documento' => 'imagem',
+                        'status' => 'ativo',
+                        'observacao' => 'Upload automatico'
+                    ]);
+                }
+            }
+
+            DB::commit();
+            return redirect()->route('posts.index')->with('success', 'Publicação atualizada com sucesso!');
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            return redirect()->route('posts.index')->with('error', 'Erro ao atualizar tente novamente!');
         }
-
-        $post->update($data);
-
-        return redirect()->route('posts.index')->with('success', 'Publicação atualizada com sucesso!');
     }
 
 

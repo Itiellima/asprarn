@@ -70,8 +70,8 @@
                     <h2 class="display-5 link-body-emphasis mb-1">
                         {{ $post->titulo }}
                     </h2>
-                    <p class="blog-post-meta">{{ $post->data->format('d/m/Y') }} atualizado em
-                        {{ $post->updated_at->format('d/m/Y') }}<a href="#">Mark</a></p>
+                    <p class="blog-post-meta">Atualizado em
+                        {{ $post->updated_at->format('d/m/Y') }}  incluido por:<a href="#"> {{ $post->owner }}</a></p>
                     <p>
                         {!! $post->texto !!}
                     </p>
