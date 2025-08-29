@@ -13,7 +13,31 @@
                     <p class="lead mb-0"><a href="#" class="text-body-emphasis fw-bold">Continue lendo...</a></p>
                 </div>
                 <div class="col-lg-5 px-0">
-                    <img src="{{ asset('storage/' . $latestPost->img) }}" class="img-fluid" alt="{{ $latestPost->titulo }}">
+                    <div id="carouselExample" class="carousel slide">
+                        @if ($latestPost->files->isNotEmpty())
+                            <div class="carousel-inner">
+                                @foreach ($latestPost->files as $index => $file)
+                                    <div class="carousel-item {{ $index === 0 ? 'active' : '' }}">
+                                        <img src="{{ asset('storage/' . $file->path) }}" class="img-fluid"
+                                            alt="{{ $latestPost->titulo }}">
+                                    </div>
+                                @endforeach
+                            </div>
+
+                        @endif
+
+                        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample"
+                            data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Previous</span>
+                        </button>
+                        <button class="carousel-control-next" type="button" data-bs-target="#carouselExample"
+                            data-bs-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Next</span>
+                        </button>
+                    </div>
+
                 </div>
 
             </div>
@@ -46,7 +70,8 @@
                     <h2 class="display-5 link-body-emphasis mb-1">
                         {{ $post->titulo }}
                     </h2>
-                    <p class="blog-post-meta">{{ $post->data->format('d/m/Y') }} atualizado em {{ $post->updated_at->format('d/m/Y') }}<a href="#">Mark</a></p>
+                    <p class="blog-post-meta">{{ $post->data->format('d/m/Y') }} atualizado em
+                        {{ $post->updated_at->format('d/m/Y') }}<a href="#">Mark</a></p>
                     <p>
                         {!! $post->texto !!}
                     </p>
@@ -209,8 +234,12 @@
                             <li>
                                 <a class="d-flex flex-column flex-lg-row gap-3 align-items-start align-items-lg-center py-3 link-body-emphasis text-decoration-none border-top"
                                     href="#">
-                                    <img src="{{ asset('storage/' . $post->img) }}" alt="{{ $post->titulo }}" width="100"
-                                        height="100">
+
+                                    @if ($post->files->isNotEmpty())
+                                        <img src="{{ asset('storage/' . $post->files->first()->path) }}"
+                                            alt="{{ $post->titulo }}" width="100" height="100">
+                                    @endif
+
                                     <div class="col-lg-8">
                                         <h6 class="mb-0">{{ $post->titulo }}</h6> <small
                                             class="text-body-secondary">{{ $post->data->format('d/m/Y') }}</small>

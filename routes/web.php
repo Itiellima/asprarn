@@ -46,9 +46,6 @@ Route::delete('/associado/delete/{id}', [AssociadoController::class, 'destroy'])
 //////////////////////////////// ********* DOCUMENTOS ASSOCIADOS ********* \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 //VIEW DOCUMENTOS ASSOCIADOS
 Route::get('/associado/documentos/{id}', [DocumentoAssociadoController::class, 'indexDocumento'])->name('associado.documentos.index');
-
-
-
 //VIEW DOCUMENTO BY ID
 Route::get('/associado/documentos/{id}/{documento}', [DocumentoAssociadoController::class, 'showDocumento'])->name('associado.documentos.show');
 //ROTA STORE

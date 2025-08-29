@@ -54,37 +54,36 @@ class PostController extends Controller
     {
 
         $user = Auth::user();
-        if (!$user || !$user->hasAnyRole(['admin', 'moderador'])) {
-            return redirect()->back()->with('error', 'Acesso negado. Você não tem permissão para acessar esta página.');
-        }
+        $arquivos = $request->file('arquivos'); // Deve ser um array de arquivos
 
         $request->validate([
-            'titulo' => 'required|string|max:255',
-            'assunto' => 'required|string|max:500',
-            'img' => 'required|file|mimes:jpg,jpeg,png|max:2048',
-            'texto' => 'required|string|max:5000',
-            'data' => 'required|date',
+            'titulo' => 'required',
+            'assunto' => 'required',
+            'texto' => 'required',
+            'data' => 'required',
+
         ]);
 
+        $post = Post::create([
+            'user_id' => $user->id,
+            'titulo' => $request->titulo,
+            'assunto' => $request->assunto,
+            'texto' => $request->texto,
+            'data' => $request->data,
+            'owner' => $user->name,
+        ]);
 
-        $arquivos = $request->file('img');
-
-        // Se for apenas um arquivo, transforma em array
-        if (!is_array($arquivos)) {
-            $arquivos = [$arquivos];
-        }
 
         foreach ($arquivos as $arquivo) {
             $path = $arquivo->store('img', 'public');
 
-            $user->files()->create([
-                'tipo_documento' => $request->tipo_documento,
+            $post->files()->create([
                 'path' => $path,
-                'status' => 'pendente',
-                'observacao' => $request->observacao,
+                'tipo_documento' => 'imagem',
+                'status' => 'ativo',
+                'observacao' => 'Upload automatico'
             ]);
         }
-
 
         return redirect()->route('posts.index')->with('success', 'Post criado com sucesso!');
     }

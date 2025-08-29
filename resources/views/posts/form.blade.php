@@ -26,16 +26,17 @@
 
         <div class="mb-3">
             <label for="formFile" class="form-label">Insira as fotos</label>
-                <input class="form-control" type="file" id="img" name="img" multiple
-                {{ $post->exist ? '' : 'required' }}>
+            <input class="form-control" type="file" id="img" name="arquivos[]" multiple
+                {{ $post->exists ? '' : 'required' }}>
 
-            @if ($post->exists && $post->img)
-                <div class="mt-2">
-                    <img id="preview-img" src="{{ asset('storage/' . $post->img) }}" width="120">
+            @if ($post->exists && $post->files)
+                <div class="mt-2 d-flex gap-2 flex-wrap">
+                    @foreach ($post->files as $file)
+                        <img src="{{ $file->url }}" width="120">
+                    @endforeach
                 </div>
-            @else
-                <img id="preview-img" style="display:none;" width="120">
             @endif
+            
         </div>
 
         <div class="mb-3 col-3">
@@ -69,13 +70,15 @@
 {{-- preview de foto/imagem  --}}
 <script>
     document.getElementById('img').addEventListener('change', function(event) {
-        const preview = document.getElementById('preview-img');
-        const file = event.target.files[0];
-        if (file) {
-            preview.src = URL.createObjectURL(file);
-            preview.style.display = 'block';
-        } else {
-            preview.style.display = 'none';
-        }
+        const container = document.getElementById('preview-container');
+        container.innerHTML = ''; // Limpa previews anteriores
+
+        Array.from(event.target.files).forEach(file => {
+            const img = document.createElement('img');
+            img.src = URL.createObjectURL(file);
+            img.width = 120;
+            img.classList.add('me-2', 'mb-2');
+            container.appendChild(img);
+        });
     });
 </script>
