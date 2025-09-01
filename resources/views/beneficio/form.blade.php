@@ -1,4 +1,4 @@
-<form action="{{ route('beneficio.store') }}" method="POST" enctype="multipart/form-data">
+<form action="{{ $beneficio->exists ? route('beneficio.update', $beneficio->id) : route('beneficio.store') }}" method="POST" enctype="multipart/form-data">
     @csrf
 
     @if ($beneficio->exists)

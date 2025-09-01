@@ -53,7 +53,7 @@
                     <p class="lead mb-0"><a href="#" class="text-body-emphasis fw-bold">Continue lendo...</a></p>
                 </div>
                 <div class="col-lg-5 px-0">
-                    <p>img</p>
+                    <img src="/img/Aspra.png" class="card-img-top" alt="aspra">
                 </div>
             </div>
         </div>
@@ -71,7 +71,7 @@
                         {{ $post->titulo }}
                     </h2>
                     <p class="blog-post-meta">Atualizado em
-                        {{ $post->updated_at->format('d/m/Y') }}  incluido por:<a href="#"> {{ $post->owner }}</a></p>
+                        {{ $post->updated_at->format('d/m/Y') }} incluido por:<a href="#"> {{ $post->owner }}</a></p>
                     <p>
                         {!! $post->texto !!}
                     </p>

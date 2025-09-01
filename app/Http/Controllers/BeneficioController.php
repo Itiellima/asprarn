@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Beneficio;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 
 class BeneficioController extends Controller
@@ -62,5 +63,79 @@ class BeneficioController extends Controller
 
             return redirect('beneficio')->with('error', 'Erro ao criar beneficio!' . $e->getMessage());
         }
+    }
+
+
+    public function edit(Beneficio $beneficio)
+    {
+        return view('beneficio.edit', compact('beneficio'));
+    }
+
+    public function update(Request $request, $id)
+    {
+
+        $beneficio = Beneficio::findOrFail($id);
+
+        $request->validate([
+            'nome' => 'required',
+            'descricao' => 'required',
+            'arquivos.*' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+        ]);
+
+        DB::beginTransaction();
+        try {
+
+            $beneficio->update([
+                'nome' => $request->nome,
+                'descricao' => $request->descricao,
+            ]);
+
+            if ($request->hasFile('arquivos')) {
+                foreach ($beneficio->files as $file) {
+                    if (Storage::disk('public')->exists($file->path)) {
+                        Storage::disk('public')->delete($file->path);
+                    }
+                }
+                $beneficio->files()->delete();
+            }
+
+            if ($request->hasFile('arquivos')) {
+                foreach ($request->file('arquivos') as $arquivo) {
+                    $path = $arquivo->store('img', 'public');
+
+                    $beneficio->files()->create([
+                        'path' => $path,
+                        'tipo_documento' => 'imagem',
+                        'status' => 'ativo',
+                        'observacao' => 'Upload automatico',
+                    ]);
+                }
+            }
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            return redirect('beneficio')->with('error', 'Erro ao atualizar beneficio!' . $e->getMessage());
+        }
+
+
+        return redirect()->route('beneficio.index')->with('success', 'Beneficio atualizado com sucesso!');
+    }
+
+    public function destroy($id)
+    {
+        $beneficio = Beneficio::findOrFail($id);
+
+        foreach ($beneficio->files as $file) {
+            Storage::disk('public')->delete($file->path);
+        }
+
+        $beneficio->files()->delete();
+
+        $beneficio->delete();
+
+
+
+        return redirect('beneficio')->with('success', 'Beneficio excluido com sucesso!');
     }
 }

@@ -18,7 +18,7 @@
 
     <div class="meu-container row">
 
-        @if (!$beneficios)
+        @if ($beneficios->isEmpty())
             <div class="card mx-2 mb-3 col-6" style="width: 18rem;">
                 <img src="/img/Aspra.png" class="card-img-top" alt="aspra">
                 <div class="card-body">
@@ -27,7 +27,7 @@
                     <a href="#" class="btn btn-primary">Ver mais</a>
                     @auth
                         @hasanyrole(['admin', 'moderador'])
-                            <a href="">Excluir</a>
+                            <a href="" class="btn btn-danger ms-2">Excluir</a>
                         @endhasanyrole
                     @endauth
                 </div>
@@ -35,7 +35,7 @@
         @else
             @foreach ($beneficios as $beneficio)
                 <div class="card mx-2 mb-3" style="width: 18rem; min-height: 400px;">
-                    <div id="carouselExample" class="carousel slide">
+                    <div id="carouselExample{{ $beneficio->id }}" class="carousel slide">
                         <div class="carousel-inner">
                             @foreach ($beneficio->files as $index => $files)
                                 <div class="carousel-item {{ $index === 0 ? 'active' : '' }}">
@@ -44,12 +44,12 @@
                                 </div>
                             @endforeach
                         </div>
-                        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample"
+                        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample{{ $beneficio->id }}"
                             data-bs-slide="prev">
                             <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                             <span class="visually-hidden">Previous</span>
                         </button>
-                        <button class="carousel-control-next" type="button" data-bs-target="#carouselExample"
+                        <button class="carousel-control-next" type="button" data-bs-target="#carouselExample{{ $beneficio->id }}"
                             data-bs-slide="next">
                             <span class="carousel-control-next-icon" aria-hidden="true"></span>
                             <span class="visually-hidden">Next</span>
@@ -66,7 +66,13 @@
                             <a href="#" class="btn btn-primary">Ver mais</a>
                             @auth
                                 @hasanyrole(['admin', 'moderador'])
-                                    <a href="#" class="btn btn-danger ms-2">Excluir</a>
+                                <form action="{{ route('beneficio.destroy', $beneficio->id) }}" method="POST">
+                                    @csrf
+                                    @method('DELETE')
+
+                                    <button type="submit" class="btn btn-danger ms-2" onclick="return confirm('Tem certeza que deseja excluir esse beneficio?')">Excluir</button>
+                                </form>
+                                    <a href="{{ route('beneficio.edit', $beneficio->id)}}" class="btn btn-danger m-2">Editar</a>
                                 @endhasanyrole
                             @endauth
                         </div>
