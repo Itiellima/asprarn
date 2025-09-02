@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Associado;
 use App\Models\HistoricoSituacoes;
-use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -59,10 +58,5 @@ class HistoricoSituacoesController extends Controller
 
         return redirect()->back()->with('success', 'Historico excluido com sucesso!');
     }
-
-
-
-
-
 
 }

@@ -16,9 +16,10 @@ Route::get('/', [IndexController::class, 'index'])->name('index');
 
 
 Route::middleware(['auth'])->group(function () {
-    Route::resource('beneficio', BeneficioController::class);
     Route::resource('posts', PostController::class);
 });
+
+Route::resource('beneficio', BeneficioController::class);
 
 //View dashboard
 Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['auth'])->name('dashboard');

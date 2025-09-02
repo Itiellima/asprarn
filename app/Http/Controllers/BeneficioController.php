@@ -6,6 +6,7 @@ use App\Models\Beneficio;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Auth;
 
 
 class BeneficioController extends Controller
@@ -20,6 +21,12 @@ class BeneficioController extends Controller
 
     public function create()
     {
+
+        $user = Auth::user();
+
+        if(!$user || !$user->hasAnyRole(['admin', 'moderador'])){
+            return redirect('beneficio')->with('error', 'Acesso negado. Você não tem acesso a essa funcionalidade.');
+        }
 
         $beneficio = new Beneficio();
 
@@ -74,6 +81,12 @@ class BeneficioController extends Controller
     public function update(Request $request, $id)
     {
 
+        $user = Auth::user();
+
+        if(!$user || !$user->hasAnyRole(['admin', 'moderador'])){
+            return redirect('beneficio')->with('error', 'Acesso negado. Você nãso tem acesso a essa funcionalidade.');
+        }
+
         $beneficio = Beneficio::findOrFail($id);
 
         $request->validate([
@@ -118,7 +131,6 @@ class BeneficioController extends Controller
             return redirect('beneficio')->with('error', 'Erro ao atualizar beneficio!' . $e->getMessage());
         }
 
-
         return redirect()->route('beneficio.index')->with('success', 'Beneficio atualizado com sucesso!');
     }
 
@@ -134,8 +146,7 @@ class BeneficioController extends Controller
 
         $beneficio->delete();
 
-
-
         return redirect('beneficio')->with('success', 'Beneficio excluido com sucesso!');
     }
+
 }

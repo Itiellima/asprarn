@@ -15,6 +15,12 @@ class DocumentoAssociadoController extends Controller
 
     public function indexDocumento($id){
 
+        $user = Auth::user();
+
+        if(!$user || !$user->hasAnyRole(['admin', 'moderador'])){
+            return redirect()->route('index')->with('error', 'Acesso negado. Você não tem permissão para acessar esta página.');
+        }
+
         $associado = Associado::with([
             'files'
         ])->findOrFail($id);

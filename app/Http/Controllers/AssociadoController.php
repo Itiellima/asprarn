@@ -185,54 +185,61 @@ class AssociadoController extends Controller
 
         $associado = Associado::with(['endereco', 'contato', 'dadosBancarios'])->findOrFail($id);
 
-        // Atualiza os dados da tabela principal
-        $associado->update($request->only([
-            'nome',
-            'cpf',
-            'rg',
-            'org_expedidor',
-            'nome_pai',
-            'nome_mae',
-            'dt_nasc',
-            'estado_civil',
-            'grau_instrucao',
-            'graduacao',
-            'nome_guerra',
-            'nmr_praca',
-            'matricula',
-            'opm',
-            'dependentes',
-            'obs'
-        ]));
+        DB::beginTransaction();
+        try {
+            // Atualiza os dados da tabela principal
+            $associado->update($request->only([
+                'nome',
+                'cpf',
+                'rg',
+                'org_expedidor',
+                'nome_pai',
+                'nome_mae',
+                'dt_nasc',
+                'estado_civil',
+                'grau_instrucao',
+                'graduacao',
+                'nome_guerra',
+                'nmr_praca',
+                'matricula',
+                'opm',
+                'dependentes',
+                'obs'
+            ]));
 
-        // Atualiza o endereço (assume que o relacionamento existe)
-        $associado->endereco()->update($request->only([
-            'cep',
-            'logradouro',
-            'nmr',
-            'bairro',
-            'cidade',
-            'uf',
-            'complemento'
-        ]));
+            // Atualiza o endereço (assume que o relacionamento existe)
+            $associado->endereco()->update($request->only([
+                'cep',
+                'logradouro',
+                'nmr',
+                'bairro',
+                'cidade',
+                'uf',
+                'complemento'
+            ]));
 
-        // Atualiza o contato
-        $associado->contato()->update($request->only([
-            'tel_celular',
-            'tel_residencial',
-            'tel_trabalho',
-            'email'
-        ]));
+            // Atualiza o contato
+            $associado->contato()->update($request->only([
+                'tel_celular',
+                'tel_residencial',
+                'tel_trabalho',
+                'email'
+            ]));
 
-        // Atualiza os dados bancários
-        $associado->dadosBancarios()->update($request->only([
-            'codigo',
-            'agencia',
-            'banco',
-            'conta',
-            'operacao',
-            'tipo'
-        ]));
+            // Atualiza os dados bancários
+            $associado->dadosBancarios()->update($request->only([
+                'codigo',
+                'agencia',
+                'banco',
+                'conta',
+                'operacao',
+                'tipo'
+            ]));
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect()->back()->with('error', 'Erro ao atualizar associado');
+        }
 
         return redirect('/associado')->with('msg', 'Associado alterado com sucesso!');
     }
@@ -249,14 +256,20 @@ class AssociadoController extends Controller
 
         $associado = Associado::findOrFail($id);
 
-        // Exclui o usuário vinculado ao associado (se existir)
-        $associado->user->delete();
+        try {
+            DB::beginTransaction();
 
-        // Exclui o associado (cascade cuida do resto)
-        $associado->delete();
+            // Exclui o usuário vinculado ao associado (se existir)
+            $associado->user->delete();
 
+            // Exclui o associado (cascade cuida do resto)
+            $associado->delete();
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect()->back()->with('error', 'Erro ao deletar associado');
+        }
 
         return redirect('/associado')->with('msg', 'Associado deletado com sucesso!');
     }
-    
 }

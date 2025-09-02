@@ -13,6 +13,12 @@ class SituacaoController extends Controller
 
     public function storeSituacao(Request $request, $id) {
 
+        $user = Auth::user();
+
+        if(!$user || !$user->hasAnyRole(['admin', 'moderador'])){
+            return redirect()->back()->with('error', 'Acesso negado. Você não tem permissão para acessar esta página.');
+        }
+
         $validated = $request->validate([
             'ativo' => 'nullable|boolean',
             'inadimplente' => 'nullable|boolean',
@@ -28,7 +34,6 @@ class SituacaoController extends Controller
             'pendente_documento' => 0,
             'pendente_financeiro' => 0,
         ], $validated);
-
 
         $associado->situacao()->updateOrCreate(
             ['associado_id' => $id],
