@@ -4,16 +4,18 @@
 
 @section('content')
 
+<div class="container body-offset">
+    
     @if ($associado->id)
         <h1>Editar associado</h1>
     @else
         <h1>Cadastrar novo associado</h1>
     @endif
-
-
+    
+    
     <div class="container mb-3">
         <div class="container">
-
+    
             <fieldset id="formFields" @if ($associado->id) disabled @endif>
                 <form action="{{ $associado->id ? route('associado.update', $associado->id) : route('associado.store') }}"
                     method="POST">
@@ -21,10 +23,10 @@
                     @if ($associado->id)
                         @method('PUT')
                     @endif
-
-
+    
+    
                     {{-- DADOS PESSOAIS --}}
-                    <div class="container row border-top border-bottom border-primary">
+                    <div class="container row m-1 border-bottom border-primary">
                         <h2>Dados pessoais</h2>
                         <div class="mb-3 col-6">
                             <label for="formGroup" class="form-label">Nome:</label>
@@ -131,9 +133,9 @@
                             </select>
                         </div>
                     </div>
-
+    
                     {{-- Endereço --}}
-                    <div class="container row border-bottom border-primary mt-3">
+                    <div class="container row border-bottom border-primary mt-3 m-1">
                         <h2>Endereço</h2>
                         <div class="mb-3 col-3">
                             <label for="formGroup" class="form-label">CEP:</label>
@@ -177,9 +179,9 @@
                                 value="{{ old('complemento', $associado->endereco?->complemento) }}">
                         </div>
                     </div>
-
+    
                     {{-- Contato --}}
-                    <div class="container row border-bottom border-primary mt-3">
+                    <div class="container row border-bottom border-primary mt-3 m-1">
                         <h2>Contato</h2>
                         <div class="mb-3 col-3">
                             <label for="formGroup" class="form-label">Numero de Celular:</label>
@@ -206,9 +208,9 @@
                                 value="{{ old('email', $associado->contato?->email) }}">
                         </div>
                     </div>
-
+    
                     {{-- Dados Bancarios --}}
-                    <div class="container row border-bottom border-primary mt-3">
+                    <div class="container row border-bottom border-primary mt-3 m-1">
                         <h2>Dados Bancarios</h2>
                         <div class="mb-3 col-3">
                             <label for="formGroup" class="form-label">Codigo:</label>
@@ -247,9 +249,9 @@
                                 value="{{ old('tipo', $associado->dadosBancarios?->tipo) }}">
                         </div>
                     </div>
-
+    
                     {{-- Dados dos Militares --}}
-                    <div class="container row border-bottom border-primary mt-3">
+                    <div class="container row border-bottom border-primary mt-3 m-1">
                         <h2>Dados dos Militares</h2>
                         <div class="mb-3 col-3">
                             <label for="formGroup" class="form-label">Posto/Graduação:</label>
@@ -307,22 +309,23 @@
                             </select>
                         </div>
                     </div>
-
+    
                     {{-- Dependentes e Observações --}}
-                    <div class="container row border-bottom border-primary mt-3">
+                    <div class="container row border-bottom border-primary mt-3 m-1">
                         <h2>Dependentes</h2>
                         <label for="formGroup" class="form-label">Insira os nomes dos dependentes:</label>
                         <textarea name="dependentes" id="dependentes" cols="30" rows="5" maxlength="200">{{ old('dependentes', $associado->dependentes) }}</textarea>
                         </textarea>
                     </div>
-
-                    <div class="container row border-bottom border-primary mt-3">
+    
+                    {{-- Observações --}}
+                    <div class="container row border-bottom border-primary mt-3 m-1">
                         <h2>Observações</h2>
                         <label for="formGroup" class="form-label">Insira os nomes dos dependentes:</label>
                         <textarea name="obs" id="obs" cols="30" rows="5" maxlength="200">{{ old('obs', $associado->obs) }}</textarea>
                         </textarea>
                     </div>
-
+    
                     <div class="container border-bottom border-primary mt-3 text-end">
                         <input type="submit" class="btn btn-primary mb-3" id="submitBtn"
                             value="{{ $associado->id ? 'Salvar alterações' : 'Cadastrar' }}">
@@ -347,5 +350,7 @@
         </div>
     </div>
     
-    <script src="{{ asset('js/form-edit.js') }}"></script>
+</div>
+<script src="{{ asset('js/form-edit.js') }}"></script>
+
 @endsection

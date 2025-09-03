@@ -42,7 +42,8 @@
 </head>
 
 <body class="">
-    <header class="py-2">
+    {{-- Header --}}
+    <header class="">
         <nav class="row align-items-center border-bottom fixed-top bg-light">
 
             <div class="col-md-3 text-center text-start">
@@ -107,6 +108,7 @@
         </script>
     </header>
 
+    {{-- Alertas --}}
     <div class="container">
         @if (session('msg'))
             <div class="alert alert-success">
@@ -136,7 +138,7 @@
 
 
     <div>
-        <main class="container body-offset">
+        <main class="">
             @yield('content')
         </main>
     </div>

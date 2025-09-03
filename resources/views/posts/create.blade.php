@@ -4,11 +4,14 @@
 
 @section('content')
 
-    <div class="meu-container alert alert-light">
-        <h1>Nova Publicação</h1>
+    <div class="container body-offset">
+
+        <div class="meu-container alert alert-light">
+            <h1>Nova Publicação</h1>
+        </div>
+
+        @include('posts.form', ['post' => $post])
     </div>
 
-    @include('posts.form', ['post' => $post])
-    
 
 @endsection

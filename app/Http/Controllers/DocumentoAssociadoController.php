@@ -13,11 +13,12 @@ use Illuminate\Support\Facades\Log;
 class DocumentoAssociadoController extends Controller
 {
 
-    public function indexDocumento($id){
+    public function indexDocumento($id)
+    {
 
         $user = Auth::user();
 
-        if(!$user || !$user->hasAnyRole(['admin', 'moderador'])){
+        if (!$user || !$user->hasAnyRole(['admin', 'moderador'])) {
             return redirect()->route('index')->with('error', 'Acesso negado. Você não tem permissão para acessar esta página.');
         }
 
@@ -25,7 +26,17 @@ class DocumentoAssociadoController extends Controller
             'files'
         ])->findOrFail($id);
 
-        return view('associado.documentos.index', compact('associado'));
+        $search = request('search');
+
+        $documentos = $associado->files()
+            ->when($search, function ($query, $search) {
+                $query->where('tipo_documento', 'like', "%{$search}%")
+                    ->orWhere('status', 'like', "%{$search}%")
+                    ->orWhere('observacao', 'like', "%{$search}%");
+            })
+            ->paginate(10);
+
+        return view('associado.documentos.index', compact('associado', 'documentos', 'search'));
     }
 
     // Criar documento

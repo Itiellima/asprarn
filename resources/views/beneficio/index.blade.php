@@ -4,6 +4,8 @@
 
 @section('content')
 
+<div class="container body-offset">
+
     <div class="meu-container mb-3">
         <h1>Clubes de Beneficios</h1>
     </div>
@@ -14,10 +16,10 @@
             </div>
         @endhasanyrole
     @endauth
-
-
+    
+    
     <div class="meu-container row">
-
+    
         @if ($beneficios->isEmpty())
             <div class="card mx-2 mb-3 col-6" style="width: 18rem;">
                 <img src="/img/Aspra.png" class="card-img-top" alt="aspra">
@@ -55,8 +57,8 @@
                             <span class="visually-hidden">Next</span>
                         </button>
                     </div>
-
-
+    
+    
                     <div class="card-body d-flex flex-column justify-content-between">
                         <div>
                             <h5 class="card-title">{{ $beneficio->nome }}</h5>
@@ -69,7 +71,7 @@
                                 <form action="{{ route('beneficio.destroy', $beneficio->id) }}" method="POST">
                                     @csrf
                                     @method('DELETE')
-
+    
                                     <button type="submit" class="btn btn-danger ms-2" onclick="return confirm('Tem certeza que deseja excluir esse beneficio?')">Excluir</button>
                                 </form>
                                     <a href="{{ route('beneficio.edit', $beneficio->id)}}" class="btn btn-danger m-2">Editar</a>
@@ -80,12 +82,12 @@
                 </div>
             @endforeach
         @endif
-
-
-
-
+    
+    
+    
+    
     </div>
-
+    
     # NOME DESCRIÇÃO <br>
     1 ASSISTÊNCIA FUNERÁRIA Cobertura de assistência funerária.<br>
     2 ASSISTENCIA JURÍDICA Consultas, audiências, defesa administrativa e entradas em processos.<br>
@@ -98,7 +100,9 @@
     8 CURSO DE INGLES WIZARD Desconto no curso de inglês .<br>
     9 FACULDADE CÂMARA CASCUDO Desconto nos cursos disponibilizados.<br>
     10 SESC Benefícios sociais / Lazer.<br>
+    
 
+</div>    
 
 
 

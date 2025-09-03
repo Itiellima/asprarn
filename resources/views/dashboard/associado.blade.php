@@ -15,12 +15,7 @@
 
                 <p class="mt-4">Texto de exemplo dentro da área principal.</p>
             </div>
-
-
-
-            <div class="container">
-
-            </div>
+            
             {{--
                 @auth
                     <p>Bem vindo: <strong>{{ auth()->user()->name }}</strong></p>

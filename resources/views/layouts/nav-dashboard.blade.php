@@ -4,23 +4,46 @@
         <h2 class="text-xl font-bold mb-6">Dashboard: {{ auth()->user()->name }}</h2>
 
         <nav>
-            <a href="/dashboard" class="hover:bg-gray-700 p-2 rounded">🏠 Home</a>
-
             @auth
-                @hasanyrole('admin|moderador')
-                    <a href="/usuarios" class="hover:bg-gray-700 p-2 rounded">👮 Gerenciar Usuarios</a>
-                    <a href="/associado" class="hover:bg-gray-700 p-2 rounded">👮 Listar Associados</a>
-                @endhasanyrole
+                <div class="dropdown">
+
+                    <a href="/dashboard" class="btn btn-secondary mx-1">🏠 Home</a>
+                    <a href="/profile" class="btn btn-secondary mx-1">👮 Alterar Perfil</a>
+
+
+                    @hasanyrole('admin|moderador')
+                        <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                            aria-expanded="false">
+                            Admnistração Menu
+                        </button>
+
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="#">Action</a></li>
+                            <li>
+                                <a href="#" class="dropdown-item">📊 Visão Geral (Dashboard)*</a>
+                            </li>
+                            <li>
+                                <a href="{{ route('associado.index') }}" class="dropdown-item">👥 Gestão de Associados</a>
+                            </li>
+                            <li>
+                                <a href="#" class="dropdown-item">💰 Financeiro*</a>
+                            </li>
+                            <li>
+                                <a href="/usuarios" class="dropdown-item">🔐 Controle de Acesso</a>
+                            </li>
+                            <li>
+                                <a href="{{ route('posts.index') }}" class="dropdown-item">​📣 Comunicação</a>
+                            </li>
+                            <li>
+                                <a href="#" class="dropdown-item">⚙️ Configurações*</a>
+                            </li>
+                        </ul>
+                        
+                    @endhasanyrole
+                </div>
             @endauth
-
-            <a href="{{ route('posts.index') }}" class="hover:bg-gray-700 p-2 rounded">/​📂 Publicações</a>
-            <a href="#" class="hover:bg-gray-700 p-2 rounded">⚙️ Configurações</a>
-            <a href="/profile" class="hover:bg-gray-700 p-2 rounded">👮 Alterar Perfil</a>
-
-
-            @role('admin')
-            @endrole
         </nav>
+
 
     </aside>
 

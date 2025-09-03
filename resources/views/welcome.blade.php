@@ -3,6 +3,7 @@
 @section('title', '')
 
 @section('content')
+<div class="container body-offset">
 
     @if ($latestPost)
         <div class="p-4 p-md-5 mb-4 rounded text-body-emphasis bg-body-secondary">
@@ -322,6 +323,7 @@
         Associação dos Praças da Polícia Militar e Corpo de Bombeiros Militar do Estado do Rio Grande do Norte
     </h2>
     </p>
+</div>
 
 
 

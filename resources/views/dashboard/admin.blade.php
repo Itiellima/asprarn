@@ -4,9 +4,10 @@
 
 @section('content')
 
+
     @include('layouts.nav-dashboard')
 
-    <body class="">
+    {{-- <body class="">
 
         <!-- Conteúdo -->
         <main class="flex-1 p-6">
@@ -41,6 +42,8 @@
 
         </main>
 
-    </body>
+    </body> --}}
 
 @endsection
+
+

@@ -57,6 +57,20 @@
                     </div>
                 </div>
 
+                {{-- Formulário de busca --}}
+                <form method="GET" action="{{ route('associado.documentos.index', $associado->id) }}" class="mb-4">
+                    <div class="input-group">
+                        <input type="text" name="search" class="form-control"
+                            placeholder="Buscar por tipo, status ou observação..." value="{{ $search }}">
+                        <button class="btn btn-outline-primary" type="submit">🔍 Buscar</button>
+                    </div>
+                </form>
+
+                @if (!@empty($search))
+                    <p>Você pesquisou por: <strong>{{ $search }}</strong></p>
+                @else
+                @endif
+
                 <h3>Documentos do associado</h3>
                 @if ($associado->files && $associado->files->count() > 0)
                     <table class="table table-striped">
@@ -69,7 +83,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($associado->files as $file)
+                            @foreach ($documentos as $file)
                                 <tr>
                                     <td>{{ $file->tipo_documento }}</td>
                                     <td>{{ ucfirst($file->status) }}</td>
