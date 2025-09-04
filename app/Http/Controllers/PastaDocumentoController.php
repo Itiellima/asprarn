@@ -63,6 +63,18 @@ class PastaDocumentoController extends Controller
         $associado = Associado::findOrFail($associado_id);
         $pasta = $associado->pastaDocumentos()->with('files')->findOrFail($pasta_id);
 
+        
+
+        $search = request('search');
+
+        $documentos = $pasta->files()
+            ->when($search, function ($query, $search) {
+                $query->where('tipo_documento', 'like', "%{$search}%")
+                    ->orWhere('status', 'like', "%{$search}%")
+                    ->orWhere('observacao', 'like', "%{$search}%");
+            })
+            ->paginate(10);
+
         return view('associado.pastas.show', compact('pasta', 'associado'));
     }
 }
