@@ -11,6 +11,7 @@ use App\Http\Controllers\SituacaoController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\IndexController;
+use App\Http\Controllers\PastaDocumentoController;
 
 Route::get('/', [IndexController::class, 'index'])->name('index');
 
@@ -26,6 +27,20 @@ Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['au
 
 //view requerimento para impressão
 Route::get('/requerimento/{id}', [RequerimentoController::class, 'show'])->name('associado.pdf.requerimento');
+
+
+Route::get('/associado/pasta_documento/{id}', [PastaDocumentoController::class, 'index'])->name('associado.pasta_documento.index');
+Route::post('/associado/pasta_documento/store/{id}', [PastaDocumentoController::class, 'store'])->name('associado.pasta_documento.store');
+Route::get('/associado/pasta_documento/show/{associado_id}/{pasta_id}', [PastaDocumentoController::class, 'show'])->name('associado.pasta_documento.show');
+
+
+
+
+
+
+
+
+
 
 //////////////////////////////// ********* ASSOCIADO ********* \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 //VIEW TODOS OS ASSOCIADOS

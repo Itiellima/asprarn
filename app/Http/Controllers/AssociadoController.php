@@ -51,12 +51,10 @@ class AssociadoController extends Controller
             return redirect()->route('associado.index')->with('error', 'Acesso negado. Você não tem permissão para acessar esta página.');
         }
 
-
         $associado = Associado::with([
             'endereco',
             'contato',
             'dadosBancarios',
-            'documentos',
             'historicoSituacoes',
             'mensalidades',
             'situacao'

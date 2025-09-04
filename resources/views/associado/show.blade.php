@@ -89,17 +89,21 @@
     {{-- ACOES --}}
     <div class="container align-items-center border border my-3">
         <div class="row mx-3 my-3">
-            <a href="{{ route('associado.documentos.index', $associado->id) }}"
-                class="btn btn-primary col-2 mx-2">Documentos</a>
+            {{-- <a href="{{ route('associado.documentos.index', $associado->id) }}"
+                class="btn btn-primary col-2 mx-2">Documentos</a> --}}
+                
+            <a href="{{ route('associado.pasta_documento.index', $associado->id) }}"
+                class="btn btn-primary col-2 mx-2">Arquivos</a>
+
             <a href="#" class="btn btn-primary col-2 mx-2">Historico</a>
             <a href="#" class="btn btn-primary col-2 mx-2">Financeiro</a>
             <a href="#" class="btn btn-primary col-2 mx-2 disabled">#</a>
         </div>
     </div>
 
+    {{-- Painel Historico de situação --}}
     <div class="container border mt-3 mb-4">
 
-        {{-- Painel Historico de situação --}}
         <div class="container my-3">
             <h3>Histórico de Situações do associado</h3>
             @if ($associado->historicoSituacoes && $associado->historicoSituacoes->count() > 0)
