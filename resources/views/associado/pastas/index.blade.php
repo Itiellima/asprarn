@@ -13,6 +13,7 @@
             </h2>
 
         </div>
+        
         <div class="container m-3 p-3 border rounded">
             @if ($pastas && $pastas->count() > 0)
                 <table class="table table-striped">
@@ -44,14 +45,14 @@
             @endif
         </div>
 
-        {{-- MODAL INSERSAO --}}
-        <div class="">
+        {{-- Modal crirar pasta --}}
+        <div>
             {{-- Botão para abrir modal de inderir documento --}}
             <button type="button" class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
                 Nova Pasta
             </button>
 
-            {{-- Modal de inserir documento --}}
+            {{-- Modal de criar pasta --}}
             <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
                 aria-labelledby="staticBackdropLabel" aria-hidden="true">
                 <div class="modal-dialog">

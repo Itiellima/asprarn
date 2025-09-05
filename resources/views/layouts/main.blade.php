@@ -109,7 +109,7 @@
     </header>
 
     {{-- Alertas --}}
-    <div class="container">
+    <div class="container m-3">
         @if (session('msg'))
             <div class="alert alert-success">
                 {{ session('msg') }}

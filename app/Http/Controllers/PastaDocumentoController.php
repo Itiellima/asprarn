@@ -16,9 +16,13 @@ class PastaDocumentoController extends Controller
             return redirect()->route('index')->with('error', 'Acesso negado. Você não tem permissão para acessar esta página.');
         }
 
-
         $associado = Associado::findOrFail($id);
-        $pastas = $associado->pastaDocumentos()->paginate(10);
+
+        $pastas = PastaDocumento::with([
+            'associado'
+        ])
+            ->paginate(10);
+
 
         return view('associado.pastas.index', compact('associado', 'pastas'));
     }
@@ -63,7 +67,7 @@ class PastaDocumentoController extends Controller
         $associado = Associado::findOrFail($associado_id);
         $pasta = $associado->pastaDocumentos()->with('files')->findOrFail($pasta_id);
 
-        
+        $arquivos = $pasta->files;
 
         $search = request('search');
 
@@ -75,6 +79,6 @@ class PastaDocumentoController extends Controller
             })
             ->paginate(10);
 
-        return view('associado.pastas.show', compact('pasta', 'associado'));
+        return view('associado.pastas.show', compact('pasta', 'associado', 'documentos', 'search', 'arquivos'));
     }
 }

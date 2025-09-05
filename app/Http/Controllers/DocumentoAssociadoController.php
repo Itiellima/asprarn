@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Associado;
 use App\Models\File; // novo model polimórfico
+use App\Models\PastaDocumento;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -22,13 +23,14 @@ class DocumentoAssociadoController extends Controller
             return redirect()->route('index')->with('error', 'Acesso negado. Você não tem permissão para acessar esta página.');
         }
 
-        $associado = Associado::with([
-            'files'
+        $pasta = PastaDocumento::with([
+            'files',
+            'associado'
         ])->findOrFail($id);
 
         $search = request('search');
 
-        $documentos = $associado->files()
+        $documentos = $pasta->files()
             ->when($search, function ($query, $search) {
                 $query->where('tipo_documento', 'like', "%{$search}%")
                     ->orWhere('status', 'like', "%{$search}%")
@@ -36,10 +38,10 @@ class DocumentoAssociadoController extends Controller
             })
             ->paginate(10);
 
-        return view('associado.documentos.index', compact('associado', 'documentos', 'search'));
+        return view('associado.documentos.index', compact('pasta', 'documentos', 'search'));
     }
 
-    // Criar documento
+    // Criar documento para uma pasta
     public function storeDocumento(Request $request, $id)
     {
         $user = Auth::user();
@@ -57,11 +59,19 @@ class DocumentoAssociadoController extends Controller
         try {
             DB::beginTransaction();
 
-            $associado = Associado::findOrFail($id);
+            // Verifica se a pasta existe e pertense ao associado
+            $pasta = PastaDocumento::where('id', $id)
+                ->with('associado')
+                ->firstOrFail();
 
-            $path = $request->file('arquivo')->store('documentos', 'public');
+            // Pega o ID do associado
+            $associadoId = $pasta->associado_id;
 
-            $associado->files()->create([
+            // Salva o arquivo e o caminho para armazenar o arquivo
+            $path = $request->file('arquivo')->store("documentos/{$associadoId}/{$pasta->id}", 'public');
+
+            // Cria o registro do arquivo na tabela files
+            $pasta->files()->create([
                 'tipo_documento' => $request->tipo_documento,
                 'path' => $path,
                 'status' => 'pendente',
@@ -72,6 +82,7 @@ class DocumentoAssociadoController extends Controller
 
             return redirect()->back()->with('success', 'Documento enviado com sucesso!');
         } catch (\Exception $e) {
+
             DB::rollBack();
             Log::error('Erro ao enviar documentos' . $e->getMessage());
 
@@ -93,7 +104,7 @@ class DocumentoAssociadoController extends Controller
             'observacao' => 'nullable|string',
         ]);
 
-        $file = File::where('fileable_type', Associado::class)
+        $file = File::where('fileable_type', PastaDocumento::class)
             ->where('fileable_id', $id)
             ->findOrFail($fileId);
 
@@ -106,19 +117,21 @@ class DocumentoAssociadoController extends Controller
     public function destroyDocumento($associadoId, $fileId)
     {
         $user = Auth::user();
-
         if (!$user || !$user->hasAnyRole(['admin', 'moderador'])) {
             return redirect()->route('index')->with('error', 'Acesso negado. Você não tem permissão para acessar esta página.');
         }
 
-        $file = File::where('fileable_type', Associado::class)
+        // Verifica se o arquivo pertence ao associado através da pasta
+        $file = File::where('fileable_type', PastaDocumento::class)
             ->where('fileable_id', $associadoId)
             ->findOrFail($fileId);
 
+        // Deleta o arquivo do storage se existir
         if ($file->path && Storage::disk('public')->exists($file->path)) {
             Storage::disk('public')->delete($file->path);
         }
 
+        // Deleta o registro do arquivo
         $file->delete();
 
         return redirect()->back()->with('success', 'Documento excluído com sucesso!');
@@ -133,7 +146,7 @@ class DocumentoAssociadoController extends Controller
             return redirect()->route('index')->with('error', 'Acesso negado. Você não tem permissão para acessar esta página.');
         }
 
-        $file = File::where('fileable_type', Associado::class)
+        $file = File::where('fileable_type', PastaDocumento::class)
             ->where('fileable_id', $id)
             ->findOrFail($fileId);
 
@@ -143,4 +156,5 @@ class DocumentoAssociadoController extends Controller
 
         abort(404, 'Arquivo não encontrado.');
     }
+
 }
