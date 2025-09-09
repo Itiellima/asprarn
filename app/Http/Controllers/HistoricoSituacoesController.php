@@ -6,6 +6,7 @@ use App\Models\Associado;
 use App\Models\HistoricoSituacoes;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class HistoricoSituacoesController extends Controller
 {
@@ -31,14 +32,25 @@ class HistoricoSituacoesController extends Controller
 
         $associado = Associado::findOrFail($id);
 
-        $associado->historicoSituacoes()->create([
-            'situacao' => $request->situacao,
-            'observacao' => $request->observacao,
-            'data_inicio' => $request->data_inicio,
-            'data_fim' => $request->data_fim,
-        ]);
+        DB::beginTransaction();
+        try {
 
-        return redirect()->back()->with('success', 'Historico criado com sucesso!');
+            $associado->historicoSituacoes()->create([
+                'situacao' => $request->situacao,
+                'observacao' => $request->observacao,
+                'data_inicio' => $request->data_inicio,
+                'data_fim' => $request->data_fim,
+            ]);
+    
+            DB::commit();
+            return redirect()->back()->with('success', 'Historico criado com sucesso!');
+
+        } catch (\Exception $e){
+            DB::rollBack();
+            return redirect()->back()->with('error', 'Erro ao inserir um historico: ' . $e->getMessage());
+
+        }
+        
     }
 
 

@@ -136,17 +136,30 @@ class BeneficioController extends Controller
 
     public function destroy($id)
     {
-        $beneficio = Beneficio::findOrFail($id);
+        $user = Auth::user();
 
-        foreach ($beneficio->files as $file) {
-            Storage::disk('public')->delete($file->path);
+        if(!$user || !$user->hasAnyRole(['admin', 'moderador'])){
+            return redirect('beneficio')->with('error', 'Acesso negado. Voçê não tema acesso a essa funcionalidade.');
         }
 
-        $beneficio->files()->delete();
+        $beneficio = Beneficio::findOrFail($id);
 
-        $beneficio->delete();
+        DB::beginTransaction();
+        try {
 
-        return redirect('beneficio')->with('success', 'Beneficio excluido com sucesso!');
+            foreach ($beneficio->files as $file) {
+                Storage::disk('public')->delete($file->path);
+            }
+    
+            $beneficio->files()->delete();
+    
+            $beneficio->delete();
+    
+            return redirect('beneficio')->with('success', 'Beneficio excluido com sucesso!');
+            DB::commmit();
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect('beneficio')->with('error', 'Erro ao excluir beneficio!');
+        }
     }
-
 }
