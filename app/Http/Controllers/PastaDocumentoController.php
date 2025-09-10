@@ -6,6 +6,7 @@ use App\Models\PastaDocumento;
 use App\Models\Associado;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class PastaDocumentoController extends Controller
 {
@@ -47,13 +48,20 @@ class PastaDocumentoController extends Controller
             'descricao' => 'nullable|string',
         ]);
 
-        $associado->pastaDocumentos()->create([
-            'nome' => $request->nome,
-            'tipo_documento' => $request->tipo_documento,
-            'descricao' => $request->descricao,
-        ]);
-
-        return redirect()->back()->with('success', 'Pasta de documentos criada com sucesso.');
+        DB::beginTransaction();
+        try{
+            $associado->pastaDocumentos()->create([
+                'nome' => $request->nome,
+                'tipo_documento' => $request->tipo_documento,
+                'descricao' => $request->descricao,
+            ]);
+    
+            DB::commit();
+            return redirect()->back()->with('success', 'Pasta de documentos criada com sucesso.');
+        } catch (\Exception $e){
+            DB::rollBack();
+            return redirect()->back()->with('error', 'Erro ao criar a pasta de documentos: ' . $e->getMessage());
+        }
         //
     }
 

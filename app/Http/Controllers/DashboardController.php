@@ -30,7 +30,8 @@ class DashboardController extends Controller
         // Admin ou moderador → pega todos os associados
         if (in_array($role, ['admin', 'moderador'])) {
             $associados = Associado::all();
-            return view("dashboard.$role", compact('user', 'associados'));
+            
+            return view("dashboard.admin", compact('user', 'associados'));
         }
 
         // Associado → pega apenas o associado vinculado ao usuário logado
