@@ -14,11 +14,10 @@
                     @hasanyrole('admin|moderador')
                         <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown"
                             aria-expanded="false">
-                            Admnistração Menu
+                            Administração Menu
                         </button>
 
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="#">Action</a></li>
                             <li>
                                 <a href="#" class="dropdown-item">📊 Visão Geral (Dashboard)*</a>
                             </li>

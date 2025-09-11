@@ -3,15 +3,16 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 
 class PastaDocumento extends Model
 {
 
     protected $table = 'pasta_documentos';
     protected $fillable = [
-        'associado_id', 
-        'nome', 
-        'tipo_documento', 
+        'associado_id',
+        'nome',
+        'tipo_documento',
         'descricao'
     ];
 
@@ -28,4 +29,16 @@ class PastaDocumento extends Model
         return $this->morphMany(File::class, 'fileable');
     }
 
+    protected static function booted()
+    {
+        static::deleting(function ($pastaDocumento) {
+            // Apaga arquivos da relação polimórfica
+            foreach ($pastaDocumento->files as $file) {
+                if ($file->path && Storage::disk('public')->exists($file->path)) {
+                    Storage::disk('public')->delete($file->path);
+                }
+                $file->delete();
+            }
+        });
+    }
 }
