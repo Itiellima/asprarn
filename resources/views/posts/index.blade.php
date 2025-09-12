@@ -7,7 +7,9 @@
     <div class="container body-offset">
 
         <div class="meu-container alert alert-light">
-            <h1>Index</h1>
+            <h1>
+                Publicações
+            </h1>
         </div>
 
         <div class="container mb-3">
