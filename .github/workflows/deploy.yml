@@ -12,12 +12,11 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
-      # Passo 1: Instalar dependências PHP (se precisar subir o vendor)
+      # Build PHP/Laravel
       - name: Install PHP dependencies
-        run: |
-          composer install --no-dev --optimize-autoloader
+        run: composer install --no-dev --optimize-autoloader
 
-      # Passo 2: Build dos assets com Vite
+      # Build assets com Vite
       - name: Setup Node
         uses: actions/setup-node@v3
         with:
@@ -29,13 +28,16 @@ jobs:
       - name: Build assets
         run: npm run build
 
-      # Passo 3: Deploy (manda tudo do repositório + build do Vite em public/build)
-      - name: Deploy via FTP
-        uses: locaweb/ftp-deploy@1.0.0
+      # Deploy via FTP
+      - name: Deploy to Locaweb
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.4
         with:
-          host: ${{ secrets.HOST }}
-          user: ${{ secrets.USER }}
+          server: ${{ secrets.HOST }}
+          username: ${{ secrets.USER }}
           password: ${{ secrets.PASS }}
-          localDir: .            # Laravel inteiro
-          remoteDir: public_html # ou a pasta raiz do site
-          forceSsl: false
+          local-dir: .
+          server-dir: public_html/
+          exclude: |
+            .git*
+            node_modules*
+            tests*
