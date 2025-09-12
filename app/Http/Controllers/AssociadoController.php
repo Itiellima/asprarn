@@ -60,7 +60,12 @@ class AssociadoController extends Controller
             'situacao'
         ])->findOrFail($id);
 
-        return view('associado.show', ['associado' => $associado]);
+        $contato = $associado->contato ?? new Contato();
+        $endereco = $associado->endereco ?? new Endereco();
+        $dadosBancarios = $associado->dadosBancarios ?? new DadosBancarios();
+
+
+        return view('associado.show', compact('associado', 'contato', 'endereco', 'dadosBancarios'));
     }
 
     // view para criar um associado

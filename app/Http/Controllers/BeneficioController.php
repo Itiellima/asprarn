@@ -155,8 +155,8 @@ class BeneficioController extends Controller
     
             $beneficio->delete();
     
+            DB::commit();
             return redirect('beneficio')->with('success', 'Beneficio excluido com sucesso!');
-            DB::commmit();
         } catch (\Exception $e) {
             DB::rollBack();
             return redirect('beneficio')->with('error', 'Erro ao excluir beneficio!');
