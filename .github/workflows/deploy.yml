@@ -1,4 +1,4 @@
-name: Deploy Laravel completo para Locaweb
+name: Deploy Laravel + Vite para Locaweb
 
 on:
   push:
@@ -34,9 +34,10 @@ jobs:
       - name: Prepare Laravel for Locaweb
         run: |
           mkdir -p temp_deploy
-          cp -r * temp_deploy/
-          
-          # Ajustar public/index.php para caminhos relativos
+          # Copiar todo o Laravel para temp_deploy, exceto temp_deploy
+          rsync -av --progress --exclude 'temp_deploy' ./ temp_deploy/
+
+          # Ajustar public/index.php para paths relativos
           sed -i "s|require __DIR__ . '/../vendor/autoload.php';|require __DIR__ . '/vendor/autoload.php';|g" temp_deploy/public/index.php
           sed -i "s|\\$app = require_once __DIR__ . '/../bootstrap/app.php';|\\$app = require_once __DIR__ . '/bootstrap/app.php';|g" temp_deploy/public/index.php
 
