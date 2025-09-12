@@ -39,4 +39,5 @@ jobs:
           host: ${{ secrets.HOST }}
           user: ${{ secrets.USER }}
           password: ${{ secrets.PASS }}
-          localDir: "."  # envia tudo do projeto
+          localDir: "."
+          forceSsl: true
