@@ -1,4 +1,4 @@
-name: Deploy Laravel para Locaweb
+name: Deploy Laravel + Vite para Locaweb
 
 on:
   push:
@@ -7,38 +7,35 @@ on:
 
 jobs:
   deploy:
-    name: Deploy
     runs-on: ubuntu-latest
-
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout
+        uses: actions/checkout@v3
 
-      - name: Instalar dependências PHP
-        run: composer install --no-dev --optimize-autoloader
+      # Passo 1: Instalar dependências PHP (se precisar subir o vendor)
+      - name: Install PHP dependencies
+        run: |
+          composer install --no-dev --optimize-autoloader
 
-      - name: Instalar Node.js
+      # Passo 2: Build dos assets com Vite
+      - name: Setup Node
         uses: actions/setup-node@v3
         with:
           node-version: '18'
 
-      - name: Instalar dependências do frontend
+      - name: Install Node dependencies
         run: npm install
 
-      - name: Compilar assets
+      - name: Build assets
         run: npm run build
 
-      - name: Preparar Laravel
-        run: |
-          php artisan config:cache
-          php artisan route:cache
-          php artisan view:cache
-
-      - name: FTP Deploy Locaweb
+      # Passo 3: Deploy (manda tudo do repositório + build do Vite em public/build)
+      - name: Deploy via FTP
         uses: locaweb/ftp-deploy@1.0.0
         with:
           host: ${{ secrets.HOST }}
           user: ${{ secrets.USER }}
           password: ${{ secrets.PASS }}
-          localDir: "dist"
-          remoteDir: public_html
+          localDir: .            # Laravel inteiro
+          remoteDir: public_html # ou a pasta raiz do site
           forceSsl: false
