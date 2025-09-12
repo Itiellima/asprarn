@@ -7,11 +7,11 @@ on:
 
 jobs:
   deploy:
+    name: Deploy
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout código
-        uses: actions/checkout@v3
+      - uses: actions/checkout@v3
 
       - name: Instalar dependências PHP
         run: composer install --no-dev --optimize-autoloader
@@ -27,20 +27,16 @@ jobs:
       - name: Compilar assets
         run: npm run build
 
-      - name: Gerar chave da aplicação
-        run: php artisan key:generate
-
-      - name: Preparar arquivos Laravel
+      - name: Preparar Laravel
         run: |
           php artisan config:cache
           php artisan route:cache
           php artisan view:cache
 
-      - name: Deploy via FTP
-        uses: SamKirkland/FTP-Deploy-Action@v4
+      - name: FTP Deploy Locaweb
+        uses: locaweb/ftp-deploy@1.0.0
         with:
-          server: ftp.asprarn.com.br
-          username: ${{ secrets.FTP_USERNAME }}
-          password: ${{ secrets.FTP_PASSWORD }}
-          server-dir: /public_html/
-          local-dir: ./
+          host: ${{ secrets.HOST }}
+          user: ${{ secrets.USER }}
+          password: ${{ secrets.PASS }}
+          localDir: "."  # envia tudo do projeto
