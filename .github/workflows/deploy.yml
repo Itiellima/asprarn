@@ -9,14 +9,15 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
+      # Passo 1: Clonar repositório
       - name: Checkout
         uses: actions/checkout@v3
 
-      # Build PHP/Laravel
+      # Passo 2: Instalar dependências PHP
       - name: Install PHP dependencies
         run: composer install --no-dev --optimize-autoloader
 
-      # Build assets com Vite
+      # Passo 3: Build assets com Vite
       - name: Setup Node
         uses: actions/setup-node@v3
         with:
@@ -28,14 +29,24 @@ jobs:
       - name: Build assets
         run: npm run build
 
-      # Deploy via FTP
+      # Passo 4: Preparar arquivos para envio
+      - name: Prepare Laravel public for FTP
+        run: |
+          mkdir -p temp_public
+          cp -r public/* temp_public/
+          # Copiar build de Vite
+          cp -r public/build temp_public/build
+          # Opcional: remover arquivos desnecessários
+          rm -rf temp_public/node_modules temp_public/.git temp_public/tests
+
+      # Passo 5: Deploy via FTP
       - name: Deploy to Locaweb
         uses: SamKirkland/FTP-Deploy-Action@v4.3.4
         with:
           server: ${{ secrets.HOST }}
           username: ${{ secrets.USER }}
           password: ${{ secrets.PASS }}
-          local-dir: .
+          local-dir: temp_public
           server-dir: public_html/
           exclude: |
             .git*
