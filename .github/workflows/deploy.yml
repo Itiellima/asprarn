@@ -1,4 +1,4 @@
-name: Deploy Laravel + Vite para Locaweb
+name: Deploy Laravel completo para Locaweb
 
 on:
   push:
@@ -8,16 +8,17 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+
     steps:
-      # Passo 1: Clonar repositório
+      # 1️⃣ Clonar o repositório
       - name: Checkout
         uses: actions/checkout@v3
 
-      # Passo 2: Instalar dependências PHP
+      # 2️⃣ Instalar dependências PHP
       - name: Install PHP dependencies
         run: composer install --no-dev --optimize-autoloader
 
-      # Passo 3: Build assets com Vite
+      # 3️⃣ Configurar Node e build do Vite
       - name: Setup Node
         uses: actions/setup-node@v3
         with:
@@ -26,30 +27,36 @@ jobs:
       - name: Install Node dependencies
         run: npm install
 
-      - name: Build assets
+      - name: Build Vite assets
         run: npm run build
 
-      # Passo 4: Preparar arquivos para envio
-      - name: Prepare Laravel public for FTP
+      # 4️⃣ Preparar pasta temporária para deploy
+      - name: Prepare Laravel for Locaweb
         run: |
-          mkdir -p temp_public
-          cp -r public/* temp_public/
-          # Copiar build de Vite
-          cp -r public/build temp_public/build
-          # Opcional: remover arquivos desnecessários
-          rm -rf temp_public/node_modules temp_public/.git temp_public/tests
+          mkdir -p temp_deploy
+          cp -r * temp_deploy/
+          
+          # Ajustar public/index.php para caminhos relativos
+          sed -i "s|require __DIR__ . '/../vendor/autoload.php';|require __DIR__ . '/vendor/autoload.php';|g" temp_deploy/public/index.php
+          sed -i "s|\\$app = require_once __DIR__ . '/../bootstrap/app.php';|\\$app = require_once __DIR__ . '/bootstrap/app.php';|g" temp_deploy/public/index.php
 
-      # Passo 5: Deploy via FTP
+          # Mover o conteúdo de public para a raiz da pasta temporária
+          cp -r temp_deploy/public/* temp_deploy/
+          rm -rf temp_deploy/public
+
+          # Remover arquivos desnecessários
+          rm -rf temp_deploy/node_modules temp_deploy/.git temp_deploy/tests
+
+      # 5️⃣ Deploy via FTP
       - name: Deploy to Locaweb
         uses: SamKirkland/FTP-Deploy-Action@v4.3.4
         with:
           server: ${{ secrets.HOST }}
           username: ${{ secrets.USER }}
           password: ${{ secrets.PASS }}
-          local-dir: temp_public
+          local-dir: temp_deploy
           server-dir: public_html/
           exclude: |
             .git*
             node_modules*
             tests*
-            
