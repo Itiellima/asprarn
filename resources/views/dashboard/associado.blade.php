@@ -11,9 +11,7 @@
         <!-- Conteúdo -->
         <main class="">
             <div class="container">
-                <h1 class="text-2xl font-bold">Conteúdo principal</h1>
-
-                <p class="mt-4">Texto de exemplo dentro da área principal.</p>
+                <h1 class="text-2xl font-bold">Em breve.</h1>
             </div>
             
             {{--

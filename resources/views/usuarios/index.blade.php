@@ -6,7 +6,7 @@
     @include('layouts.nav-dashboard')
 
     <div class="container">
-        <h1>Gerenciar Roles dos Usuários</h1>
+        <h1>Gerenciar permissões dos Usuários</h1>
 
         @if (session('success'))
             <div class="alert alert-success">{{ session('success') }}</div>

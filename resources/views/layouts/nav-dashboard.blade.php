@@ -8,10 +8,12 @@
                 <div class="dropdown">
 
                     <a href="/dashboard" class="btn btn-secondary mx-1">🏠 Home</a>
-                    <a href="/profile" class="btn btn-secondary mx-1">👮 Alterar Perfil</a>
+
 
 
                     @hasanyrole('admin|moderador')
+                        <a href="/profile" class="btn btn-secondary mx-1">👮 Alterar Perfil</a>
+
                         <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown"
                             aria-expanded="false">
                             Administração Menu
@@ -37,7 +39,6 @@
                                 <a href="#" class="dropdown-item">⚙️ Configurações*</a>
                             </li>
                         </ul>
-                        
                     @endhasanyrole
                 </div>
             @endauth
