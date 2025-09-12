@@ -50,7 +50,7 @@ jobs:
 
       # 5️⃣ Deploy via FTP
       - name: Deploy to Locaweb
-        uses: SamKirkland/FTP-Deploy-Action@latest
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.4
         with:
           server: ${{ secrets.HOST }}
           username: ${{ secrets.USER }}
