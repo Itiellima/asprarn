@@ -61,7 +61,7 @@ jobs:
           server: ${{ secrets.HOST }}
           username: ${{ secrets.USER }}
           password: ${{ secrets.PASS }}
-          local-dir: temp_deploy
+          local-dir: temp_deploy/
           server-dir: public_html/
           exclude: |
             .git*
