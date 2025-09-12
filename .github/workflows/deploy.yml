@@ -40,4 +40,4 @@ jobs:
           user: ${{ secrets.USER }}
           password: ${{ secrets.PASS }}
           localDir: "."
-          forceSsl: true
+          forceSsl: false
