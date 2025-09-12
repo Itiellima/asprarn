@@ -39,6 +39,6 @@ jobs:
           host: ${{ secrets.HOST }}
           user: ${{ secrets.USER }}
           password: ${{ secrets.PASS }}
-          localDir: .
+          localDir: "dist"
           remoteDir: public_html
           forceSsl: false
