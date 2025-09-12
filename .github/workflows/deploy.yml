@@ -34,27 +34,24 @@ jobs:
       - name: Prepare Laravel for Locaweb
         run: |
           mkdir -p temp_deploy
-          # Copiar todo o Laravel para temp_deploy, exceto temp_deploy
+          # Copiar todo o Laravel para temp_deploy, exceto a própria pasta
           rsync -av --progress --exclude 'temp_deploy' ./ temp_deploy/
 
           # Ajustar public/index.php para paths relativos
           sed -i "s|require __DIR__ . '/../vendor/autoload.php';|require __DIR__ . '/vendor/autoload.php';|g" temp_deploy/public/index.php
           sed -i "s|\\$app = require_once __DIR__ . '/../bootstrap/app.php';|\\$app = require_once __DIR__ . '/bootstrap/app.php';|g" temp_deploy/public/index.php
 
-          # Mover o conteúdo de public para a raiz da pasta temporária
+          # Mover conteúdo de public para a raiz da pasta temporária
           cp -r temp_deploy/public/* temp_deploy/
           rm -rf temp_deploy/public
 
           # Remover arquivos desnecessários
           rm -rf temp_deploy/node_modules temp_deploy/.git temp_deploy/tests
-          
-      - name: Debug secrets
-        run: |
-          echo "HOST=${{ secrets.HOST }}"
-          echo "USER=${{ secrets.USER }}"
-          echo "PASS=${{ secrets.PASS }}"
 
-      # 5️⃣ Deploy via FTP
+          # Debug: listar conteúdo para garantir que a pasta existe
+          ls -la temp_deploy/
+
+      # 5️⃣ Deploy via FTP para Locaweb
       - name: Deploy to Locaweb
         uses: SamKirkland/FTP-Deploy-Action@v4.3.4
         with:
