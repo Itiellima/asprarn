@@ -47,6 +47,12 @@ jobs:
 
           # Remover arquivos desnecessários
           rm -rf temp_deploy/node_modules temp_deploy/.git temp_deploy/tests
+          
+      - name: Debug secrets
+        run: |
+          echo "HOST=${{ secrets.HOST }}"
+          echo "USER=${{ secrets.USER }}"
+          echo "PASS=${{ secrets.PASS }}"
 
       # 5️⃣ Deploy via FTP
       - name: Deploy to Locaweb
