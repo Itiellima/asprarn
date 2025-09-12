@@ -89,18 +89,6 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/usuarios/{user}/role', [UsuariosController::class, 'updateRole'])->name('usuarios.updateRole');
 });
 
-/*
-    Route::middleware([
-        'auth:sanctum',
-        config('jetstream.auth_session'),
-        'verified',
-    ])->group(function () {
-        Route::get('/dashboard', function () {
-            return view('dashboard');
-        })->name('dashboard');
-    });
-*/
-
 Route::get('/profile', function () {
     return view('profile.show');
-})->name('profile.show');
+})->name('profile.view');
