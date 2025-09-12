@@ -17,10 +17,21 @@ class UsuariosController extends Controller
             return redirect()->route('dashboard')->with('error', 'Acesso negado. Você não tem permissão para acessar esta página.');
         }
 
-        $users = User::all();
         $roles = Role::all();
 
-        return view('usuarios.index', compact('users', 'roles'));
+
+        $search = request('search');
+
+        $users = User::query()
+            ->when($search, function ($query, $search) {
+                $query->where('name', 'like', "%{$search}%")
+                    ->orWhere('email', 'like', "%{$search}%");
+            })
+            ->orderBy('name')
+            ->paginate(10);
+
+
+        return view('usuarios.index', compact('users', 'roles', 'search'));
     }
 
     public function updateRole(Request $request, $id)
