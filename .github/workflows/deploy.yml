@@ -1,0 +1,42 @@
+name: Deploy Laravel para Locaweb
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    name: Deploy
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Instalar dependências PHP
+        run: composer install --no-dev --optimize-autoloader
+
+      - name: Instalar Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Instalar dependências do frontend
+        run: npm install
+
+      - name: Compilar assets
+        run: npm run build
+
+      - name: Preparar Laravel
+        run: |
+          php artisan config:cache
+          php artisan route:cache
+          php artisan view:cache
+
+      - name: FTP Deploy Locaweb
+        uses: locaweb/ftp-deploy@1.0.0
+        with:
+          host: ${{ secrets.HOST }}
+          user: ${{ secrets.USER }}
+          password: ${{ secrets.PASS }}
+          localDir: "."  # envia tudo do projeto
