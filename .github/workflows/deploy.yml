@@ -13,13 +13,24 @@ jobs:
       - name: Checkout código
         uses: actions/checkout@v3
 
-      - name: Instalar dependências
+      - name: Instalar dependências PHP
         run: composer install --no-dev --optimize-autoloader
+
+      - name: Instalar Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Instalar dependências do frontend
+        run: npm install
+
+      - name: Compilar assets
+        run: npm run build
 
       - name: Gerar chave da aplicação
         run: php artisan key:generate
 
-      - name: Preparar arquivos para deploy
+      - name: Preparar arquivos Laravel
         run: |
           php artisan config:cache
           php artisan route:cache
