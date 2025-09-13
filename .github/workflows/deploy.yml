@@ -10,51 +10,57 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # 1. Baixar código
+      # 1️⃣ Baixar código
       - name: 📥 Checkout code
         uses: actions/checkout@v3
 
-      # 2. Configurar PHP
+      # 2️⃣ Configurar PHP
       - name: ⚙️ Setup PHP
         uses: shivammathur/setup-php@v2
         with:
           php-version: '8.2'
           extensions: mbstring, bcmath, intl, pdo, pdo_mysql
 
-      # 3. Instalar dependências do Laravel
+      # 3️⃣ Instalar dependências do Laravel
       - name: 📦 Install Composer dependencies
         run: composer install --optimize-autoloader --no-dev
 
-      # 4. Instalar dependências do Node + build
+      # 4️⃣ Instalar dependências do Node + build
       - name: 📦 Install Node dependencies and build
         run: |
           npm install
           npm run build
 
-      # 5. Deploy Laravel "core" (exceto public)
+      # 5️⃣ Criar pasta temporária de deploy
+      - name: 📂 Prepare deploy folder
+        run: |
+          mkdir -p temp_deploy
+          cp -r app bootstrap config database resources routes storage vendor artisan composer.json composer.lock .env temp_deploy/
+
+      # 6️⃣ Deploy Laravel "core" (exceto public)
       - name: 🚀 Deploy Laravel app (exceto public)
-        uses: SamKirkland/FTP-Deploy-Action@v4
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.4
         with:
           server: ${{ secrets.HOST }}
           username: ${{ secrets.USER }}
           password: ${{ secrets.PASS }}
-          local-dir: temp_deploy/           # todo Laravel exceto public
-          server-dir: laravel_app/          # pasta fora do public_html
+          local-dir: temp_deploy/          # todo Laravel exceto public
+          server-dir: laravel_app/         # pasta fora do public_html
           exclude: |
             public/
             node_modules/
             tests/
             .git*
 
-      # 6. Deploy pasta public para public_html
+      # 7️⃣ Deploy pasta public para public_html
       - name: 🚀 Deploy public folder
-        uses: SamKirkland/FTP-Deploy-Action@v4
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.4
         with:
           server: ${{ secrets.HOST }}
           username: ${{ secrets.USER }}
           password: ${{ secrets.PASS }}
-          local-dir: temp_deploy/public/    # conteúdo da pasta public
-          server-dir: public_html/          # destino público
+          local-dir: temp_deploy/public/   # conteúdo da pasta public
+          server-dir: public_html/         # destino público
           exclude: |
             .git*
             node_modules*
