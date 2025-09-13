@@ -31,22 +31,31 @@ jobs:
           npm install
           npm run build
 
-      # 5. Criar pasta de deploy
-      - name: 📂 Prepare deploy folder
-        run: |
-          mkdir -p temp_deploy
-          cp -r app bootstrap config database public resources routes storage vendor artisan composer.json composer.lock temp_deploy/
-
-      # 6. Deploy via FTP
-      - name: 🚀 Deploy to Locaweb
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.4
+      # 5. Deploy Laravel "core" (exceto public)
+      - name: 🚀 Deploy Laravel app (exceto public)
+        uses: SamKirkland/FTP-Deploy-Action@v4
         with:
           server: ${{ secrets.HOST }}
           username: ${{ secrets.USER }}
           password: ${{ secrets.PASS }}
-          local-dir: temp_deploy/
-          server-dir: public_html/
+          local-dir: temp_deploy/           # todo Laravel exceto public
+          server-dir: laravel_app/          # pasta fora do public_html
           exclude: |
-            **/.git*
-            **/node_modules/*
-            **/tests/*
+            public/
+            node_modules/
+            tests/
+            .git*
+
+      # 6. Deploy pasta public para public_html
+      - name: 🚀 Deploy public folder
+        uses: SamKirkland/FTP-Deploy-Action@v4
+        with:
+          server: ${{ secrets.HOST }}
+          username: ${{ secrets.USER }}
+          password: ${{ secrets.PASS }}
+          local-dir: temp_deploy/public/    # conteúdo da pasta public
+          server-dir: public_html/          # destino público
+          exclude: |
+            .git*
+            node_modules*
+            tests*
