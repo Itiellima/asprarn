@@ -35,7 +35,7 @@ jobs:
       - name: 📂 Prepare deploy folder
         run: |
           mkdir -p temp_deploy
-          cp -r app bootstrap config database public resources routes storage vendor artisan composer.json composer.lock .env temp_deploy/
+          cp -r app bootstrap config database public resources routes storage vendor artisan composer.json composer.lock temp_deploy/
 
       # 6. Deploy via FTP
       - name: 🚀 Deploy to Locaweb
