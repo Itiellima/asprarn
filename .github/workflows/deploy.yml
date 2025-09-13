@@ -1,58 +1,44 @@
-name: Deploy Laravel + Vite para Locaweb
+name: 🚀 Deploy Laravel to Locaweb
 
 on:
   push:
     branches:
-      - main
+      - main   # roda sempre que fizer push na branch main
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
 
     steps:
-      # 1️⃣ Clonar o repositório
-      - name: Checkout
+      # 1. Baixar código
+      - name: 📥 Checkout code
         uses: actions/checkout@v3
 
-      # 2️⃣ Instalar dependências PHP
-      - name: Install PHP dependencies
-        run: composer install --no-dev --optimize-autoloader
-
-      # 3️⃣ Configurar Node e build do Vite
-      - name: Setup Node
-        uses: actions/setup-node@v3
+      # 2. Configurar PHP
+      - name: ⚙️ Setup PHP
+        uses: shivammathur/setup-php@v2
         with:
-          node-version: '18'
+          php-version: '8.1'
+          extensions: mbstring, bcmath, intl, pdo, pdo_mysql
 
-      - name: Install Node dependencies
-        run: npm install
+      # 3. Instalar dependências do Laravel
+      - name: 📦 Install Composer dependencies
+        run: composer install --optimize-autoloader --no-dev
 
-      - name: Build Vite assets
-        run: npm run build
+      # 4. Instalar dependências do Node + build
+      - name: 📦 Install Node dependencies and build
+        run: |
+          npm install
+          npm run build
 
-      # 4️⃣ Preparar pasta temporária para deploy
-      - name: Prepare Laravel for Locaweb
+      # 5. Criar pasta de deploy
+      - name: 📂 Prepare deploy folder
         run: |
           mkdir -p temp_deploy
-          # Copiar todo o Laravel para temp_deploy, exceto a própria pasta
-          rsync -av --progress --exclude 'temp_deploy' ./ temp_deploy/
+          cp -r app bootstrap config database public resources routes storage vendor artisan composer.json composer.lock .env temp_deploy/
 
-          # Ajustar public/index.php para paths relativos
-          sed -i "s|require __DIR__ . '/../vendor/autoload.php';|require __DIR__ . '/vendor/autoload.php';|g" temp_deploy/public/index.php
-          sed -i "s|\\$app = require_once __DIR__ . '/../bootstrap/app.php';|\\$app = require_once __DIR__ . '/bootstrap/app.php';|g" temp_deploy/public/index.php
-
-          # Mover conteúdo de public para a raiz da pasta temporária
-          cp -r temp_deploy/public/* temp_deploy/
-          rm -rf temp_deploy/public
-
-          # Remover arquivos desnecessários
-          rm -rf temp_deploy/node_modules temp_deploy/.git temp_deploy/tests
-
-          # Debug: listar conteúdo para garantir que a pasta existe
-          ls -la temp_deploy/
-
-      # 5️⃣ Deploy via FTP para Locaweb
-      - name: Deploy to Locaweb
+      # 6. Deploy via FTP
+      - name: 🚀 Deploy to Locaweb
         uses: SamKirkland/FTP-Deploy-Action@v4.3.4
         with:
           server: ${{ secrets.HOST }}
@@ -61,6 +47,6 @@ jobs:
           local-dir: temp_deploy/
           server-dir: public_html/
           exclude: |
-            .git*
-            node_modules*
-            tests*
+            **/.git*
+            **/node_modules/*
+            **/tests/*
