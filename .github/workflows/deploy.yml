@@ -34,8 +34,11 @@ jobs:
       # 5️⃣ Criar pasta temporária de deploy
       - name: 📂 Prepare deploy folder
         run: |
-          mkdir -p temp_deploy
-          cp -r app bootstrap config database resources routes storage vendor artisan composer.json composer.lock temp_deploy/
+          mkdir -p temp_deploy/laravel_app
+          # Envia apenas o núcleo do Laravel para fora da public_html
+          cp -r app bootstrap config database resources routes storage vendor artisan composer.json composer.lock temp_deploy/laravel_app/
+          # Agora copia a public para uma pasta separada
+          cp -r public temp_deploy/public
 
       # 6️⃣ Deploy Laravel "core" (exceto public)
       - name: 🚀 Deploy Laravel app (exceto public)
