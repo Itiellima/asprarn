@@ -27,9 +27,9 @@ jobs:
       - name: 🚀 Deploy Laravel App
         uses: SamKirkland/FTP-Deploy-Action@v4.3.4
         with:
-          server: ${{ secrets.FTP_SERVER }}
-          username: ${{ secrets.FTP_USERNAME }}
-          password: ${{ secrets.FTP_PASSWORD }}
+          server: ${{ secrets.HOST }}
+          username: ${{ secrets.USER }}
+          password: ${{ secrets.PASS }}
           server-dir: /laravel_app/       # destino Laravel
           local-dir: ./                   # enviar tudo
           timeout: 120000
@@ -49,9 +49,9 @@ jobs:
       - name: 🚀 Deploy Public
         uses: SamKirkland/FTP-Deploy-Action@v4.3.4
         with:
-          server: ${{ secrets.FTP_SERVER }}
-          username: ${{ secrets.FTP_USERNAME }}
-          password: ${{ secrets.FTP_PASSWORD }}
+          server: ${{ secrets.HOST }}
+          username: ${{ secrets.USER }}
+          password: ${{ secrets.PASS }}
           server-dir: /public_html/       # destino Public
           local-dir: ./public/            # apenas a pasta public
           timeout: 120000
