@@ -31,39 +31,41 @@ jobs:
           npm install
           npm run build
 
-      # 5️⃣ Criar pasta temporária de deploy
-      - name: 📂 Prepare deploy folder
+      # 5️⃣ Preparar apenas a pasta public para deploy
+      - name: 📂 Prepare public folder
         run: |
-          mkdir -p temp_deploy/laravel_app
-          # Envia apenas o núcleo do Laravel para fora da public_html
-          cp -r app bootstrap config database resources routes storage vendor artisan composer.json composer.lock temp_deploy/laravel_app/
-          # Agora copia a public para uma pasta separada
-          cp -r public temp_deploy/public
+          mkdir -p temp_deploy/public
+          cp -r public/* temp_deploy/public/
 
-      # 6️⃣ Deploy Laravel "core" (exceto public)
-      - name: 🚀 Deploy Laravel app (exceto public)
+      # 6️⃣ Deploy do core do Laravel (tudo exceto public)
+      - name: 🚀 Deploy Laravel core
         uses: SamKirkland/FTP-Deploy-Action@v4.3.4
         with:
           server: ${{ secrets.HOST }}
           username: ${{ secrets.USER }}
           password: ${{ secrets.PASS }}
-          local-dir: temp_deploy/          # todo Laravel exceto public
-          server-dir: laravel_app/         # pasta fora do public_html
+          local-dir: ./
+          server-dir: laravel_app/
+          dangerous-clean-slate: false
+          timeout: 60000
           exclude: |
-            public/
-            node_modules/
-            tests/
+            public/*
+            node_modules/*
+            tests/*
             .git*
+            temp_deploy/*
 
-      # 7️⃣ Deploy pasta public para public_html
+      # 7️⃣ Deploy da pasta public para public_html
       - name: 🚀 Deploy public folder
         uses: SamKirkland/FTP-Deploy-Action@v4.3.4
         with:
           server: ${{ secrets.HOST }}
           username: ${{ secrets.USER }}
           password: ${{ secrets.PASS }}
-          local-dir: temp_deploy/public/   # conteúdo da pasta public
-          server-dir: public_html/         # destino público
+          local-dir: temp_deploy/public/
+          server-dir: public_html/
+          dangerous-clean-slate: false
+          timeout: 60000
           exclude: |
             .git*
             node_modules*
