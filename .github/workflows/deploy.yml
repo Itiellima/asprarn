@@ -31,9 +31,12 @@ jobs:
           npm install
           npm run build
 
-      # 5️⃣ Preparar apenas a pasta public para deploy
-      - name: 📂 Prepare public folder
+       # 5️⃣ Criar pasta temporária de deploy
+      - name: 📂 Prepare deploy folder
         run: |
+          mkdir -p temp_deploy/laravel_app
+          cp -r app bootstrap config database resources routes storage vendor artisan composer.json composer.lock temp_deploy/laravel_app/
+          # Copiar a public para outra pasta
           mkdir -p temp_deploy/public
           cp -r public/* temp_deploy/public/
 
