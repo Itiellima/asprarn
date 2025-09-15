@@ -1,75 +1,61 @@
-name: 🚀 Deploy Laravel to Locaweb
+name: 🚀 Deploy Laravel + Public via FTP
 
 on:
   push:
     branches:
-      - main   # roda sempre que fizer push na branch main
+      - main   # ou a branch de produção
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
 
     steps:
-      # 1️⃣ Baixar código
-      - name: 📥 Checkout code
+      - name: 📂 Checkout do repositório
         uses: actions/checkout@v3
 
-      # 2️⃣ Configurar PHP
-      - name: ⚙️ Setup PHP
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: '8.2'
-          extensions: mbstring, bcmath, intl, pdo, pdo_mysql
+      # Instalar dependências do Laravel
+      - name: 📦 Instalar dependências
+        run: composer install --no-dev --optimize-autoloader
 
-      # 3️⃣ Instalar dependências do Laravel
-      - name: 📦 Install Composer dependencies
-        run: composer install --optimize-autoloader --no-dev
-
-      # 4️⃣ Instalar dependências do Node + build
-      - name: 📦 Install Node dependencies and build
+      # Build do Vite (se usa Vite no projeto)
+      - name: ⚡ Build do Vite
         run: |
           npm install
           npm run build
 
-       # 5️⃣ Criar pasta temporária de deploy
-      - name: 📂 Prepare deploy folder
-        run: |
-          mkdir -p temp_deploy/laravel_app
-          cp -r app bootstrap config database resources routes storage vendor artisan composer.json composer.lock temp_deploy/laravel_app/
-          # Copiar a public para outra pasta
-          mkdir -p temp_deploy/public
-          cp -r public/* temp_deploy/public/
-
-      # 6️⃣ Deploy do core do Laravel (tudo exceto public)
-      - name: 🚀 Deploy Laravel core
+      # Deploy do código Laravel (SEM a pasta public)
+      - name: 🚀 Deploy Laravel App
         uses: SamKirkland/FTP-Deploy-Action@v4.3.4
         with:
-          server: ${{ secrets.HOST }}
-          username: ${{ secrets.USER }}
-          password: ${{ secrets.PASS }}
-          local-dir: ./
-          server-dir: laravel_app/
-          dangerous-clean-slate: false
-          timeout: 60000
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          server-dir: /laravel_app/       # destino Laravel
+          local-dir: ./                   # enviar tudo
+          timeout: 120000
           exclude: |
-            public/*
-            node_modules/*
-            tests/*
-            .git*
-            temp_deploy/*
+            **/public/**          # exclui public
+            **/.git*
+            **/.github*
+            **/node_modules/**
+            **/tests/**
+            **/storage/logs/**
+            **/storage/framework/cache/**
+            vite.config.js
+            package.json
+            package-lock.json
 
-      # 7️⃣ Deploy da pasta public para public_html
-      - name: 🚀 Deploy public folder
+      # Deploy apenas da pasta public
+      - name: 🚀 Deploy Public
         uses: SamKirkland/FTP-Deploy-Action@v4.3.4
         with:
-          server: ${{ secrets.HOST }}
-          username: ${{ secrets.USER }}
-          password: ${{ secrets.PASS }}
-          local-dir: temp_deploy/public/
-          server-dir: public_html/
-          dangerous-clean-slate: false
-          timeout: 60000
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          server-dir: /public_html/       # destino Public
+          local-dir: ./public/            # apenas a pasta public
+          timeout: 120000
           exclude: |
-            .git*
-            node_modules*
-            tests*
+            **/.git*
+            **/node_modules/**
+            vite.config.js
