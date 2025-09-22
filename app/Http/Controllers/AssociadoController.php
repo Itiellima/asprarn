@@ -211,7 +211,9 @@ class AssociadoController extends Controller
             ]));
 
             // Atualiza o endereço (assume que o relacionamento existe)
-            $associado->endereco()->update($request->only([
+            $associado->endereco()->updateOrCreate(
+                ['associado_id' => $associado->id],
+                $request->only([
                 'cep',
                 'logradouro',
                 'nmr',
@@ -222,7 +224,9 @@ class AssociadoController extends Controller
             ]));
 
             // Atualiza o contato
-            $associado->contato()->update($request->only([
+            $associado->contato()->updateOrCreate(
+                ['associado_id' => $associado->id],
+                $request->only([
                 'tel_celular',
                 'tel_residencial',
                 'tel_trabalho',
@@ -230,7 +234,9 @@ class AssociadoController extends Controller
             ]));
 
             // Atualiza os dados bancários
-            $associado->dadosBancarios()->update($request->only([
+            $associado->dadosBancarios()->updateOrCreate(
+                ['associado_id' => $associado->id],
+                $request->only([
                 'codigo',
                 'agencia',
                 'banco',
